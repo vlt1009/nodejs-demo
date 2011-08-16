@@ -90,7 +90,7 @@ var querystring = require('querystring');
 			res.setHeader("Set-Cookie", [common.format("passport=id=#{id}&visa=#{visa}&mask=#{mask}; expires=Mon, 31 Dec 2998 16:00:00 GMT; path=/;", player)]);
 		} else {
 			player.passportTime = new Date;
-			player.status = "online";
+			player.state = "online";
 		}
 		return player;
 	};

@@ -9,6 +9,6 @@ application.Core.addConfig("ChatApi", {
 	/**
 	 * 请的Host地址
 	 */
-	apiHost: "http://localhost:2012"
-	//apiHost: "http://yudongxia:8080"
+	//apiHost: "http://localhost:2012"
+	apiHost: "http://yudongxia.com:8080"
 });

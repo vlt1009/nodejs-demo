@@ -94,6 +94,11 @@ input[type="button"]:hover, button:hover, .button:hover{
     position: absolute;
     right: 5px;
 }
+
+#editorTools label{
+	margin: 5px 0;
+    position: absolute;
+}
 	
 .tools button{
 	float: right;

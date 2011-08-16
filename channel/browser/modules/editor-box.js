@@ -34,13 +34,16 @@ application.Core.registerModule("EditorBox", function(sandbox){
 							lib.g('editor').value = "";
 						});
 						break;
+					case "focus":
+						lib.g('editor').focus();
+						break;
 				}
 			});
 			
 			lib.on('editor', 'keydown', function(e){
 				switch (e.which || e.keyCode || e.charCode) {
 					case 13:
-						if (e.ctrlKey) {
+						if (!(lib.g("ctrlEnter").checked ^ e.ctrlKey)) {
 							lib.event.stop(e);
 							AceEvent.fire(eventHandler, "send");
 						}
