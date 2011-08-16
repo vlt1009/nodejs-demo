@@ -86,7 +86,7 @@ var common = require('../common/channel.common.js');
 	/**
 	 * 清理已经掉线或离开的用户 
 	 */
-	PlayerPlugin.prototype.patrol = function() {
+	PlayerPlugin.prototype.patrol = function(fields) {
 		var now = new Date;
 		if (now - this.patrolTime < common.maxPatrolTime) return;
 		common.forEach(this.players, function(player) {
