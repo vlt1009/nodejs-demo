@@ -153,6 +153,19 @@ application.Core.registerExtension("ChatApi", function (sandbox) {
 	};
 	/* Debug End */
 	
+	function escapeSymbol(text) {
+		return String(text).replace(/[#%&+=\/\\\s]/g, function(all) {
+			return "%" + (0x100 + all.charCodeAt()).toString(16).substring(1);
+		});
+	} 
+
+	function jsonToQuery(json) {
+		var result = [];
+		for (var key in json) {
+			result.push([escapeSymbol(key), escapeSymbol(json[key])].join("="));
+		}
+		return result.join("&");
+	}
 	
 	return {
 		pick: function(details, callback) {
@@ -164,7 +177,7 @@ application.Core.registerExtension("ChatApi", function (sandbox) {
 				});
 				callback = function() {};
 			}, config.pickMaxWait);
-			var url = [config.pickUrl, lib.url.jsonToQuery(details)].join("?");
+			var url = [config.pickUrl, jsonToQuery(details)].join("?");
 			logger.log(url);
 			lib.sio.callByServer(url, function(data) {
 				timer && clearTimeout(timer);
@@ -174,7 +187,7 @@ application.Core.registerExtension("ChatApi", function (sandbox) {
 		},
 		command: function(details, callback) {
 			if (!details) return;
-			var url = [config.commandUrl, lib.url.jsonToQuery(details)].join("?");
+			var url = [config.commandUrl, jsonToQuery(details)].join("?");
 			logger.log(url);
 			lib.sio.callByServer(url, function(data) {
 				callback && callback(data);

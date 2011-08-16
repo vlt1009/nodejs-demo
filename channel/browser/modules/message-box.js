@@ -34,12 +34,21 @@ application.Core.registerModule("MessageBox", function(sandbox){
 					break;
 				case "messageAll":
 					messageTree.loadChilds(item.messages);
+					scrollBottom();
 					break;
 				case "messageAdd":
 					messageTree.appendChilds(item.messages);
+					scrollBottom();
 					break;
 			}
 		});
+	}
+	/**
+	 * 滚动到底部
+	 */
+	function scrollBottom() {
+		var parent = messageTree.parent.parentNode;
+		parent.scrollTop = parent.scrollHeight;
 	}
 	
 	/**
@@ -47,6 +56,7 @@ application.Core.registerModule("MessageBox", function(sandbox){
 	 * @param {Date} time
 	 */
 	function formatTime(time) {
+		time = new Date(time);
 		var timeStr = lib.date.format(time, "HH:mm:ss");
 		var dateStr = lib.date.format(time, "yyyy:MM:dd");
 		return lib.date.format(new Date, "yyyy:MM:dd") == dateStr ? timeStr :
@@ -58,6 +68,13 @@ application.Core.registerModule("MessageBox", function(sandbox){
 	 */
 	function ifSelf(id) {
 		return id == passportInfo.id ? "self" : "";
+	}
+	/**
+	 * 处理多行文本
+	 * @param {String} text 文本
+	 */
+	function mutiline(text) {
+		return lib.encodeHTML(text).replace(/\n/g, "<br/>");
 	}
 	
 	return {
@@ -74,7 +91,8 @@ application.Core.registerModule("MessageBox", function(sandbox){
 					return AceTemplate.format('messageListTemplate', node.data, {
 						node: node,
 						formatTime: formatTime,
-						ifSelf: ifSelf
+						ifSelf: ifSelf,
+						mutiline: mutiline
 					});
 				},
 				oncommand: function(command, node, e){

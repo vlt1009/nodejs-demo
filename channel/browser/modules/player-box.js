@@ -73,6 +73,13 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 				},
 				oncommand: function(command, node, e){
 					switch (command) {
+						case "nick":
+							if (!ifSelf(node.data.id)) return;
+							sandbox.notify(events.showDialog, {
+								type: "nick",
+								nick: passportInfo.nick
+							});
+							break;
 					}
 				}
 			});

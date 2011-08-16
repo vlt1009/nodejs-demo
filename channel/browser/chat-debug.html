@@ -18,6 +18,7 @@
 		<script src="modules/message-box.js"></script>
 		<script src="modules/player-box.js"></script>
 		<script src="modules/editor-box.js"></script>
+		<script src="modules/dialog-box.js"></script>
 	</head>
 	<body>
 		<div id="main">
@@ -28,7 +29,7 @@
 						<script id="messageListTemplate" type="text/template">
 						<li>
 							<span class="nick #{helper.ifSelf(from)}">#{nick}</span><span class="time">#{helper.formatTime(time)}</span>
-							<pre class="message"><code>#{message}</code></pre>
+							<pre class="message"><p>!#{helper.mutiline(message)}</p></pre>
 						</li>
 						</script>
 
@@ -57,7 +58,7 @@
 				<h4>用户</h4>
 				<ul>
 					<script id="playerListTemplate" type="text/template">
-					<li class="#{state}"><span class="state"></span><span class="nick #{helper.ifSelf(id)}">#{nick}</span></li>
+					<li class="#{state}" cmd="nick"><span class="state"></span><span class="nick #{helper.ifSelf(id)}">#{nick}</span></li>
 					</script>
 
 					<!-- Debug Start -->
@@ -67,18 +68,40 @@
 				</ul>
 			</div>
 		</div>
-		<div id="masks" class="hidden">
+		<div id="masks" style="display: none;">
+			<script id="dialogTemplate" type="text/template">
+				switch(type) {
+					case "nick":
+					
 			<div class="dialog hidden">
-				<div class="head"><span class="title">标题</span><span class="close"></span></div>
+				<div class="head"><span class="title">修改昵称</span><span class="close" cmd="cancel"></span></div>
 				<div class="content">
 					<div class="panel">
-						<div><span>昵称：</span><input type="text" id="inputEmail"/></div>
+						<div><span>昵称：</span><input type="text" id="inputNick" value="#{nick}"/></div>
+					</div>
+				</div>
+				<div class="foot">
+					<input type="button" class="button" value="取消" cmd="cancel"/><input type="button" class="button" value="确定" cmd="ok"/>
+				</div>
+			</div>
+			
+						break;
+				}
+			</script>
+			
+			<!-- Debug Start -->
+			<div class="dialog">
+				<div class="head"><span class="title">修改昵称</span><span class="close"></span></div>
+				<div class="content">
+					<div class="panel">
+						<div><span>昵称：</span><input type="text" id="inputNick"/></div>
 					</div>
 				</div>
 				<div class="foot">
 					<input type="button" class="button" value="取消"/><input type="button" class="button" value="确定"/>
 				</div>
 			</div>
+			<!-- Debug End -->
 		</div>
 	</body>
 </html>
