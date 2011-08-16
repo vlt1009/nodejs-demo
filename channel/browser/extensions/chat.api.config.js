@@ -7,11 +7,8 @@ application.Core.addConfig("ChatApi", {
 	 */
 	pickMaxWait: 45 * 1000,
 	/**
-	 * 请的url路径
+	 * 请的Host地址
 	 */
-	pickUrl: "http://localhost:2012/pick",
-	/**
-	 * 发送命令的路径
-	 */
-	commandUrl: "http://localhost:2012/command"
+	apiHost: "http://localhost:2012"
+	//apiHost: "http://yudongxia:8080"
 });

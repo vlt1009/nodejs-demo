@@ -60,7 +60,7 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 			playerTree = AceTree.create({
 				parent: lib.g("playerListTemplate").parentNode,
 				oninit: function(tree){
-					AceEvent.on(tree.parent, function(command, target, e){
+					tree.eventHandler = AceEvent.on(tree.parent, function(command, target, e){
 						var node = tree.node4target(target);
 						node && tree.oncommand(command, node, e);
 					});
@@ -85,6 +85,13 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 			});
 			
 			sandbox.on(events.pickSuccess, pickSuccess);
+			lib.on('modifyNick', 'click', function(e) {
+				playerTree.oncommand('nick', {
+					data: {
+						id: passportInfo.id
+					}
+				});
+			});
 		}
 	};
 });

@@ -177,7 +177,7 @@ application.Core.registerExtension("ChatApi", function (sandbox) {
 				});
 				callback = function() {};
 			}, config.pickMaxWait);
-			var url = [config.pickUrl, jsonToQuery(details)].join("?");
+			var url = [config.apiHost + "/pick", jsonToQuery(details)].join("?");
 			logger.log(url);
 			lib.sio.callByServer(url, function(data) {
 				timer && clearTimeout(timer);
@@ -187,7 +187,7 @@ application.Core.registerExtension("ChatApi", function (sandbox) {
 		},
 		command: function(details, callback) {
 			if (!details) return;
-			var url = [config.commandUrl, jsonToQuery(details)].join("?");
+			var url = [config.apiHost + "/command", jsonToQuery(details)].join("?");
 			logger.log(url);
 			lib.sio.callByServer(url, function(data) {
 				callback && callback(data);

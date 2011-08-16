@@ -33,6 +33,14 @@
  		* 最大缓存的变化数
  		*/
 		maxFireCount: 15,
+		/**
+		 * 清理用户掉线的时间
+		 */
+		maxPatrolTime: 45 * 1000,
+		/**
+		 * 离线的时间
+		 */
+		offineTime: 75 * 1000,
 		format: format,
 		forEach: forEach
 	};

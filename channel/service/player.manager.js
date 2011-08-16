@@ -9,7 +9,7 @@ var querystring = require('querystring');
 	/**
  	* 可更新的字段列表
  	*/
-	var updateFields = ['nick'];
+	var updateFields = ['nick', 'state'];
 	/**
  	* 获取用户身份验证码
  	* @param {String} id 用户id
@@ -26,7 +26,8 @@ var querystring = require('querystring');
 		this.id = id || (+new Date).toString(36);
 		this.visa = parseInt(Math.random() * 99999999).toString(36);
 		this.mask = getPlayerMask(this.id, this.visa);
-		this.nick = "player " + this.id;
+		this.nick = this.id;
+		this.state = "unknown";
 		var now = new Date;
 		/**
 		 * 创建时间
@@ -89,6 +90,7 @@ var querystring = require('querystring');
 			res.setHeader("Set-Cookie", [common.format("passport=id=#{id}&visa=#{visa}&mask=#{mask}; expires=Mon, 31 Dec 2998 16:00:00 GMT; path=/;", player)]);
 		} else {
 			player.passportTime = new Date;
+			player.status = "online";
 		}
 		return player;
 	};

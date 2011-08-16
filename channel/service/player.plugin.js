@@ -13,6 +13,10 @@ var common = require('../common/channel.common.js');
 		this.maxCount = options.maxCount || 300;
 		this.playerCount = 0;
 		this.players = {};
+		/**
+		 * 清理掉线用户的时间
+		 */
+		this.patrolTime = new Date;
 	}
 	
 	PlayerPlugin.prototype.command = function(fields, passport, query){
@@ -29,7 +33,7 @@ var common = require('../common/channel.common.js');
 						players: [{
 							id: player.id,
 							nick: player.nick,
-							state: "online"
+							state: player.status
 						}]
 					});
 				}
@@ -45,18 +49,22 @@ var common = require('../common/channel.common.js');
 					type: "playerUpdate",
 					players: [{
 						id: player.id,
-						nick: player.nick
+						nick: player.nick,
+						state: player.status
 					}]
 				});
 				break;
 		}
+		this.patrol(fields);
 	};
 	
 	PlayerPlugin.prototype.all = function(fields, passport, query){
+		if (!fields || !passport) return;
 		fields.push({
 			type: "playerAll",
 			players: this.getPlayerAll()
 		});
+		this.patrol(fields);
 	};
 	
 	PlayerPlugin.prototype.getPlayer = function(id){
@@ -75,6 +83,41 @@ var common = require('../common/channel.common.js');
 		return players;
 	};
 	
+	/**
+	 * 清理已经掉线或离开的用户 
+	 */
+	PlayerPlugin.prototype.patrol = function() {
+		var now = new Date;
+		if (now - this.patrolTime < common.maxPatrolTime) return;
+		common.forEach(this.players, function(player) {
+			if (player.state != "offine") {
+				if (now - player.passportTime > common.offineTime) {
+					player.update({
+						state: 'offine'
+					});
+					fields.push({
+						type: "playerUpdate",
+						players: [{
+							id: player.id,
+							state: player.status
+						}]
+					});
+				}
+			} else {
+				if (now - this.patrolTime > 2 * common.maxPatrolTime) {
+					fields.push({
+						type: "playerRemove",
+						players: [{
+							id: player.id
+						}]
+					});
+					delete this.players[player.id];
+				}
+			}
+		});
+		this.patrolTime = now;
+	};
+
 	exports.create = function(channel, options){
 		return new PlayerPlugin(channel, options);
 	};

@@ -45,10 +45,15 @@ ul, li, pre, div, h4, p{
 
 #messageBox .nick, #playerBox .nick{
 	color: #333;
+	margin: 0 5px 0 0;
 }
 #messageBox .nick.self, #playerBox .nick.self{
 	color: blue;
 	font-weight: bold;
+}
+
+#messageBox .id, #playerBox .id{
+	color: #e0e;
 }
 
 #messageBox .time{
@@ -76,6 +81,10 @@ ul, li, pre, div, h4, p{
 	width: 150px;
 	height: 280px;
 	float: left;
+}
+#playerList{
+	overflow: auto;
+	height: 260px;
 }
 
 #playerBox li{
@@ -146,7 +155,10 @@ h4{
 	height: 154px;
 	z-index: 12;
 	margin: 0 auto;
-	background: #fff;
+	border: solid 1px #bdc7d9;
+	border-radius: 3px;
+	background-image: -moz-linear-gradient(top, #fff, #eee);
+	background-image: -webkit-linear-gradient(top, #fff, #eee);
 }
 
 .dialog .box{
@@ -215,4 +227,16 @@ h4{
 
 .dialog .panel{
     margin: 10px;
+}
+.dialog .close{
+	display: inline-block;
+	cursor: pointer;
+	width: 10px;
+	height: 10px;
+	margin: 5px;
+	border-radius: 3px;
+	background-image: -moz-linear-gradient(top, rgb(204,232,255), #f00);
+	background-image: -webkit-linear-gradient(top, rgb(204,232,255), #f00);
+	border: solid 1px #bdc7d9;
+	float: right;
 }

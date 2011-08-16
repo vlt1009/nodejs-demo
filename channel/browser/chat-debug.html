@@ -28,22 +28,22 @@
 					<ul>
 						<script id="messageListTemplate" type="text/template">
 						<li>
-							<span class="nick #{helper.ifSelf(from)}">#{nick}</span><span class="time">#{helper.formatTime(time)}</span>
+							<span class="nick #{helper.ifSelf(from)}">#{nick}</span>&lt;<span class="id">#{id}</span>&gt;<span class="time">#{helper.formatTime(time)}</span>
 							<pre class="message"><p>!#{helper.mutiline(message)}</p></pre>
 						</li>
 						</script>
 
 						<!-- Debug Start -->
 						<li>
-							<span class="nick">昵称1</span><span class="time">19:51:23</span>
+							<span class="nick">昵称1</span>&lt;<span class="id">kkdd1</span>&gt;<span class="time">19:51:23</span>
 							<pre class="message"><p>聊天内容1！</p></pre>
 						</li>
 						<li>
-							<span class="nick self">昵称2</span><span class="time">19:51:32</span>
+							<span class="nick self">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span>
 							<pre class="message"><p>聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2！</p></pre>
 						</li>
 						<li>
-							<span class="nick">昵称3</span><span class="time">19:51:23</span>
+							<span class="nick">昵称3</span>&lt;<span class="id">kkdd3</span>&gt;<span class="time">19:51:23</span>
 							<pre class="message"><p>聊天内容3！</p></pre>
 						</li>
 						<!-- Debug End -->
@@ -55,17 +55,19 @@
 				</div>
 			</div>
 			<div id="playerBox">
-				<h4>用户</h4>
-				<ul>
-					<script id="playerListTemplate" type="text/template">
-					<li class="#{state}" cmd="nick"><span class="state"></span><span class="nick #{helper.ifSelf(id)}">#{nick}</span></li>
-					</script>
-
-					<!-- Debug Start -->
-					<li class="online"><span class="state"></span><span class="nick">昵称 他人</span></li>
-					<li class="offline"><span class="state"></span><span class="nick self">昵称 自己</span></li>
-					<!-- Debug End -->
-				</ul>
+				<h4>用户<input id="modifyNick" type="button" value="修改昵称" /></h4>
+				<div id="playerList">
+					<ul>
+						<script id="playerListTemplate" type="text/template">
+						<li class="#{state}" cmd="nick"><span class="state"></span><span class="nick #{helper.ifSelf(id)}">#{nick}</span>&lt;<span class="id">#{id}</span>&gt;</li>
+						</script>
+	
+						<!-- Debug Start -->
+						<li class="online"><span class="state"></span><span class="nick">昵称 他人</span>&lt;<span class="id">kkdd1</span>&gt;</li>
+						<li class="offline"><span class="state"></span><span class="nick self">昵称 自己</span>&lt;<span class="id">kkdd2</span>&gt;</li>
+						<!-- Debug End -->
+					</ul>
+				</div>
 			</div>
 		</div>
 		<div id="masks" style="display: none;">
@@ -73,7 +75,7 @@
 				switch(type) {
 					case "nick":
 					
-			<div class="dialog hidden">
+			<div class="dialog">
 				<div class="head"><span class="title">修改昵称</span><span class="close" cmd="cancel"></span></div>
 				<div class="content">
 					<div class="panel">
