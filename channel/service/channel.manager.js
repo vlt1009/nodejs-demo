@@ -4,6 +4,7 @@ var playerManager = require('./player.manager.js');
 (function(){
 	/**
 	 * @author 王集鹄(wangjihu，http://weibo.com/zswang)
+	 * 频道管理器
 	 */
 	/**
 	 * 频道集合
@@ -16,9 +17,14 @@ var playerManager = require('./player.manager.js');
 	 * @param{Array Of Object} plugins 插件列表
 	 */
 	function Channel(id){
+		/**
+		 * 频道id
+		 */
 		this.id = id;
-		this.title = "channel " + id;
-
+		this.title = id;
+		/**
+		 * pick缓存
+		 */
 		this.pickDict = {};
 		this.pickKey = 0;
 		this.seqFields = [];
@@ -29,6 +35,10 @@ var playerManager = require('./player.manager.js');
 		this.createTime = now;
 		this.accessTime = now;
 		this.modifyTime = now;
+		/**
+		 * 清理过期数据
+		 */
+		this.patrolTime = new Date;
 	}
 	/**
 	 * 执行回调
@@ -51,7 +61,7 @@ var playerManager = require('./player.manager.js');
 		var passport = playerManager.getPassport(req, res);
 		var fields = [];
 		common.forEach(this.plugins, function(plugin){
-			plugin.command(fields, passport, query);
+			plugin.command && plugin.command(fields, passport, query);
 		});
 		this.callback(res, query.callback, {
 			result: "ok"
@@ -94,7 +104,12 @@ var playerManager = require('./player.manager.js');
 		}
 		this.pickDict = {};
 	};
-	
+	/**
+	 * 处理用户pick请求
+	 * @param {Object} query
+	 * @param {Object} req
+	 * @param {Object} res
+	 */
 	Channel.prototype.pick = function(query, req, res){
 		var passport = playerManager.getPassport(req, res);
 		if (query.seq <= this.minSeq) { // 首次访问或完整数据
@@ -115,7 +130,7 @@ var playerManager = require('./player.manager.js');
 				}
 			];
 			common.forEach(this.plugins, function(plugin){
-				plugin.all(fields, passport, query);
+				plugin.all && plugin.all(fields, passport, query);
 			});
 			this.callback(res, query.callback, {
 				result: "ok",
@@ -140,6 +155,24 @@ var playerManager = require('./player.manager.js');
 				});
 			}, common.pickWait)
 		};
+		
+		var fields = [];
+		this.patrol(fields); // 处理过期数据
+		if (fields.length) {
+			this.fire(fields);
+		}
+	};
+	/**
+	 * 处理过期数据
+	 * @param {Array of Object} fields 返回动作列表
+	 */
+	Channel.prototype.patrol = function(fields) {
+		var now = new Date;
+		if (now - this.patrolTime < common.maxPatrolTime) return;
+		common.forEach(this.plugins, function(plugin){
+			plugin.patrol && plugin.patrol(fields);
+		});
+		this.patrolTime = now;
 	};
 	
 	/**

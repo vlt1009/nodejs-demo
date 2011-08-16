@@ -20,10 +20,10 @@ var common = require('../common/channel.common.js');
 				if (!query.text) return;
 				this.currId++;
 				var message = {
-					id: 2,
+					id: this.currId,
 					from: passport.id,
 					nick: passport.nick,
-					time: new Date,
+					time: +new Date,
 					message: query.text
 				};
 				this.messageList.push(message);

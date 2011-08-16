@@ -13,10 +13,6 @@ var common = require('../common/channel.common.js');
 		this.maxCount = options.maxCount || 300;
 		this.playerCount = 0;
 		this.players = {};
-		/**
-		 * 清理掉线用户的时间
-		 */
-		this.patrolTime = new Date;
 	}
 	
 	PlayerPlugin.prototype.command = function(fields, passport, query){
@@ -55,7 +51,6 @@ var common = require('../common/channel.common.js');
 				});
 				break;
 		}
-		this.patrol(fields);
 	};
 	
 	PlayerPlugin.prototype.all = function(fields, passport, query){
@@ -64,7 +59,6 @@ var common = require('../common/channel.common.js');
 			type: "playerAll",
 			players: this.getPlayerAll()
 		});
-		this.patrol(fields);
 	};
 	
 	PlayerPlugin.prototype.getPlayer = function(id){
@@ -88,10 +82,10 @@ var common = require('../common/channel.common.js');
 	 */
 	PlayerPlugin.prototype.patrol = function(fields) {
 		var now = new Date;
-		if (now - this.patrolTime < common.maxPatrolTime) return;
+		var self = this;
 		common.forEach(this.players, function(player) {
 			if (player.state != "offine") {
-				if (now - player.passportTime > common.offineTime) {
+				if (now - player.passportTime > common.offineTime) { // 掉线
 					player.update({
 						state: 'offine'
 					});
@@ -99,23 +93,22 @@ var common = require('../common/channel.common.js');
 						type: "playerUpdate",
 						players: [{
 							id: player.id,
-							state: player.status
+							state: player.state
 						}]
 					});
 				}
 			} else {
-				if (now - this.patrolTime > 2 * common.maxPatrolTime) {
+				if (now - player.passportTime > 2 * common.offineTime) { // 清除掉线用户
 					fields.push({
 						type: "playerRemove",
 						players: [{
 							id: player.id
 						}]
 					});
-					delete this.players[player.id];
+					delete self.players[player.id];
 				}
 			}
 		});
-		this.patrolTime = now;
 	};
 
 	exports.create = function(channel, options){

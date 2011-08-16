@@ -36,7 +36,10 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 					break;
 				case "playerUpdate":
 					lib.each(item.players, function(player) {
-						playerTree.updateData(player);
+						var node = playerTree.updateData(player);
+						if (passportInfo.id == player.id) {
+							passportInfo.nick = node.data.nick;
+						}
 					});
 					break;
 				case "playerRemove":
@@ -85,11 +88,9 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 			});
 			
 			sandbox.on(events.pickSuccess, pickSuccess);
-			lib.on('modifyNick', 'click', function(e) {
-				playerTree.oncommand('nick', {
-					data: {
-						id: passportInfo.id
-					}
+			AceEvent.on('playerTools', function(command) {
+				playerTree.oncommand(command, {
+					data: passportInfo
 				});
 			});
 		}

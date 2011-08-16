@@ -7,26 +7,44 @@ ul, li, pre, div, h4, p{
 	margin: 0;
 }
 
+input[type="button"], button, .button {
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#fffffd), to(#f0f0f0));
+	background-image: -moz-linear-gradient(top, #fffffd, #f0f0f0);
+	border: 1px solid #d2d2d0;
+	margin: 7px 10px 0 0;
+	padding: 2px 18px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+input[type="button"]:hover, button:hover, .button:hover{
+	border: 1px solid #99bdd7;
+	box-shadow: 0 0 1px 1px #c2eeff;
+}
+
 #main{
 	border: solid 1px #bdc7d9;
 	border-radius: 3px;
+	margin: 0 auto;
 	background-image: -moz-linear-gradient(top, #fff, #eee);
 	background-image: -webkit-linear-gradient(top, #fff, #eee);
-	overflow: auto;
 	position: absolute;
-	left: 0;
-	top: 0;
+	top: 10px;
+	left: 10px;
+	width: 520px;
+	height: 320px;
 }
 
 #messageBox{
-	float: left;
-	width: 300px;
-	height: 280px;
+	width: 315px;
 	border: solid 1px #bdc7d9;
 	border-radius: 3px;
 	padding: 5px;
 	background: #fff;
 	margin: 10px 10px 10px 10px;
+	position: absolute;
+	top: 0;
+	bottom: 0;
 }
 
 #messageBox ul{
@@ -63,14 +81,23 @@ ul, li, pre, div, h4, p{
 }
 
 #messageList{
+	border: solid 1px #bdc7d9;
+	border-radius: 3px;
     height: 170px;
-    margin: 0 0 10px;
+    margin: 5px 0;
     overflow: auto;
+    padding: 5px;
 }
 
-#tools button{
+#editorTools button{
+	bottom: 7px;
+    position: absolute;
+    right: 5px;
+}
+	
+.tools button{
 	float: right;
-} 
+}
 
 #playerBox{
 	border: solid 1px #bdc7d9;
@@ -79,12 +106,18 @@ ul, li, pre, div, h4, p{
 	margin: 10px 10px 10px 0;
 	background: #fff;
 	width: 150px;
-	height: 280px;
-	float: left;
+	right: 0;
+    top: 0;
+	bottom: 0;
+	position: absolute;
 }
+
 #playerList{
+	margin: 5px 0 0;
+	border: solid 1px #bdc7d9;
+	border-radius: 3px;
 	overflow: auto;
-	height: 260px;
+	height: 227px;
 }
 
 #playerBox li{
@@ -125,8 +158,8 @@ ul, li, pre, div, h4, p{
 }
 
 #editor{
-	width: 300px;
-	height: 53px;
+	width: 225px;
+	height: 73px;
 	resize: none;
 }
 
@@ -200,21 +233,6 @@ h4{
 	text-align: right;
 	background: #fdfdfd;
 	border-radius: 0 0 3px 3px;
-}
-
-.dialog .foot .button{
-	background: -webkit-gradient(linear, 0 0, 0 100%, from(#fffffd), to(#f0f0f0));
-	background-image: -moz-linear-gradient(top, #fffffd, #f0f0f0);
-	border: 1px solid #d2d2d0;
-	margin: 7px 10px 0 0;
-	padding: 2px 18px;
-	border-radius: 3px;
-	cursor: pointer;
-}
-
-.dialog .foot .button:hover{
-	border: 1px solid #99bdd7;
-	box-shadow: 0 0 1px 1px #c2eeff;
 }
 
 .dialog .head .title{

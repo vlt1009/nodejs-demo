@@ -23,6 +23,11 @@ application.Core.registerModule("DialogBox", function(sandbox){
 		lib.show('masks');
 		logger.info(data);
 		dialogTree.loadChilds([data]);
+		switch (data.type) {
+			case "nick":
+				lib.g("inputNick").focus();
+				break;
+		}
 	}
 	
 	function closeDialog() {

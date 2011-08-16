@@ -21,7 +21,7 @@ application.Core.registerModule("EditorBox", function(sandbox){
 
 	return {
 		init: function(){
-			var eventHandler = AceEvent.on("tools", function(command, element, e){
+			var eventHandler = AceEvent.on("editorTools", function(command, element, e){
 				switch (command) {
 					case "send":
 						var text = lib.g("editor").value;
@@ -40,7 +40,7 @@ application.Core.registerModule("EditorBox", function(sandbox){
 			lib.on('editor', 'keydown', function(e){
 				switch (e.which || e.keyCode || e.charCode) {
 					case 13:
-						if (!e.ctrlKey) {
+						if (e.ctrlKey) {
 							lib.event.stop(e);
 							AceEvent.fire(eventHandler, "send");
 						}

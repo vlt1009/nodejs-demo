@@ -23,7 +23,7 @@ var querystring = require('querystring');
 	 * @param {String} id
 	 */
 	function Player(id) {
-		this.id = id || (+new Date).toString(36);
+		this.id = id || (+new Date - new Date('2011/8/16')).toString(36);
 		this.visa = parseInt(Math.random() * 99999999).toString(36);
 		this.mask = getPlayerMask(this.id, this.visa);
 		this.nick = this.id;

@@ -28,7 +28,7 @@
 					<ul>
 						<script id="messageListTemplate" type="text/template">
 						<li>
-							<span class="nick #{helper.ifSelf(from)}">#{nick}</span>&lt;<span class="id">#{id}</span>&gt;<span class="time">#{helper.formatTime(time)}</span>
+							<span class="nick #{helper.ifSelf(from)}">#{nick}</span>&lt;<span class="id">#{from}</span>&gt;<span class="time">#{helper.formatTime(time)}</span>
 							<pre class="message"><p>!#{helper.mutiline(message)}</p></pre>
 						</li>
 						</script>
@@ -49,13 +49,13 @@
 						<!-- Debug End -->
 					</ul>
 				</div>
-				<div id="tools">
+				<div id="editorTools" class="tools">
 					<textarea id="editor"></textarea>
 					<button cmd="send">发送</button>
 				</div>
 			</div>
 			<div id="playerBox">
-				<h4>用户<input id="modifyNick" type="button" value="修改昵称" /></h4>
+				<h4>用户</h4>
 				<div id="playerList">
 					<ul>
 						<script id="playerListTemplate" type="text/template">
@@ -67,6 +67,9 @@
 						<li class="offline"><span class="state"></span><span class="nick self">昵称 自己</span>&lt;<span class="id">kkdd2</span>&gt;</li>
 						<!-- Debug End -->
 					</ul>
+				</div>
+				<div id="playerTools" class="tools">
+					<button cmd="nick">修改昵称</button>
 				</div>
 			</div>
 		</div>
@@ -83,7 +86,7 @@
 					</div>
 				</div>
 				<div class="foot">
-					<input type="button" class="button" value="取消" cmd="cancel"/><input type="button" class="button" value="确定" cmd="ok"/>
+					<button cmd="cancel">取消</button><button cmd="ok">确定</button>
 				</div>
 			</div>
 			
@@ -100,7 +103,7 @@
 					</div>
 				</div>
 				<div class="foot">
-					<input type="button" class="button" value="取消"/><input type="button" class="button" value="确定"/>
+					<button cmd="cancel">取消</button><button cmd="ok">确定</button>
 				</div>
 			</div>
 			<!-- Debug End -->
