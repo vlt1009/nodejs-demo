@@ -29,7 +29,7 @@ var common = require('../common/channel.common.js');
 						players: [{
 							id: player.id,
 							nick: player.nick,
-							state: player.status
+							state: player.state
 						}]
 					});
 				}
@@ -46,7 +46,7 @@ var common = require('../common/channel.common.js');
 					players: [{
 						id: player.id,
 						nick: player.nick,
-						state: player.status
+						state: player.state
 					}]
 				});
 				break;
