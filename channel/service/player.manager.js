@@ -11,12 +11,16 @@ var querystring = require('querystring');
  	*/
 	var updateFields = ['nick', 'state'];
 	/**
+	 * 昵称词典，避免昵称重复
+	 */
+	var nickDict = {};
+	/**
  	* 获取用户身份验证码
  	* @param {String} id 用户id
  	* @param {String} visa 密码
  	*/
 	function getPlayerMask(id, visa) {
-		return (20110815 ^ parseInt(visa, 36) ^ parseInt(id, 36)).toString(36);
+		return (common.passportKey ^ parseInt(visa, 36) ^ parseInt(id, 36)).toString(36);
 	}
 	/**
 	 * 用户信息
@@ -26,8 +30,14 @@ var querystring = require('querystring');
 		this.id = id || (+new Date - new Date('2011/8/16')).toString(36);
 		this.visa = parseInt(Math.random() * 99999999).toString(36);
 		this.mask = getPlayerMask(this.id, this.visa);
-		this.nick = this.id;
-		this.state = "unknown";
+		/**
+		 * 昵称
+		 */
+		this.nick = "@" + this.id;
+		/**
+		 * 在线状态 online-在线 offline-离线 busy-忙碌
+		 */
+		this.state = "online";
 		var now = new Date;
 		/**
 		 * 创建时间
@@ -45,6 +55,11 @@ var querystring = require('querystring');
 		 * 验证时间，用来判断是否离线
 		 */
 		this.passportTime = now;
+		/**
+		 * 最后发送命令的时间，用来验证是否活跃
+		 */
+		this.commandTime = now;
+
 		playerDict[this.id] = this;
 	}
 	/**
@@ -90,7 +105,6 @@ var querystring = require('querystring');
 			res.setHeader("Set-Cookie", [common.format("passport=id=#{id}&visa=#{visa}&mask=#{mask}; expires=Mon, 31 Dec 2998 16:00:00 GMT; path=/;", player)]);
 		} else {
 			player.passportTime = new Date;
-			player.state = "online";
 		}
 		return player;
 	};

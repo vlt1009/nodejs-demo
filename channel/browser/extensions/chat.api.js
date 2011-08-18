@@ -110,7 +110,7 @@ application.Core.registerExtension("ChatApi", function (sandbox) {
 					plugin: "player",
 					players: [
 						{
-							id: 4,
+							id: 5,
 							nick: "岩石",
 							state: "online"
 						}
@@ -153,16 +153,10 @@ application.Core.registerExtension("ChatApi", function (sandbox) {
 	};
 	/* Debug End */
 	
-	function escapeSymbol(text) {
-		return String(text).replace(/[#%&+=\/\\\s]/g, function(all) {
-			return "%" + (0x100 + all.charCodeAt()).toString(16).substring(1);
-		});
-	} 
-
 	function jsonToQuery(json) {
 		var result = [];
 		for (var key in json) {
-			result.push([escapeSymbol(key), escapeSymbol(json[key])].join("="));
+			result.push([encodeURIComponent(key), encodeURIComponent(json[key])].join("="));
 		}
 		return result.join("&");
 	}

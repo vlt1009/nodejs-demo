@@ -60,11 +60,14 @@ var playerManager = require('./player.manager.js');
 	Channel.prototype.command = function(query, req, res){
 		var passport = playerManager.getPassport(req, res);
 		var fields = [];
+		var error;
 		common.forEach(this.plugins, function(plugin){
-			plugin.command && plugin.command(fields, passport, query);
+			if (error) return;
+			error = plugin.command && plugin.command(fields, passport, query);
 		});
 		this.callback(res, query.callback, {
-			result: "ok"
+			result: "ok",
+			error: error
 		});
 		this.fire(fields);
 	};
@@ -165,6 +168,7 @@ var playerManager = require('./player.manager.js');
 	/**
 	 * 处理过期数据
 	 * @param {Array of Object} fields 返回动作列表
+	 * @param {Object} passport pick 触发者
 	 */
 	Channel.prototype.patrol = function(fields) {
 		var now = new Date;

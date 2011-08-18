@@ -17,6 +17,19 @@ var common = require('../common/channel.common.js');
 	
 	PlayerPlugin.prototype.command = function(fields, passport, query){
 		if (!fields || !passport || !query) return;
+		passport.commandTime = new Date;
+		if (passport.state == "busy") {
+			passport.update({
+				state: "offline"
+			});
+			fields.push({
+				type: "playerUpdate",
+				players: [{
+					id: passport.id,
+					state: passport.state
+				}]
+			});
+		}
 		switch (query.command) {
 			case "enter":
 				if (this.playerCount >= this.maxCount) return;
@@ -35,7 +48,8 @@ var common = require('../common/channel.common.js');
 				}
 				break;
 			case "nick":
-				if (/^\s*$/.test(query.nick)) return;
+				var error = common.checkNick(query.nick);
+				if (error) return error;
 				var player = this.getPlayer(passport.id);
 				if (!player) return;
 				player.update({
@@ -78,39 +92,43 @@ var common = require('../common/channel.common.js');
 	};
 	
 	/**
-	 * 清理已经掉线或离开的用户 
+	 * 清理已经掉线或离开的用户
 	 */
-	PlayerPlugin.prototype.patrol = function(fields) {
+	PlayerPlugin.prototype.patrol = function(fields){
 		var now = new Date;
 		var self = this;
-		common.forEach(this.players, function(player) {
-			if (player.state != "offine") {
-				if (now - player.passportTime > common.offineTime) { // 掉线
-					player.update({
-						state: 'offine'
-					});
-					fields.push({
-						type: "playerUpdate",
-						players: [{
-							id: player.id,
-							state: player.state
-						}]
-					});
-				}
-			} else {
-				if (now - player.passportTime > 2 * common.offineTime) { // 清除掉线用户
-					fields.push({
-						type: "playerRemove",
-						players: [{
-							id: player.id
-						}]
-					});
-					delete self.players[player.id];
-				}
+		common.forEach(this.players, function(player){
+			if (now - player.passportTime > 2 * common.offineTime) { // 清除掉线用户
+				fields.push({
+					type: "playerRemove",
+					players: [{
+						id: player.id
+					}]
+				});
+				delete self.players[player.id];
+				return;
 			}
+			
+			var state = player.state;
+			if (now - player.passportTime > common.offineTime) { // 掉线
+				state = 'offline';
+			} else if (now - player.commandTime > common.busyTime) { // 忙碌
+				state = 'busy';
+			}
+			if (player.state == state) return; // 状态未改变
+			player.update({
+				state: state
+			});
+			fields.push({
+				type: "playerUpdate",
+				players: [{
+					id: player.id,
+					state: player.state
+				}]
+			});
 		});
 	};
-
+	
 	exports.create = function(channel, options){
 		return new PlayerPlugin(channel, options);
 	};

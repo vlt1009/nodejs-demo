@@ -12,5 +12,10 @@ application.Core.addConfig("Events", {
 	 * @description 显示对话框
 	 * @event
 	 */
-	showDialog: 2
+	showDialog: 2,
+	/**
+	 * @description 用户被选中
+	 * @event
+	 */
+	playerFocus: 3
 });

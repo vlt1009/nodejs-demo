@@ -76,11 +76,10 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 				},
 				oncommand: function(command, node, e){
 					switch (command) {
-						case "nick":
-							if (!ifSelf(node.data.id)) return;
-							sandbox.notify(events.showDialog, {
-								type: "nick",
-								nick: passportInfo.nick
+						case "focus":
+							node.focus();
+							sandbox.notify(events.playerFocus, {
+								info: node.data
 							});
 							break;
 					}
@@ -89,9 +88,15 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 			
 			sandbox.on(events.pickSuccess, pickSuccess);
 			AceEvent.on('playerTools', function(command) {
-				playerTree.oncommand(command, {
-					data: passportInfo
-				});
+				switch (command) {
+					case "nick":
+						sandbox.notify(events.showDialog, {
+							type: "nick",
+							maxNick: ChannelCommon.maxNick,
+							nick: passportInfo.nick
+						});
+						break;
+				}
 			});
 		}
 	};

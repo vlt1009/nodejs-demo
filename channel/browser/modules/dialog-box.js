@@ -21,16 +21,17 @@ application.Core.registerModule("DialogBox", function(sandbox){
 
 	function showDialog(data) {
 		lib.show('masks');
-		logger.info(data);
 		dialogTree.loadChilds([data]);
 		switch (data.type) {
 			case "nick":
-				lib.g("inputNick").focus();
+				var input = lib.g("inputNick");
+				input.setSelectionRange(0, input.value.length);
+				input.focus();
 				break;
 		}
 	}
 	
-	function closeDialog() {
+	function closeDialog(data) {
 		dialogTree.removeAll();
 		lib.hide('masks');
 	}
@@ -38,6 +39,7 @@ application.Core.registerModule("DialogBox", function(sandbox){
 	return {
 		init: function(){
 			dialogTree = AceTree.create({
+				indenter: "fieldIdentifier",
 				parent: lib.g("dialogTemplate").parentNode,
 				oninit: function(tree){
 					tree.eventHandler = AceEvent.on(tree.parent, function(command, element, e){
@@ -57,8 +59,9 @@ application.Core.registerModule("DialogBox", function(sandbox){
 							switch(node.data.type) {
 								case "nick":
 									var nick = lib.g("inputNick").value;
-									if (/^\s*$/.test(nick)) {
-										alert("nick is invalid.");
+									var error = ChannelCommon.checkNick(nick);
+									if (error) {
+										alert(error);
 										return;
 									}
 									if (nick != node.data.nick) {

@@ -8,6 +8,7 @@
 		<script src="lib/engine/ace-template.js"></script>
 		<script src="lib/engine/ace-event.js"></script>
 		<script src="lib/engine/ace-tree.js"></script>
+		<script src="../common/channel.common.js"></script>
 		<!-- Debug Start -->
 		<script src="extensions/console.logger.js"></script>
 		<!-- Debug End -->
@@ -60,7 +61,7 @@
 				<div id="playerList">
 					<ul>
 						<script id="playerListTemplate" type="text/template">
-						<li class="#{state}" cmd="nick"><span class="state"></span><span class="nick #{helper.ifSelf(id)}">#{nick}</span>&lt;<span class="id">#{id}</span>&gt;</li>
+						<li class="#{state}" cmd="letter" down="focus"><span class="state"></span><span class="nick #{helper.ifSelf(id)}">#{nick}</span>&lt;<span class="id">#{id}</span>&gt;</li>
 						</script>
 	
 						<!-- Debug Start -->
@@ -76,23 +77,36 @@
 		</div>
 		<div id="masks" style="display: none;">
 			<script id="dialogTemplate" type="text/template">
+			<div class="dialog">
 				switch(type) {
 					case "nick":
 					
-			<div class="dialog">
 				<div class="head"><span class="title">修改昵称</span><span class="close" cmd="cancel"></span></div>
 				<div class="content">
 					<div class="panel">
-						<div><span>昵称：</span><input type="text" id="inputNick" value="#{nick}"/></div>
+						<div><span>昵称：</span><input type="text" id="inputNick" value="#{nick}" maxlength="#{nickMax}"/></div>
 					</div>
 				</div>
 				<div class="foot">
 					<button cmd="cancel">取消</button><button cmd="ok">确定</button>
 				</div>
-			</div>
-			
+						break;			
+
+					case "error":
+
+				<div class="head"><span class="title">错误</span><span class="close"></span></div>
+				<div class="content">
+					<div class="panel">
+						<div><p>#{message}</p></div>
+					</div>
+				</div>
+				<div class="foot">
+					<button cmd="ok">确定</button>
+				</div>
+
 						break;
 				}
+			</div>
 			</script>
 			
 			<!-- Debug Start -->
@@ -100,11 +114,22 @@
 				<div class="head"><span class="title">修改昵称</span><span class="close"></span></div>
 				<div class="content">
 					<div class="panel">
-						<div><span>昵称：</span><input type="text" id="inputNick"/></div>
+						<div><span>昵称：</span><input type="text" id="inputNick" maxlength="20"/></div>
 					</div>
 				</div>
 				<div class="foot">
 					<button cmd="cancel">取消</button><button cmd="ok">确定</button>
+				</div>
+			</div>
+			<div class="dialog">
+				<div class="head"><span class="title">错误</span><span class="close"></span></div>
+				<div class="content">
+					<div class="panel">
+						<div><p>无效的昵称！</p></div>
+					</div>
+				</div>
+				<div class="foot">
+					<button cmd="ok">确定</button>
 				</div>
 			</div>
 			<!-- Debug End -->

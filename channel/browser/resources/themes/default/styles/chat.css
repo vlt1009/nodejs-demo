@@ -162,6 +162,11 @@ input[type="button"]:hover, button:hover, .button:hover{
 	background-image: -moz-linear-gradient(top, #f2f7fd, #eff6ff);
 }
 
+#playerBox li.focus{
+	background-image: -webkit-linear-gradient(top, #f2f7fd, #eff6ff);
+	background-image: -moz-linear-gradient(top, #f2f7fd, #eff6ff);
+}
+
 #editor{
 	width: 225px;
 	height: 73px;

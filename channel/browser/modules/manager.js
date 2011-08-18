@@ -53,11 +53,16 @@ application.Core.registerModule("Manager", function(sandbox){
 			/* Debug End */
 			
 			AceTemplate.register(); // 注册所有模板
+			
 			chatApi.command({
 				command: "enter"
 			}, function(data) {
-				if (!data || data.result != "ok") {
-					logger.log("enter channel error.");
+				data = data || {};
+				if (data.result != "ok") {
+					sandbox.notify(events.showDialog, {
+						type: "error",
+						message: data.error || "enter channel error."
+					});
 					return;
 				}
 				nextPick();
