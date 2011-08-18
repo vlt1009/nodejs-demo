@@ -20,7 +20,7 @@ var common = require('../common/channel.common.js');
 		passport.commandTime = new Date;
 		if (passport.state == "busy") {
 			passport.update({
-				state: "offline"
+				state: "online"
 			});
 			fields.push({
 				type: "playerUpdate",
