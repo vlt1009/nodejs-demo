@@ -1,7 +1,7 @@
 var common = require('../common/channel.common.js');
 var playerManager = require('./player.manager.js');
 
-(function(){
+void function(){
 	/**
 	 * @author 王集鹄(wangjihu，http://weibo.com/zswang)
 	 * 频道管理器
@@ -100,6 +100,10 @@ var playerManager = require('./player.manager.js');
 			common.forEach(this.seqFields, function(item){
 				if (data.currSeq > item.startSeq) return;
 				item.fields.forEach(function(field){
+					// 处理黑名单
+					if (field.blackList && pickItem.passport.id in field.blackList) return;
+					// 处理白名单
+					if (field.whiteList && !(pickItem.passport.id in field.whiteList)) return;
 					data.fields.push(field);
 				});
 			});
@@ -201,4 +205,4 @@ var playerManager = require('./player.manager.js');
 	};
 	
 	exports.getChannel = getChannel;
-})();
+}();

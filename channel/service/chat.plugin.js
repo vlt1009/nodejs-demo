@@ -1,6 +1,6 @@
 var common = require('../common/channel.common.js');
 
-(function(){
+void function(){
 	/**
 	 * @author 王集鹄(wangjihu，http://weibo.com/zswang)
 	 */
@@ -56,4 +56,4 @@ var common = require('../common/channel.common.js');
 	exports.create = function(channel, options) {
 		return new ChatPlugin(channel, options);
 	};
-})();
+}();

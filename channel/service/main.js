@@ -10,7 +10,7 @@ var playerPlugin = require('./player.plugin.js');
 http.createServer(function(req, res){
 	var reqUrl = url.parse(req.url, true);
 	var query = reqUrl.query;
-	if (!(/^[\w_$]+$/i.test(query.callback))) { // 错误的callback参数
+	if (/[^\w_$]/.test(query.callback)) { // 错误的callback参数
 		res.writeHead(200, {
 			'Content-Type': 'text/javascript'
 		});
