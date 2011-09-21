@@ -1,7 +1,11 @@
-(function() {
+var ChannelCommon = ChannelCommon || {};
+
+void function(exports) {
+
 	/**
 	 * @author 王集鹄(wangjihu，http://weibo.com/zswang)
 	 */
+
 	/**
 	 * 模板处理
 	 * @param {String} template 模板字符 #{key}
@@ -92,11 +96,8 @@
 		forEach: forEach
 	};
 
-	if (typeof exports != 'undefined') { // nodejs
-		forEach(ChannelCommon, function(value, key) {
-			exports[key] = value;
-		})
-	} else if (typeof window != 'undefined') {
-		window.ChannelCommon = ChannelCommon;
-	}
-})();
+	forEach(ChannelCommon, function(value, key) {
+		exports[key] = value;
+	});
+	
+}(typeof exports == "undefined" ? ChannelCommon : exports);
