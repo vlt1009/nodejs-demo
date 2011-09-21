@@ -31,7 +31,7 @@ input[type="button"]:hover, button:hover, .button:hover{
 	position: absolute;
 	top: 10px;
 	left: 10px;
-	width: 520px;
+	width: 600px;
 	height: 320px;
 }
 
@@ -65,7 +65,7 @@ input[type="button"]:hover, button:hover, .button:hover{
 	color: #333;
 	margin: 0 5px 0 0;
 }
-#messageBox .nick.self, #playerBox .nick.self{
+#messageBox .self .nick, #playerBox .self .nick{
 	color: blue;
 	font-weight: bold;
 }
@@ -110,7 +110,7 @@ input[type="button"]:hover, button:hover, .button:hover{
 	padding: 5px;
 	margin: 10px 10px 10px 0;
 	background: #fff;
-	width: 150px;
+	width: 230px;
 	right: 0;
     top: 0;
 	bottom: 0;
@@ -126,7 +126,6 @@ input[type="button"]:hover, button:hover, .button:hover{
 }
 
 #playerBox li{
-	cursor: pointer;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -139,6 +138,25 @@ input[type="button"]:hover, button:hover, .button:hover{
 	margin: 0 3px;
 	border-radius: 3px;
 	border: solid 1px #bdc7d9;
+}
+
+#playerBox .letter{
+	cursor: pointer;
+	font-size: 9pt;
+	color: #fff;
+	margin: 0 3px;
+	border-radius: 2px;
+	background-image: -moz-linear-gradient(bottom, #fff, #000);
+	background-image: -webkit-linear-gradient(bottom, #fff, #000);
+	visibility: hidden;
+}
+
+#playerBox li:hover .letter{
+	visibility: visible;
+}
+
+#playerBox li.self:hover .letter{
+	visibility: hidden;
 }
 
 #playerBox .online .state{
@@ -180,7 +198,7 @@ h4{
 	background-image: -webkit-linear-gradient(left, rgb(204,232,255), #fff);
 }
 
-#masks{
+.masks{
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -255,6 +273,11 @@ h4{
 
 .dialog .panel{
     margin: 10px;
+}
+.dialog .panel textarea{
+    height: 68px;
+    width: 263px;
+    resize: none;
 }
 .dialog .close{
 	display: inline-block;

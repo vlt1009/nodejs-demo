@@ -18,10 +18,12 @@ application.Core.registerModule("DialogBox", function(sandbox){
 	 * 聊天室api
 	 */
 	var chatApi = sandbox.getExtension("ChatApi");
+	
+	var handler = 0;
 
 	function showDialog(data) {
-		lib.show('masks');
-		dialogTree.loadChilds([data]);
+		data._handler = handler++;
+		dialogTree.appendChild(data);
 		switch (data.type) {
 			case "nick":
 				var input = lib.g("inputNick");
@@ -32,14 +34,13 @@ application.Core.registerModule("DialogBox", function(sandbox){
 	}
 	
 	function closeDialog(data) {
-		dialogTree.removeAll();
-		lib.hide('masks');
+		dialogTree.removeNode(data);
 	}
 
 	return {
 		init: function(){
 			dialogTree = AceTree.create({
-				indenter: "fieldIdentifier",
+				fieldIdentifier: "_handler",
 				parent: lib.g("dialogTemplate").parentNode,
 				oninit: function(tree){
 					tree.eventHandler = AceEvent.on(tree.parent, function(command, element, e){
@@ -53,7 +54,7 @@ application.Core.registerModule("DialogBox", function(sandbox){
 				oncommand: function(command, node, e){
 					switch (command) {
 						case "cancel":
-							closeDialog();
+							closeDialog(node.data);
 							break;
 						case "ok":
 							switch(node.data.type) {
@@ -61,7 +62,10 @@ application.Core.registerModule("DialogBox", function(sandbox){
 									var nick = lib.g("inputNick").value;
 									var error = ChannelCommon.checkNick(nick);
 									if (error) {
-										alert(error);
+										showDialog({
+											type: "error",
+											message: error
+										});
 										return;
 									}
 									if (nick != node.data.nick) {
@@ -72,7 +76,7 @@ application.Core.registerModule("DialogBox", function(sandbox){
 									}
 									break;
 							}
-							closeDialog();
+							closeDialog(node.data);
 							break;
 					}
 				}

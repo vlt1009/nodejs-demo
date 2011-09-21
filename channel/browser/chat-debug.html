@@ -28,14 +28,14 @@
 				<div id="messageList">
 					<ul>
 						<script id="messageListTemplate" type="text/template">
-						<li>
-							<span class="nick #{helper.ifSelf(from)}">#{nick}</span>&lt;<span class="id">#{from}</span>&gt;<span class="time">#{helper.formatTime(time)}</span>
+						<li class="#{helper.ifSelf(from)}">
+							<span class="nick">#{nick}</span>&lt;<span class="id">#{from}</span>&gt;<span class="time">#{helper.formatTime(time)}</span>
 							<pre class="message"><p>!#{helper.mutiline(message)}</p></pre>
 						</li>
 						</script>
 
 						<!-- Debug Start -->
-						<li>
+						<li class="self">
 							<span class="nick">昵称1</span>&lt;<span class="id">kkdd1</span>&gt;<span class="time">19:51:23</span>
 							<pre class="message"><p>聊天内容1！</p></pre>
 						</li>
@@ -61,12 +61,12 @@
 				<div id="playerList">
 					<ul>
 						<script id="playerListTemplate" type="text/template">
-						<li class="#{state}" cmd="letter" down="focus"><span class="state"></span><span class="nick #{helper.ifSelf(id)}">#{nick}</span>&lt;<span class="id">#{id}</span>&gt;</li>
+						<li class="#{state} #{helper.ifSelf(id)}" down="focus"><span class="letter" cmd="letter">私信</span><span class="state"></span><span class="nick">#{nick}</span>&lt;<span class="id">#{id}</span>&gt;</li>
 						</script>
 	
 						<!-- Debug Start -->
-						<li class="online"><span class="state"></span><span class="nick">昵称 他人</span>&lt;<span class="id">kkdd1</span>&gt;</li>
-						<li class="offline"><span class="state"></span><span class="nick self">昵称 自己</span>&lt;<span class="id">kkdd2</span>&gt;</li>
+						<li class="online"><span class="letter">私信</span><span class="state"></span><span class="nick">昵称 他人</span>&lt;<span class="id">kkdd1</span>&gt;</li>
+						<li class="offline self"><span class="letter">私信</span><span class="state"></span><span class="nick">昵称 自己</span>&lt;<span class="id">kkdd2</span>&gt;</li>
 						<!-- Debug End -->
 					</ul>
 				</div>
@@ -75,61 +75,75 @@
 				</div>
 			</div>
 		</div>
-		<div id="masks" style="display: none;">
+		<div>
 			<script id="dialogTemplate" type="text/template">
-			<div class="dialog">
-				switch(type) {
-					case "nick":
-					
-				<div class="head"><span class="title">修改昵称</span><span class="close" cmd="cancel"></span></div>
-				<div class="content">
-					<div class="panel">
-						<div><span>昵称：</span><input type="text" id="inputNick" value="#{nick}" maxlength="#{nickMax}"/></div>
+			<div class="masks">
+				<div class="dialog">
+					switch(type) {
+						case "nick":
+						
+					<div class="head"><span class="title">修改昵称</span><span class="close" cmd="cancel"></span></div>
+					<div class="content">
+						<div class="panel">
+							<div><span>昵称：</span><input type="text" id="inputNick" value="#{nick}" maxlength="#{maxNick}"/></div>
+						</div>
 					</div>
-				</div>
-				<div class="foot">
-					<button cmd="cancel">取消</button><button cmd="ok">确定</button>
-				</div>
-						break;			
-
-					case "error":
-
-				<div class="head"><span class="title">错误</span><span class="close"></span></div>
-				<div class="content">
-					<div class="panel">
-						<div><p>#{message}</p></div>
+					<div class="foot">
+						<button cmd="cancel">取消</button><button cmd="ok">确定</button>
 					</div>
+							break;			
+	
+						case "error":
+	
+					<div class="head"><span class="title">错误</span><span class="close" cmd="cancel"></span></div>
+					<div class="content">
+						<div class="panel">
+							<div><p>#{message}</p></div>
+						</div>
+					</div>
+					<div class="foot">
+						<button cmd="ok">确定</button>
+					</div>
+	
+							break;
+					}
 				</div>
-				<div class="foot">
-					<button cmd="ok">确定</button>
-				</div>
-
-						break;
-				}
 			</div>
 			</script>
-			
 			<!-- Debug Start -->
-			<div class="dialog">
-				<div class="head"><span class="title">修改昵称</span><span class="close"></span></div>
-				<div class="content">
-					<div class="panel">
-						<div><span>昵称：</span><input type="text" id="inputNick" maxlength="20"/></div>
+			<div class="masks" style="display: none;">
+				<div class="dialog">
+					<div class="head"><span class="title">修改昵称</span><span class="close"></span></div>
+					<div class="content">
+						<div class="panel">
+							<div><span>昵称：</span><input type="text" id="inputNick" maxlength="20"/></div>
+						</div>
+					</div>
+					<div class="foot">
+						<button cmd="cancel">取消</button><button cmd="ok">确定</button>
 					</div>
 				</div>
-				<div class="foot">
-					<button cmd="cancel">取消</button><button cmd="ok">确定</button>
-				</div>
-			</div>
-			<div class="dialog">
-				<div class="head"><span class="title">错误</span><span class="close"></span></div>
-				<div class="content">
-					<div class="panel">
-						<div><p>无效的昵称！</p></div>
+				<div class="dialog">
+					<div class="head"><span class="title">错误</span><span class="close"></span></div>
+					<div class="content">
+						<div class="panel">
+							<div><p>无效的昵称！</p></div>
+						</div>
+					</div>
+					<div class="foot">
+						<button cmd="ok">确定</button>
 					</div>
 				</div>
-				<div class="foot">
-					<button cmd="ok">确定</button>
+				<div class="dialog">
+					<div class="head"><span class="title">给 刀刀<3></《》> 发私信</span><span class="close"></span></div>
+					<div class="content">
+						<div class="panel">
+							<div><textarea id="inputLetter"/></textarea></div>
+						</div>
+					</div>
+					<div class="foot">
+						<button cmd="cancel">取消</button><button cmd="ok">确定</button>
+					</div>
 				</div>
 			</div>
 			<!-- Debug End -->
