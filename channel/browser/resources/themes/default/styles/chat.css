@@ -12,7 +12,7 @@ input[type="button"], button, .button {
 	background-image: -moz-linear-gradient(top, #fffffd, #f0f0f0);
 	border: 1px solid #d2d2d0;
 	margin: 7px 10px 0 0;
-	padding: 2px 18px;
+	padding: 2px 8px;
 	border-radius: 3px;
 	cursor: pointer;
 }
@@ -20,6 +20,14 @@ input[type="button"], button, .button {
 input[type="button"]:hover, button:hover, .button:hover{
 	border: 1px solid #99bdd7;
 	box-shadow: 0 0 1px 1px #c2eeff;
+}
+
+.hidden{
+	display: none;
+}
+
+#playerTools .number b{
+	color: red;
 }
 
 #main{
@@ -51,26 +59,26 @@ input[type="button"]:hover, button:hover, .button:hover{
 	height: 100px;
 }
 
-#messageBox li{
+#messageBox li, #letterBox li{
 	overflow: hidden;
 	border-bottom: 1px solid #ddd;
 }
 
-#messageBox li p{
+#messageBox li p, #letterBox li p{
 	 word-wrap: break-word;
 	 white-space: pre-wrap;
 }
 
-#messageBox .nick, #playerBox .nick{
-	color: #333;
+#messageBox .nick, #playerBox .nick, #letterBox .nick{
+	color: #111;
 	margin: 0 5px 0 0;
 }
-#messageBox .self .nick, #playerBox .self .nick{
+#messageBox .self .nick, #playerBox .self .nick, #letterBox .self .nick{
 	color: blue;
 	font-weight: bold;
 }
 
-#messageBox .id, #playerBox .id{
+#messageBox .id, #playerBox .id, #letterBox .id{
 	color: #e0e;
 }
 
@@ -140,7 +148,7 @@ input[type="button"]:hover, button:hover, .button:hover{
 	border: solid 1px #bdc7d9;
 }
 
-#playerBox .letter, #messageBox .letter{
+#playerBox .letter, #messageBox .letter, #letterBox .reply{
 	cursor: pointer;
 	font-size: 9pt;
 	color: #fff;
@@ -151,7 +159,7 @@ input[type="button"]:hover, button:hover, .button:hover{
 	visibility: hidden;
 }
 
-#playerBox li:hover .letter, #messageBox li:hover .letter{
+#playerBox li:hover .letter, #messageBox li:hover .letter, #letterBox li:hover .reply{
 	visibility: visible;
 }
 
@@ -290,4 +298,17 @@ h4{
 	background-image: -webkit-linear-gradient(top, rgb(204,232,255), #f00);
 	border: solid 1px #bdc7d9;
 	float: right;
+}
+
+#letterBox .dialog{
+	width: 300px; 
+	height: 350px;
+}
+
+#letterBox .dialog .content{
+    border: 1px solid #BDC7D9;
+    border-radius: 3px 3px 3px 3px;
+    margin: 5px 0;
+    overflow: auto;
+    padding: 5px;
 }

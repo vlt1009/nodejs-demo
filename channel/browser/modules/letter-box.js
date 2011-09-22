@@ -11,10 +11,6 @@ application.Core.registerModule("LetterBox", function(sandbox){
 	 */
 	var lib = sandbox.getLib();
 	/**
-	 * 用户列表
-	 */
-	var playerTree;
-	/**
 	 * 登录信息
 	 */
 	var passportInfo = {};
@@ -31,25 +27,6 @@ application.Core.registerModule("LetterBox", function(sandbox){
 			switch(item.type) {
 				case "passport":
 					passportInfo = item.info;
-					break;
-				case "playerAll":
-					playerTree.loadChilds(item.players);
-					break;
-				case "playerAdd":
-					playerTree.appendChilds(item.players);
-					break;
-				case "playerUpdate":
-					lib.each(item.players, function(player) {
-						var node = playerTree.updateData(player);
-						if (passportInfo.id == player.id) {
-							passportInfo.nick = node.data.nick;
-						}
-					});
-					break;
-				case "playerRemove":
-					lib.each(item.players, function(player) {
-						playerTree.removeNode(player);
-					});
 					break;
 			}
 		});

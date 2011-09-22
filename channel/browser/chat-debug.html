@@ -73,6 +73,65 @@
 				</div>
 				<div id="playerTools" class="tools">
 					<button cmd="nick">修改昵称</button>
+					<button id="viewLetter" cmd="viewLetter">查看私信<span class="number hidden">(<b>2</b>)</span></button>
+				</div>
+			</div>
+		</div>
+		<div id="letterBox" class="hidden">
+			<div class="masks">
+				<div class="dialog">
+					<div class="head"><span class="title">私信</span><span class="close"></span></div>
+					<div class="content">
+						<ul>
+							<script id="letterListTemplate" type="text/template">
+							<li class="#{helper.ifSelf(from)}">
+								<span class="nick">#{nick}</span>&lt;<span class="id">#{from}</span>&gt;<span class="time">#{helper.formatTime(time)}</span><span class="reply" cmd="reply">回复</span>
+								<pre class="message"><p>!#{helper.mutiline(message)}</p></pre>
+							</li>
+							</script>
+							<!-- Debug Start -->
+							<li class="self">
+								<span class="nick">昵称1</span>&lt;<span class="id">kkdd1</span>&gt;<span class="time">19:51:23</span><span class="reply" cmd="reply">回复</span>
+								<pre class="message"><p>聊天内容1！</p></pre>
+							</li>
+							<li>
+								<span class="nick self">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span><span class="reply" cmd="reply">回复</span>
+								<pre class="message"><p>聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2！</p></pre>
+							</li>
+							<li>
+								<span class="nick">昵称3</span>&lt;<span class="id">kkdd3</span>&gt;<span class="time">19:51:23</span><span class="reply" cmd="reply">回复</span>
+								<pre class="message"><p>聊天内容3！</p></pre>
+							</li>
+							<li class="self">
+								<span class="nick">昵称1</span>&lt;<span class="id">kkdd1</span>&gt;<span class="time">19:51:23</span><span class="reply" cmd="reply">回复</span>
+								<pre class="message"><p>聊天内容1！</p></pre>
+							</li>
+							<li>
+								<span class="nick self">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span><span class="reply" cmd="reply">回复</span>
+								<pre class="message"><p>聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2！</p></pre>
+							</li>
+							<li>
+								<span class="nick">昵称3</span>&lt;<span class="id">kkdd3</span>&gt;<span class="time">19:51:23</span><span class="reply" cmd="reply">回复</span>
+								<pre class="message"><p>聊天内容3！</p></pre>
+							</li>
+							<li class="self">
+								<span class="nick">昵称1</span>&lt;<span class="id">kkdd1</span>&gt;<span class="time">19:51:23</span><span class="reply" cmd="reply">回复</span>
+								<pre class="message"><p>聊天内容1！</p></pre>
+							</li>
+							<li>
+								<span class="nick self">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span><span class="reply" cmd="reply">回复</span>
+								<pre class="message"><p>聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2！</p></pre>
+							</li>
+							<li>
+								<span class="nick">昵称3</span>&lt;<span class="id">kkdd3</span>&gt;<span class="time">19:51:23</span><span class="reply" cmd="reply">回复</span>
+								<pre class="message"><p>聊天内容3！</p></pre>
+							</li>
+							<!-- Debug End -->
+						</ul>
+					</div>
+					<div class="foot">
+						<button cmd="ok">确定</button>
+					</div>
 				</div>
 			</div>
 		</div>
