@@ -1,5 +1,6 @@
 // cscript.exe
 void function(){
+	
 	var console = {
 		log: function(info){
 			WScript.StdOut.WriteLine(info);

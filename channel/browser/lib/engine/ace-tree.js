@@ -1,9 +1,10 @@
 var AceTree = AceTree || {};
 
-(function(){
+void function(exports){
 	/**
 	 * Ace Engine Tree
 	 * 一套基于模板和事件代理的通用树形控件
+	 * @see http://code.google.com/p/ace-engine/wiki/AceTree
 	 * @author 王集鹄(wangjihu，http://weibo.com/zswang)
 	 * @version 1.0
 	 * @copyright www.baidu.com
@@ -408,8 +409,8 @@ var AceTree = AceTree || {};
 	 */
 	TemplateNode.prototype.setStatus = function(name, value, pending){
 		if (!name) return;
-		if (this.status[name] == value) // 状态为改变 
-return;
+		// 状态为改变
+		if (this.status[name] == value) return;
 		this.status[name] = value;
 		if (pending) return;
 		if (this.tree.statusClasses.test(name)) {
@@ -714,7 +715,7 @@ return;
 	 * 创建一个基于模板的树形控件
 	 * @param {Object} options
 	 */
-	AceTree.create = function(options){
+	exports.create = function(options){
 		return new TemplateTree(options);
 	};
 	
@@ -723,7 +724,7 @@ return;
 	 * @param {String|Element} target Dom节点或者它的id
 	 * @return {TemplateNode} 返回对象的模板节点对象，如果没有找到则返回undefined
 	 */
-	AceTree.node4target = function(target){
+	exports.node4target = function(target){
 		var result;
 		target = lib.g(target);
 		scanParent(target, function(element){
@@ -735,4 +736,4 @@ return;
 		});
 		return result;
 	};
-})();
+}(AceTree);

@@ -97,6 +97,12 @@ application.Core.registerModule("MessageBox", function(sandbox){
 				},
 				oncommand: function(command, node, e){
 					switch (command) {
+						case "letter":
+							sandbox.notify(events.letterDialog, {
+								nick: node.data.nick,
+								to: node.data.from
+							});
+							break;
 					}
 				}
 			});

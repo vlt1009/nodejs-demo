@@ -140,7 +140,7 @@ input[type="button"]:hover, button:hover, .button:hover{
 	border: solid 1px #bdc7d9;
 }
 
-#playerBox .letter{
+#playerBox .letter, #messageBox .letter{
 	cursor: pointer;
 	font-size: 9pt;
 	color: #fff;
@@ -151,11 +151,11 @@ input[type="button"]:hover, button:hover, .button:hover{
 	visibility: hidden;
 }
 
-#playerBox li:hover .letter{
+#playerBox li:hover .letter, #messageBox li:hover .letter{
 	visibility: visible;
 }
 
-#playerBox li.self:hover .letter{
+#playerBox li.self:hover .letter, #messageBox li.self:hover .letter{
 	visibility: hidden;
 }
 

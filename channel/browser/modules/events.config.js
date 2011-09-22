@@ -17,5 +17,10 @@ application.Core.addConfig("Events", {
 	 * @description 用户被选中
 	 * @event
 	 */
-	playerFocus: 3
+	playerFocus: 3,
+	/**
+	 * @description 显示发送私信对话框
+	 * @event
+	 */
+	letterDialog: 4
 });

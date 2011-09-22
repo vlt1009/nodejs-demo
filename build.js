@@ -1,4 +1,5 @@
-(function(){
+void function(){
+	
 	var fs = require('fs');
 	var path = require('path');
 
@@ -42,4 +43,4 @@
 
 	if (process.argv.length < 6) return;
 	processFile(process.argv[2], process.argv[3], process.argv[4], process.argv[5]);
-})();
+}();

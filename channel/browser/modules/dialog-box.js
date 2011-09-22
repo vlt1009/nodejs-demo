@@ -14,27 +14,30 @@ application.Core.registerModule("DialogBox", function(sandbox){
 	 * 日志分析器
 	 */
 	var logger = sandbox.getLogger();
-	/**
-	 * 聊天室api
-	 */
-	var chatApi = sandbox.getExtension("ChatApi");
 	
 	var handler = 0;
 
+	/**
+	 * 显示对话框
+	 * @param {Object} data 对话框参数
+	 * 	{string} type  对话框类型
+	 * 	{function} onshow 显示时触发
+	 * 	{function} oncommand 点击按钮时触发，返回true表示不关闭对话框
+	 * 	{function} onclose 关闭后触发
+	 */
 	function showDialog(data) {
 		data._handler = handler++;
 		dialogTree.appendChild(data);
-		switch (data.type) {
-			case "nick":
-				var input = lib.g("inputNick");
-				input.setSelectionRange(0, input.value.length);
-				input.focus();
-				break;
-		}
+		data.onshow && data.onshow(data);
 	}
 	
+	/**
+	 * 关闭对话框 
+	 * @param {Object} data 对话框参数
+	 */
 	function closeDialog(data) {
 		dialogTree.removeNode(data);
+		data.onclose && data.onclose(data);
 	}
 
 	return {
@@ -52,33 +55,8 @@ application.Core.registerModule("DialogBox", function(sandbox){
 					return AceTemplate.format('dialogTemplate', node.data);
 				},
 				oncommand: function(command, node, e){
-					switch (command) {
-						case "cancel":
-							closeDialog(node.data);
-							break;
-						case "ok":
-							switch(node.data.type) {
-								case "nick":
-									var nick = lib.g("inputNick").value;
-									var error = ChannelCommon.checkNick(nick);
-									if (error) {
-										showDialog({
-											type: "error",
-											message: error
-										});
-										return;
-									}
-									if (nick != node.data.nick) {
-										chatApi.command({
-											command: "nick",
-											nick: nick
-										});
-									}
-									break;
-							}
-							closeDialog(node.data);
-							break;
-					}
+					var result = node.data.oncommand && node.data.oncommand(command, node.data);
+					if (!result) closeDialog(node.data);
 				}
 			});
 

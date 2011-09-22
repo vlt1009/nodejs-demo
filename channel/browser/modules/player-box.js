@@ -19,6 +19,10 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 	 */
 	var passportInfo = {};
 	/**
+	 * 聊天室api
+	 */
+	var chatApi = sandbox.getExtension("ChatApi");
+	/**
 	 * 获取房间当前状态成功
 	 * @param {Object} data
 	 */
@@ -82,6 +86,12 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 								info: node.data
 							});
 							break;
+						case "letter":
+							sandbox.notify(events.letterDialog, {
+								nick: node.data.nick,
+								to: node.data.id
+							});
+							break;
 					}
 				}
 			});
@@ -90,10 +100,33 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 			AceEvent.on('playerTools', function(command) {
 				switch (command) {
 					case "nick":
-						sandbox.notify(events.showDialog, {
+						sandbox.notify(events.letterDialog, {
 							type: "nick",
 							maxNick: ChannelCommon.maxNick,
-							nick: passportInfo.nick
+							nick: passportInfo.nick,
+							oncommand: function(command, data) {
+								if (command != "ok") return;
+								var nick = lib.g("inputNick").value;
+								var error = ChannelCommon.checkNick(nick);
+								if (error) {
+									sandbox.notify(events.showDialog, {
+										type: "error",
+										message: error
+									});
+									return true;
+								}
+								if (nick != data.nick) {
+									chatApi.command({
+										command: "nick",
+										nick: nick
+									});
+								}
+							},
+							onshow: function(data) {
+								var input = lib.g("inputNick");
+								input.setSelectionRange(0, input.value.length);
+								input.focus();
+							}
 						});
 						break;
 				}

@@ -52,7 +52,7 @@ function anonymous(_output_, _encode_, helper) {
 	
 var AceTemplate = AceTemplate || {};
 
-(function(){
+void function(exports){
 	/**
 	 * Ace Engine Template
 	 * 一套基于HTML和JS语法自由穿插的模板系统
@@ -146,9 +146,9 @@ var AceTemplate = AceTemplate || {};
 	 * 	html标记结束，如：
 	 * 		示例：>、src="1.gif" />
 	 * 		正则：/^.*[<>]\s*$/mg
-	 * 	没有“双引号、单引号、分号、逗号，大小括号”，不是else等单行语句、如：
+	 * 	没有“双引号、单引号、分号、大小括号”，不是else等单行语句、如：
 	 * 		示例：hello world
-	 * 		正则：/^(?!\s*(else|do|try|finally)\s*$)[^'":;,\[\]{}()\n\/]+$/mg
+	 * 		正则：/^(?!\s*(else|do|try|finally)\s*$)[^'":;{}()]+$/mg
 	 * 	属性表达式
 	 * 		示例：a="12" b="45"、a='ab' b="cd"
 	 * 		正则：/^(\s*(([\w-]+\s*=\s*"[^"]*")|([\w-]+\s*=\s*'[^']*')))+\s*$/mg
@@ -163,7 +163,7 @@ var AceTemplate = AceTemplate || {};
 		body.push(template
 			.replace(/[\r\n]+/g, "\n") // 去掉多余的换行，并且去掉IE中困扰人的\r
 			.replace(/^\n+|\s+$/mg, "") // 去掉空行，首部空行，尾部空白
-			.replace(/((^\s*[<>!#^&\u0000-\u0008\u007F-\uffff].*$|^.*[<>]\s*$|^(?!\s*(else|do|try|finally)\s*$)[^'":;,\[\]{}()\n\/]+$|^(\s*(([\w-]+\s*=\s*"[^"]*")|([\w-]+\s*=\s*'[^']*')))+\s*$|^\s*([.#][\w-.]+(:\w+)?(\s*|,))*(?!(else|do|while|try|return)\b)[.#]?[\w-.*]+(:\w+)?\s*\{.*$)\s?)+/mg, function(expression) { // 输出原文
+			.replace(/((^\s*[<>!#^&\u0000-\u0008\u007F-\uffff].*$|^.*[<>]\s*$|^(?!\s*(else|do|try|finally)\s*$)[^'":;{}()]+$|^(\s*(([\w-]+\s*=\s*"[^"]*")|([\w-]+\s*=\s*'[^']*')))+\s*$|^\s*([.#][\w-.]+(:\w+)?(\s*|,))*(?!(else|do|while|try|return)\b)[.#]?[\w-.*]+(:\w+)?\s*\{.*$)\s?)+/mg, function(expression) { // 输出原文
 				expression = ['"', expression
 					.replace(/&none;/g, "") // 空字符
 					.replace(/["'\\]/g, "\\$&") // 处理转义符
@@ -195,7 +195,7 @@ var AceTemplate = AceTemplate || {};
 	 * @param {Object} data 格式化的数据，默认为空字符串
 	 * @param {Object} helper 附加数据(默认为模板对象)
 	 */
-	AceTemplate.format = function(id, data, helper){
+	exports.format = function(id, data, helper){
 		if (!id) return "";
 		var reader, element;
 		if (typeof id == "object" && id.tagName) { // 如果是Dom对象
@@ -224,7 +224,7 @@ var AceTemplate = AceTemplate || {};
 	 * @param {String} id 模板ID
 	 * @param {Element|String} target 模板对象或者是模板字符串，如果没有则默认获取id对应的DOM对象
 	 */
-	AceTemplate.register = function(id, target){
+	exports.register = function(id, target){
 		if (!arguments.length && !registerAll) { // 无参数并且没有注册过
 			registerAll = true;
 			var scripts = document.getElementsByTagName("script");
@@ -253,7 +253,7 @@ var AceTemplate = AceTemplate || {};
 	 * 注销模板
 	 * @param {String} id 模板ID
 	 */
-	AceTemplate.unregister = function(id){
+	exports.unregister = function(id){
 		delete readerCaches[id];
 	};
-})();
+}(AceTemplate);

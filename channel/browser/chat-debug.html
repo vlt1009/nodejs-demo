@@ -20,6 +20,7 @@
 		<script src="modules/player-box.js"></script>
 		<script src="modules/editor-box.js"></script>
 		<script src="modules/dialog-box.js"></script>
+		<script src="modules/letter-box.js"></script>
 	</head>
 	<body>
 		<div id="main">
@@ -29,22 +30,22 @@
 					<ul>
 						<script id="messageListTemplate" type="text/template">
 						<li class="#{helper.ifSelf(from)}">
-							<span class="nick">#{nick}</span>&lt;<span class="id">#{from}</span>&gt;<span class="time">#{helper.formatTime(time)}</span>
+							<span class="nick">#{nick}</span>&lt;<span class="id">#{from}</span>&gt;<span class="time">#{helper.formatTime(time)}</span><span class="letter" cmd="letter">私信</span>
 							<pre class="message"><p>!#{helper.mutiline(message)}</p></pre>
 						</li>
 						</script>
 
 						<!-- Debug Start -->
 						<li class="self">
-							<span class="nick">昵称1</span>&lt;<span class="id">kkdd1</span>&gt;<span class="time">19:51:23</span>
+							<span class="nick">昵称1</span>&lt;<span class="id">kkdd1</span>&gt;<span class="time">19:51:23</span><span class="letter" cmd="letter">私信</span>
 							<pre class="message"><p>聊天内容1！</p></pre>
 						</li>
 						<li>
-							<span class="nick self">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span>
+							<span class="nick self">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span><span class="letter" cmd="letter">私信</span>
 							<pre class="message"><p>聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2！</p></pre>
 						</li>
 						<li>
-							<span class="nick">昵称3</span>&lt;<span class="id">kkdd3</span>&gt;<span class="time">19:51:23</span>
+							<span class="nick">昵称3</span>&lt;<span class="id">kkdd3</span>&gt;<span class="time">19:51:23</span><span class="letter" cmd="letter">私信</span>
 							<pre class="message"><p>聊天内容3！</p></pre>
 						</li>
 						<!-- Debug End -->
@@ -106,6 +107,19 @@
 					</div>
 	
 							break;
+						case "letter":
+						
+					<div class="head"><span class="title">给 #{nick} 发私信</span><span class="close"></span></div>
+					<div class="content">
+						<div class="panel">
+							<div><textarea id="inputLetter"/></textarea></div>
+						</div>
+					</div>
+					<div class="foot">
+						<button cmd="cancel">取消</button><button cmd="ok">确定</button>
+					</div>
+							break;
+						
 					}
 				</div>
 			</div>
@@ -135,7 +149,7 @@
 					</div>
 				</div>
 				<div class="dialog">
-					<div class="head"><span class="title">给 刀刀<3></《》> 发私信</span><span class="close"></span></div>
+					<div class="head"><span class="title">给 刀刀  发私信</span><span class="close"></span></div>
 					<div class="content">
 						<div class="panel">
 							<div><textarea id="inputLetter"/></textarea></div>

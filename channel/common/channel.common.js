@@ -1,20 +1,18 @@
 var ChannelCommon = ChannelCommon || {};
 
-void function(exports) {
+void function(exports){
 
 	/**
 	 * @author 王集鹄(wangjihu，http://weibo.com/zswang)
 	 */
-
 	/**
 	 * 模板处理
 	 * @param {String} template 模板字符 #{key}
 	 * @param {Object} json 数据
 	 */
-	function format(template, json) {
-		if (!json)
-			return template;
-		return template.replace(/\#\{(.+?)\}/g, function() {
+	function format(template, json){
+		if (!json) return template;
+		return template.replace(/\#\{(.+?)\}/g, function(){
 			return json[arguments[1]];
 		});
 	}
@@ -25,16 +23,14 @@ void function(exports) {
 	 * 	@param {Object} item 子项
 	 * 	@param {Number|String} key 下标和键值
 	 */
-	function forEach(arr, callback) {
+	function forEach(arr, callback){
 		if (arr instanceof Array) {
 			for (var i = 0; i < arr.length; i++) {
-				if (callback(arr[i], i) === false)
-					return false;
+				if (callback(arr[i], i) === false) return false;
 			}
 		} else if (typeof arr == "object") {
 			for (var p in arr) {
-				if (callback(arr[p], p) === false)
-					return false;
+				if (callback(arr[p], p) === false) return false;
 			}
 		}
 	}
@@ -47,15 +43,15 @@ void function(exports) {
 		// 服务器配置参数
 		/**
 		 * 验证私钥
-		 */ 
+		 */
 		passportKey: 20110815,
 		/**
- 		* 等待时间
- 		*/
+		 * 等待时间
+		 */
 		pickWait: 30 * 1000,
 		/**
- 		* 最大缓存的变化数
- 		*/
+		 * 最大缓存的变化数
+		 */
 		maxFireCount: 15,
 		/**
 		 * 清理用户掉线的时间
@@ -78,10 +74,14 @@ void function(exports) {
 		 */
 		maxNick: 20,
 		/**
+		 * 私信最大长度
+		 */
+		maxLetter: 4000,
+		/**
 		 * 验证昵称是否合法
 		 * @param {Object} nick
 		 */
-		checkNick: function(nick) {
+		checkNick: function(nick){
 			if (!nick || /^\s+$/.test(nick)) {
 				return "昵称不能为空";
 			}
@@ -92,11 +92,23 @@ void function(exports) {
 				return "昵称不能带@";
 			}
 		},
+		/**
+		 * 验证私信是否合法
+		 * @param {Object} letter
+		 */
+		checkLetter: function(letter){
+			if (!letter || /^\s+$/.test(letter)) {
+				return "私信不能为空";
+			}
+			if (letter.length > this.maxLetter) {
+				return this.format("私信长度不能超过#{0}", [this.maxLetter]);
+			}
+		},
 		format: format,
 		forEach: forEach
 	};
-
-	forEach(ChannelCommon, function(value, key) {
+	
+	forEach(ChannelCommon, function(value, key){
 		exports[key] = value;
 	});
 	
