@@ -6,6 +6,7 @@ var url = require('url');
 var channelManager = require('./channel.manager.js');
 var chatPlugin = require('./chat.plugin.js');
 var playerPlugin = require('./player.plugin.js');
+var letterPlugin = require('./letter.plugin.js');
 
 http.createServer(function(req, res){
 	var reqUrl = url.parse(req.url, true);
@@ -31,6 +32,13 @@ http.createServer(function(req, res){
 			options: {
 				maxCount: 1000
 			}
+		},
+		letter: {
+			create: letterPlugin.create,
+			options: {
+				maxCount: 20
+			}
+			
 		}
 	});
 	switch (reqUrl.pathname) {

@@ -1,7 +1,7 @@
 /**
  * @author 王集鹄(wangjihu，http://weibo.com/zswang)
  */
-application.Core.addConfig("Events", {
+AceCore.addConfig("Events", {
 	/**
 	 * @description 成功收到pick信息
 	 * @event

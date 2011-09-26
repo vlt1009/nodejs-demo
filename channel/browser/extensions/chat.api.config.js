@@ -1,7 +1,7 @@
 /**
  * @author 王集鹄(wangjihu，http://weibo.com/zswang)
  */
-application.Core.addConfig("ChatApi", {
+AceCore.addConfig("ChatApi", {
 	/**
 	 * pick最大等待时间，单位：毫秒
 	 */

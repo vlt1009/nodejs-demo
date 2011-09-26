@@ -101,9 +101,13 @@ void function(){
 				if (data.currSeq > item.startSeq) return;
 				item.fields.forEach(function(field){
 					// 处理黑名单
-					if (field.blackList && pickItem.passport.id in field.blackList) return;
+					if (field.blackList &&
+					['', field.blackList, ''].join().indexOf(['', pickItem.passport.id, ''].join()) >=
+					0) return;
 					// 处理白名单
-					if (field.whiteList && !(pickItem.passport.id in field.whiteList)) return;
+					if (field.whiteList &&
+					['', field.whiteList, ''].join().indexOf(['', pickItem.passport.id, ''].join()) <
+					0) return;
 					data.fields.push(field);
 				});
 			});
@@ -120,22 +124,19 @@ void function(){
 	Channel.prototype.pick = function(query, req, res){
 		var passport = playerManager.getPassport(req, res);
 		if (query.seq <= this.minSeq) { // 首次访问或完整数据
-			var fields = [
-				{
-					type: "passport",
-					info: {
-						id: passport.id,
-						nick: passport.nick
-					}
-				},
-				{
-					type: "channel",
-					info: {
-						id: this.id,
-						title: this.title
-					}
+			var fields = [{
+				type: "passport",
+				info: {
+					id: passport.id,
+					nick: passport.nick
 				}
-			];
+			}, {
+				type: "channel",
+				info: {
+					id: this.id,
+					title: this.title
+				}
+			}];
 			common.forEach(this.plugins, function(plugin){
 				plugin.all && plugin.all(fields, passport, query);
 			});
@@ -174,7 +175,7 @@ void function(){
 	 * @param {Array of Object} fields 返回动作列表
 	 * @param {Object} passport pick 触发者
 	 */
-	Channel.prototype.patrol = function(fields) {
+	Channel.prototype.patrol = function(fields){
 		var now = new Date;
 		if (now - this.patrolTime < common.maxPatrolTime) return;
 		common.forEach(this.plugins, function(plugin){
@@ -193,7 +194,7 @@ void function(){
 		var channel = channelDict[id];
 		if (!channel) {
 			channelDict[id] = channel = new Channel(id);
-
+			
 			var plugins = {};
 			for (var key in pluginInfos) {
 				var pluginInfo = pluginInfos[key];

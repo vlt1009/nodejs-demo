@@ -1,7 +1,7 @@
 /**
  * @author 王集鹄(wangjihu，http://weibo.com/zswang)
  */
-application.Core.registerModule("EditorBox", function(sandbox){
+AceCore.addModule("EditorBox", function(sandbox){
 	/**
 	 * 事件集合
 	 */
@@ -10,10 +10,6 @@ application.Core.registerModule("EditorBox", function(sandbox){
 	 * 类库
 	 */
 	var lib = sandbox.getLib();
-	/**
-	 * 日志分析器
-	 */
-	var logger = sandbox.getLogger();
 	/**
 	 * 聊天室api
 	 */

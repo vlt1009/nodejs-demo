@@ -1,5 +1,7 @@
 var common = require('../common/channel.common.js');
 var querystring = require('querystring');
+var path = require('path');
+var fs = require('fs');
 
 void function(){
 	/**
@@ -15,6 +17,10 @@ void function(){
 	 */
 	var nickDict = {};
 	/**
+	 * 存储目录
+	 */
+	var dir = "players";
+	/**
 	 * 获取用户身份验证码
 	 * @param {String} id 用户id
 	 * @param {String} visa 密码
@@ -22,11 +28,55 @@ void function(){
 	function getPlayerMask(id, visa){
 		return (common.passportKey ^ parseInt(visa, 36) ^ parseInt(id, 36)).toString(36);
 	}
+	
+	function savePlayer(id){
+		var player = playerDict[id];
+		if (!player) return;
+		path.exists(dir, function(exists){
+			if (exists) {
+				fs.writeFile(common.format("#{0}/#{1}.json", [dir, id]), JSON.stringify(player));
+			} else {
+				fs.mkdir(dir, 0777, function(){
+					fs.writeFile(common.format("#{0}/#{1}.json", [dir, id]), JSON.stringify(player));
+				});
+			}
+		});
+	}
+
+	function loadPlayer(id){
+		var player = playerDict[id];
+		if (player) return player;
+		player = new Player(id, true);
+		if (player.id == id) return player;
+	}
+
 	/**
 	 * 用户信息
 	 * @param {String} id
+	 * @param {Boolean} file 是否从文件中读取
 	 */
-	function Player(id){
+	function Player(id, file){
+		if (file) {
+			var filename = common.format("#{0}/#{1}.json", [dir, id]);
+			if (path.existsSync(filename)) {
+				var player = JSON.parse(fs.readFileSync(filename)) || {};
+				if (player.id == id) {
+					this.id = id;
+					this.visa = player.visa;
+					this.mask = player.mask;
+					this.nick = player.nick;
+					this.state = player.state;
+					this.createTime = new Date(player.createTime);
+					this.accessTime = new Date(player.accessTime);
+					this.modifyTime = new Date(player.modifyTime);
+					this.passportTime = new Date(player.passportTime);
+					this.commandTime = new Date(player.commandTime);
+					playerDict[this.id] = this;
+					return;
+				}
+			}
+			return;
+		}
 		this.id = id || (+new Date - new Date('2011/8/16')).toString(36);
 		this.visa = parseInt(Math.random() * 99999999).toString(36);
 		this.mask = getPlayerMask(this.id, this.visa);
@@ -61,6 +111,7 @@ void function(){
 		this.commandTime = now;
 		
 		playerDict[this.id] = this;
+		savePlayer(this.id);
 	}
 	/**
 	 * 更新用户信息
@@ -68,12 +119,17 @@ void function(){
 	 */
 	Player.prototype.update = function(data){
 		var self = this;
+		var changed = false;
 		common.forEach(updateFields, function(field){
 			if (field in data) {
-				self[field] = data[field];
-				self.modifyTime = new Date;
+				if (self[field] != data[field]) {
+					changed = true;
+					self[field] = data[field];
+					self.modifyTime = new Date;
+				}
 			}
 		});
+		savePlayer(this.id);
 	};
 	/**
 	 * 获取用户信息
@@ -81,7 +137,9 @@ void function(){
 	 */
 	function getPlayer(id){
 		var player = playerDict[id];
-		if (!player) return;
+		if (!player) {
+			return loadPlayer(id);
+		}
 		player.accessTime = new Date;
 		return player;
 	}

@@ -1,9 +1,8 @@
 /**
  * @author 王集鹄(wangjihu，http://weibo.com/zswang)
  */
-application.Core.registerExtension("ChatApi", function (sandbox) {
+AceCore.addExtension("ChatApi", function (sandbox) {
 	var lib = sandbox.getLib();
-	var logger = sandbox.getLogger();
 	var config = sandbox.getConfig();
 
 	/* Debug Start */
@@ -145,7 +144,7 @@ application.Core.registerExtension("ChatApi", function (sandbox) {
 			callback && callback(pickList[details.seq]);
 		},
 		command: function(details, callback) {
-			logger.log(details);
+			sandbox.log(details);
 			callback && callback({
 				result: "ok"
 			});
@@ -172,7 +171,7 @@ application.Core.registerExtension("ChatApi", function (sandbox) {
 				callback = function() {};
 			}, config.pickMaxWait);
 			var url = [config.apiHost + "/pick", jsonToQuery(details)].join("?");
-			logger.log(url);
+			sandbox.log(url);
 			lib.sio.callByServer(url, function(data) {
 				timer && clearTimeout(timer);
 				timer = 0;
@@ -182,7 +181,7 @@ application.Core.registerExtension("ChatApi", function (sandbox) {
 		command: function(details, callback) {
 			if (!details) return;
 			var url = [config.apiHost + "/command", jsonToQuery(details)].join("?");
-			logger.log(url);
+			sandbox.log(url);
 			lib.sio.callByServer(url, function(data) {
 				callback && callback(data);
 			});

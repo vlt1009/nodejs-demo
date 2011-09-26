@@ -1,7 +1,7 @@
 /**
  * @author 王集鹄(wangjihu，http://weibo.com/zswang)
  */
-application.Core.registerModule("DialogBox", function(sandbox){
+AceCore.addModule("DialogBox", function(sandbox){
 	/**
 	 * 事件集合
 	 */
@@ -10,10 +10,6 @@ application.Core.registerModule("DialogBox", function(sandbox){
 	 * 类库
 	 */
 	var lib = sandbox.getLib();
-	/**
-	 * 日志分析器
-	 */
-	var logger = sandbox.getLogger();
 	
 	var handler = 0;
 

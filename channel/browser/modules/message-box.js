@@ -1,7 +1,7 @@
 /**
  * @author 王集鹄(wangjihu，http://weibo.com/zswang)
  */
-application.Core.registerModule("MessageBox", function(sandbox){
+AceCore.addModule("MessageBox", function(sandbox){
 	/**
 	 * 事件集合
 	 */
@@ -10,10 +10,6 @@ application.Core.registerModule("MessageBox", function(sandbox){
 	 * 类库
 	 */
 	var lib = sandbox.getLib();
-	/**
-	 * 日志分析器
-	 */
-	var logger = sandbox.getLogger();
 	/**
 	 * 消息列表
 	 */
@@ -98,7 +94,7 @@ application.Core.registerModule("MessageBox", function(sandbox){
 				oncommand: function(command, node, e){
 					switch (command) {
 						case "letter":
-							sandbox.notify(events.letterDialog, {
+							sandbox.fire(events.letterDialog, {
 								nick: node.data.nick,
 								to: node.data.from
 							});

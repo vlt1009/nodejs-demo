@@ -4,7 +4,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<link rel="stylesheet" href="resources/themes/default/styles/chat.css" />
 		<script src="http://img.baidu.com/js/tangram-1.3.9.js"></script>
-		<script src="core.js"></script>
+		<script src="lib/engine/ace-core.js"></script>
 		<script src="lib/engine/ace-template.js"></script>
 		<script src="lib/engine/ace-event.js"></script>
 		<script src="lib/engine/ace-tree.js"></script>
@@ -221,5 +221,10 @@
 			</div>
 			<!-- Debug End -->
 		</div>
+		<script>
+			AceCore.start({
+				lib: baidu
+			});
+		</script>
 	</body>
 </html>

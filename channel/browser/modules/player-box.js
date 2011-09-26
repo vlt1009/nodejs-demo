@@ -1,7 +1,7 @@
 /**
  * @author 王集鹄(wangjihu，http://weibo.com/zswang)
  */
-application.Core.registerModule("PlayerBox", function(sandbox){
+AceCore.addModule("PlayerBox", function(sandbox){
 	/**
 	 * 事件集合
 	 */
@@ -82,12 +82,12 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 					switch (command) {
 						case "focus":
 							node.focus();
-							sandbox.notify(events.playerFocus, {
+							sandbox.fire(events.playerFocus, {
 								info: node.data
 							});
 							break;
 						case "letter":
-							sandbox.notify(events.letterDialog, {
+							sandbox.fire(events.letterDialog, {
 								nick: node.data.nick,
 								to: node.data.id
 							});
@@ -100,7 +100,7 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 			AceEvent.on('playerTools', function(command) {
 				switch (command) {
 					case "nick":
-						sandbox.notify(events.letterDialog, {
+						sandbox.fire(events.showDialog, {
 							type: "nick",
 							maxNick: ChannelCommon.maxNick,
 							nick: passportInfo.nick,
@@ -109,7 +109,7 @@ application.Core.registerModule("PlayerBox", function(sandbox){
 								var nick = lib.g("inputNick").value;
 								var error = ChannelCommon.checkNick(nick);
 								if (error) {
-									sandbox.notify(events.showDialog, {
+									sandbox.fire(events.showDialog, {
 										type: "error",
 										message: error
 									});
