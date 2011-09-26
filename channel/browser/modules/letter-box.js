@@ -1,7 +1,7 @@
 /**
  * @author 王集鹄(wangjihu，http://weibo.com/zswang)
  */
-application.Core.registerModule("LetterBox", function(sandbox){
+AceCore.addModule("LetterBox", function(sandbox){
 	/**
 	 * 事件集合
 	 */
@@ -19,6 +19,11 @@ application.Core.registerModule("LetterBox", function(sandbox){
 	 */
 	var chatApi = sandbox.getExtension("ChatApi");
 	/**
+	 * 私信列表
+	 */
+	var letterTree;
+	
+	/**
 	 * 获取房间当前状态成功
 	 * @param {Object} data
 	 */
@@ -28,8 +33,22 @@ application.Core.registerModule("LetterBox", function(sandbox){
 				case "passport":
 					passportInfo = item.info;
 					break;
+<<<<<<< .mine
+				case "letterAdd":
+					messageTree.appendChilds(item.messages);
+					scrollBottom();
+					break;
+=======
+>>>>>>> .r17
 			}
 		});
+	}
+	/**
+	 * 滚动到底部
+	 */
+	function scrollBottom() {
+		var parent = letterTree.parent.parentNode;
+		parent.scrollTop = parent.scrollHeight;
 	}
 	/**
 	 * 是否是自己的账号
@@ -38,17 +57,35 @@ application.Core.registerModule("LetterBox", function(sandbox){
 	function ifSelf(id) {
 		return id == passportInfo.id ? "self" : "";
 	}
+	/**
+	 * 格式化事件
+	 * @param {Date} time
+	 */
+	function formatTime(time) {
+		time = new Date(time);
+		var timeStr = lib.date.format(time, "HH:mm:ss");
+		var dateStr = lib.date.format(time, "yyyy:MM:dd");
+		return lib.date.format(new Date, "yyyy:MM:dd") == dateStr ? timeStr :
+			[dateStr, timeStr].join(" ");
+	}
+	/**
+	 * 处理多行文本
+	 * @param {String} text 文本
+	 */
+	function mutiline(text) {
+		return lib.encodeHTML(text).replace(/\n/g, "<br/>");
+	}
 	function letterDialog(data) {
-		sandbox.notify(events.showDialog, {
+		sandbox.fire(events.showDialog, {
 			type: "letter",
 			nick: data.nick,
-			to: data.id,
+			to: data.to,
 			oncommand: function(command, data) {
 				if (command != "ok") return;
 				var letter = lib.g("inputLetter").value;
 				var error = ChannelCommon.checkLetter(letter);
 				if (error) {
-					sandbox.notify(events.showDialog, {
+					sandbox.fire(events.showDialog, {
 						type: "error",
 						message: error
 					});
@@ -57,7 +94,7 @@ application.Core.registerModule("LetterBox", function(sandbox){
 				chatApi.command({
 					command: "letter",
 					to: data.to,
-					letter: letter
+					text: letter
 				});
 
 			},
@@ -71,6 +108,25 @@ application.Core.registerModule("LetterBox", function(sandbox){
 	
 	return {
 		init: function() {
+			/*
+			letterTree = AceTree.create({
+				parent: lib.g("letterListTemplate").parentNode,
+				oninit: function(tree){
+					tree.eventHandler = AceEvent.on(tree.parent, function(command, element, e){
+						var node = tree.node4target(element);
+						node && tree.oncommand(command, node, e);
+					});
+				},
+				onreader: function(node){
+					return AceTemplate.format('letterListTemplate', node.data, {
+						node: node,
+						formatTime: formatTime,
+						ifSelf: ifSelf,
+						mutiline: mutiline
+					});
+				}
+			});
+			*/
 			sandbox.on(events.letterDialog, letterDialog);
 			sandbox.on(events.pickSuccess, pickSuccess);
 		}
