@@ -20,6 +20,7 @@ void function(){
 		switch (query.command) {
 			case "letter":
 				if (!query.text) return;
+				if (query.to == passport.id) return;
 				currId++;
 				var message = {
 					id: currId,
@@ -33,9 +34,13 @@ void function(){
 					messages: []
 				};
 				playerLetter.messages.push(message);
+				var playerLetter = playerLetterList[passport.id] = playerLetterList[passport.id] || {
+					messages: []
+				};
+				playerLetter.messages.push(message);
 				fields.push({
 					type: "letterAdd",
-					whiteList: [query.to],
+					whiteList: [passport.id, query.to],
 					messages: [message]
 				});
 				while (playerLetter.messages.length > this.maxCount){
@@ -47,8 +52,24 @@ void function(){
 	
 	LetterPlugin.prototype.all = function(fields, passport, query){
 		if (!fields || !passport) return;
+		var messages = this.getMessageAll(passport);
+		if (!message) return;
+		fields.push({
+			type: "letterAll",
+			messages: messages
+		});
 	};
 	
+	LetterPlugin.prototype.getMessageAll = function(passport) {
+		var playerLetter = playerLetterList[passport.id];
+		if (!playerLetter) return;
+		var messages = [];
+		common.forEach(playerLetter.messages, function(message) {
+			messages.push(message);
+		});
+		return messages;
+	};
+
 	/**
 	 * 清理已经掉线或离开的用户
 	 */

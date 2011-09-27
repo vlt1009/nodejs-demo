@@ -48,7 +48,7 @@ AceCore.addModule("MessageBox", function(sandbox){
 	}
 	
 	/**
-	 * 格式化事件
+	 * 格式化时间
 	 * @param {Date} time
 	 */
 	function formatTime(time) {
