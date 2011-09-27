@@ -312,3 +312,7 @@ h4{
     overflow: auto;
     padding: 5px;
 }
+
+#letterBox li.old{
+	background-color: #ddd;
+}

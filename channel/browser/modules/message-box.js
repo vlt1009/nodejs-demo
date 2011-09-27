@@ -58,13 +58,7 @@ AceCore.addModule("MessageBox", function(sandbox){
 		return lib.date.format(new Date, "yyyy:MM:dd") == dateStr ? timeStr :
 			[dateStr, timeStr].join(" ");
 	}
-	/**
-	 * 是否是自己的账号
-	 * @param {String} id
-	 */
-	function ifSelf(id) {
-		return id == passportInfo.id ? "self" : "";
-	}
+
 	/**
 	 * 处理多行文本
 	 * @param {String} text 文本
@@ -87,7 +81,6 @@ AceCore.addModule("MessageBox", function(sandbox){
 					return AceTemplate.format('messageListTemplate', node.data, {
 						node: node,
 						formatTime: formatTime,
-						ifSelf: ifSelf,
 						mutiline: mutiline
 					});
 				},
@@ -100,6 +93,10 @@ AceCore.addModule("MessageBox", function(sandbox){
 							});
 							break;
 					}
+				},
+				statusClasses: /^(focus|hover|select|expand|self)$/,
+				oncreated: function(node) {
+					node.setStatus("self", node.data.from == passportInfo.id, true);
 				}
 			});
 			

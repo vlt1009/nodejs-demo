@@ -54,14 +54,6 @@ AceCore.addModule("LetterBox", function(sandbox){
 	}
 	
 	/**
-	 * 是否是自己的账号
-	 * @param {String} id
-	 */
-	function ifSelf(id){
-		return id == passportInfo.id ? "self" : "";
-	}
-	
-	/**
 	 * 格式化时间
 	 * @param {Date} time
 	 */
@@ -133,7 +125,6 @@ AceCore.addModule("LetterBox", function(sandbox){
 					return AceTemplate.format('letterListTemplate', node.data, {
 						node: node,
 						formatTime: formatTime,
-						ifSelf: ifSelf,
 						mutiline: mutiline
 					});
 				},
@@ -146,6 +137,10 @@ AceCore.addModule("LetterBox", function(sandbox){
 							});
 							break;
 					}
+				},
+				statusClasses: /^(focus|hover|select|expand|old|self)$/,
+				oncreated: function(node) {
+					node.setStatus("self", node.data.from == passportInfo.id, true);
 				}
 			});
 			
@@ -158,6 +153,10 @@ AceCore.addModule("LetterBox", function(sandbox){
 					case "ok":
 					case "cancel":
 						lib.addClass('letterBox', 'hidden');
+						
+						letterTree.each(function(node){
+							node.setStatus("old", true);
+						});
 						break;
 				}
 			});

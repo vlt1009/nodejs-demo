@@ -54,13 +54,6 @@ AceCore.addModule("PlayerBox", function(sandbox){
 			}
 		});
 	}
-	/**
-	 * 是否是自己的账号
-	 * @param {String} id
-	 */
-	function ifSelf(id) {
-		return id == passportInfo.id ? "self" : "";
-	}
 	
 	return {
 		init: function() {
@@ -74,8 +67,7 @@ AceCore.addModule("PlayerBox", function(sandbox){
 				},
 				onreader: function(node){
 					return AceTemplate.format('playerListTemplate', node.data, {
-						node: node,
-						ifSelf: ifSelf
+						node: node
 					});
 				},
 				oncommand: function(command, node, e){
@@ -93,6 +85,10 @@ AceCore.addModule("PlayerBox", function(sandbox){
 							});
 							break;
 					}
+				},
+				statusClasses: /^(focus|hover|select|expand|self)$/,
+				oncreated: function(node) {
+					node.setStatus("self", node.data.id == passportInfo.id, true);
 				}
 			});
 			

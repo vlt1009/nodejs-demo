@@ -26,7 +26,7 @@
 				<div id="messageList">
 					<ul>
 						<script id="messageListTemplate" type="text/template">
-						<li class="#{helper.ifSelf(from)}">
+						<li class="!#{helper.node.getClasses()}">
 							<span class="nick">#{nick}</span>&lt;<span class="id">#{from}</span>&gt;<span class="time">#{helper.formatTime(time)}</span><span class="letter" cmd="letter">私信</span>
 							<pre class="message"><p>!#{helper.mutiline(message)}</p></pre>
 						</li>
@@ -59,7 +59,7 @@
 				<div id="playerList">
 					<ul>
 						<script id="playerListTemplate" type="text/template">
-						<li class="#{state} #{helper.ifSelf(id)}" down="focus"><span class="letter" cmd="letter">私信</span><span class="state"></span><span class="nick">#{nick}</span>&lt;<span class="id">#{id}</span>&gt;</li>
+						<li class="#{state} !#{helper.node.getClasses()}" down="focus"><span class="letter" cmd="letter">私信</span><span class="state"></span><span class="nick">#{nick}</span>&lt;<span class="id">#{id}</span>&gt;</li>
 						</script>
 	
 						<!-- Debug Start -->
@@ -81,8 +81,12 @@
 					<div class="content">
 						<ul>
 							<script id="letterListTemplate" type="text/template">
-							<li class="#{helper.ifSelf(from)}">
+							<li class="!#{helper.node.getClasses()}">
+							if (helper.node.getStatus("self")) {
+								<b>To: </b><span class="nick">#{toNick}</span>&lt;<span class="id">#{to}</span>&gt;<span class="time">#{helper.formatTime(time)}</span>
+							} else {
 								<span class="nick">#{nick}</span>&lt;<span class="id">#{from}</span>&gt;<span class="time">#{helper.formatTime(time)}</span><span class="reply" cmd="reply">回复</span>
+							}
 								<pre class="message"><p>!#{helper.mutiline(message)}</p></pre>
 							</li>
 							</script>

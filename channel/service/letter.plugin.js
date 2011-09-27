@@ -1,4 +1,5 @@
 var common = require('../common/channel.common.js');
+var playerManager = require('./player.manager.js');
 
 void function(){
 	/**
@@ -21,10 +22,13 @@ void function(){
 			case "letter":
 				if (!query.text) return;
 				if (query.to == passport.id) return;
+				var toPlayer = playerManager.getPlayer(query.to);
+				if (!toPlayer) return;
 				currId++;
 				var message = {
 					id: currId,
-					to: query.to,
+					to: toPlayer.id,
+					toNick: toPlayer.nick,
 					from: passport.id,
 					nick: passport.nick,
 					time: +new Date,
@@ -53,7 +57,7 @@ void function(){
 	LetterPlugin.prototype.all = function(fields, passport, query){
 		if (!fields || !passport) return;
 		var messages = this.getMessageAll(passport);
-		if (!message) return;
+		if (!messages) return;
 		fields.push({
 			type: "letterAll",
 			messages: messages
