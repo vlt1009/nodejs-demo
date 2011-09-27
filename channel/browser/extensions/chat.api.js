@@ -44,6 +44,19 @@ AceCore.addExtension("ChatApi", function (sandbox) {
 					]
 				},
 				{
+					type: "letterAll",
+					plugin: "letter",
+					messages: [
+						{
+							id: 2,
+							from: 3,
+							nick: "丫丫",
+							time: new Date,
+							message: "发的是私信"
+						}
+					]
+				},
+				{
 					type: "playerAll",
 					plugin: "player",
 					players: [

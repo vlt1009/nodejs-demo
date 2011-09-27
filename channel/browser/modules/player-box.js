@@ -129,6 +129,9 @@ AceCore.addModule("PlayerBox", function(sandbox){
 							}
 						});
 						break;
+					case "viewLetter":
+						sandbox.fire(events.viewLetter);
+						break;
 				}
 			});
 		}

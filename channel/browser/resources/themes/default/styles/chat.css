@@ -163,7 +163,7 @@ input[type="button"]:hover, button:hover, .button:hover{
 	visibility: visible;
 }
 
-#playerBox li.self:hover .letter, #messageBox li.self:hover .letter{
+#playerBox li.self:hover .letter, #messageBox li.self:hover .letter, #letterBox li.self:hover .reply{
 	visibility: hidden;
 }
 

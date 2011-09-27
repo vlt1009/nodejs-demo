@@ -277,6 +277,12 @@ void function(exports){
 			startModule(id);
 		}
 		active = true;
+		
+		//处理缓存的事件
+		var item;
+		while (item = eventCaches.shift()) {
+			fire(item[0], item[1]);
+		}
 		logger.log && logger.log("core start.");
 	}
 	
@@ -288,7 +294,7 @@ void function(exports){
 		for (var id in modules) {
 			stopModule(id);
 		}
-		for (var id in modules) {
+		for (var id in extensions) {
 			stopExtension(id);
 		}
 		active = false;

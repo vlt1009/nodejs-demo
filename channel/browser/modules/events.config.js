@@ -22,5 +22,10 @@ AceCore.addConfig("Events", {
 	 * @description 显示发送私信对话框
 	 * @event
 	 */
-	letterDialog: 4
+	letterDialog: 4,
+	/**
+	 * @description 查看私信
+	 * @event
+	 */
+	viewLetter: 5
 });

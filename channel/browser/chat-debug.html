@@ -9,9 +9,6 @@
 		<script src="lib/engine/ace-event.js"></script>
 		<script src="lib/engine/ace-tree.js"></script>
 		<script src="../common/channel.common.js"></script>
-		<!-- Debug Start -->
-		<script src="extensions/console.logger.js"></script>
-		<!-- Debug End -->
 		<script src="extensions/chat.api.config.js"></script>
 		<script src="extensions/chat.api.js"></script>
 		<script src="modules/events.config.js"></script>
@@ -41,7 +38,7 @@
 							<pre class="message"><p>聊天内容1！</p></pre>
 						</li>
 						<li>
-							<span class="nick self">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span><span class="letter" cmd="letter">私信</span>
+							<span class="nick">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span><span class="letter" cmd="letter">私信</span>
 							<pre class="message"><p>聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2！</p></pre>
 						</li>
 						<li>
@@ -80,7 +77,7 @@
 		<div id="letterBox" class="hidden">
 			<div class="masks">
 				<div class="dialog">
-					<div class="head"><span class="title">私信</span><span class="close"></span></div>
+					<div class="head"><span class="title">私信</span><span class="close" cmd="cancel"></span></div>
 					<div class="content">
 						<ul>
 							<script id="letterListTemplate" type="text/template">
@@ -95,7 +92,7 @@
 								<pre class="message"><p>聊天内容1！</p></pre>
 							</li>
 							<li>
-								<span class="nick self">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span><span class="reply" cmd="reply">回复</span>
+								<span class="nick">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span><span class="reply" cmd="reply">回复</span>
 								<pre class="message"><p>聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2！</p></pre>
 							</li>
 							<li>
@@ -106,8 +103,8 @@
 								<span class="nick">昵称1</span>&lt;<span class="id">kkdd1</span>&gt;<span class="time">19:51:23</span><span class="reply" cmd="reply">回复</span>
 								<pre class="message"><p>聊天内容1！</p></pre>
 							</li>
-							<li>
-								<span class="nick self">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span><span class="reply" cmd="reply">回复</span>
+							<li class="self">
+								<span class="nick">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span><span class="reply" cmd="reply">回复</span>
 								<pre class="message"><p>聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2！</p></pre>
 							</li>
 							<li>
@@ -118,8 +115,8 @@
 								<span class="nick">昵称1</span>&lt;<span class="id">kkdd1</span>&gt;<span class="time">19:51:23</span><span class="reply" cmd="reply">回复</span>
 								<pre class="message"><p>聊天内容1！</p></pre>
 							</li>
-							<li>
-								<span class="nick self">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span><span class="reply" cmd="reply">回复</span>
+							<li class="self">
+								<span class="nick">昵称2</span>&lt;<span class="id">kkdd2</span>&gt;<span class="time">19:51:32</span><span class="reply" cmd="reply">回复</span>
 								<pre class="message"><p>聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2聊天内容2！</p></pre>
 							</li>
 							<li>
@@ -168,7 +165,7 @@
 							break;
 						case "letter":
 						
-					<div class="head"><span class="title">给 #{nick} 发私信</span><span class="close"></span></div>
+					<div class="head"><span class="title">给 #{nick} 发私信</span><span class="close" cmd="cancel"></span></div>
 					<div class="content">
 						<div class="panel">
 							<div><textarea id="inputLetter"/></textarea></div>
