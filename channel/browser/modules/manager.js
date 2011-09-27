@@ -36,7 +36,9 @@ AceCore.addModule("Manager", function(sandbox){
 				sandbox.log("seq change to:" + seq);
 			}
 			if ('fields' in data) sandbox.fire(events.pickSuccess, data.fields);
-			nextPick();
+			setTimeout(function() {
+				nextPick();
+			}, 0);
 		});
 	}
 	
@@ -61,7 +63,10 @@ AceCore.addModule("Manager", function(sandbox){
 					});
 					return;
 				}
-				nextPick();
+				
+				setTimeout(function() {
+					nextPick();
+				}, 0);
 			});
 		}
 	};

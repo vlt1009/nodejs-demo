@@ -1,1 +1,1 @@
-call build.bat D:\Apache\root\chat nocompressor
+call build.bat D:\Apache\root\chat debug

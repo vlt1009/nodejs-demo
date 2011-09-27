@@ -10,7 +10,9 @@ AceCore.addModule("DialogBox", function(sandbox){
 	 * 类库
 	 */
 	var lib = sandbox.getLib();
-	
+	/**
+	 * 对话框标识
+	 */
 	var handler = 0;
 
 	/**

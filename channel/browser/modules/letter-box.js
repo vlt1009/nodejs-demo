@@ -35,11 +35,16 @@ AceCore.addModule("LetterBox", function(sandbox){
 					break;
 				case "letterAll":
 					letterTree.loadChilds(item.messages);
+					letterTree.each(function(node){
+						node.setStatus("old", node.data.time < item.lastView);
+					});
+					updateNewLetter();
 					scrollBottom();
 					break;
 				case "letterAdd":
 					letterTree.appendChilds(item.messages);
 					scrollBottom();
+					updateNewLetter();
 					break;
 			}
 		});
@@ -52,7 +57,18 @@ AceCore.addModule("LetterBox", function(sandbox){
 		var parent = letterTree.parent.parentNode;
 		parent.scrollTop = parent.scrollHeight;
 	}
-	
+
+	var newLetterNumber = 0;
+	/**
+	 * 更新新消息数
+	 */
+	function updateNewLetter(){
+		newLetterNumber = 0;
+		letterTree.each(function(node){
+			if (!node.getStatus("old")) newLetterNumber++;
+		});
+		lib.g("newLetterNumber").innerHTML = newLetterNumber ? "(<b>" + newLetterNumber + "</b>)" : "";
+	}
 	/**
 	 * 格式化时间
 	 * @param {Date} time
@@ -108,6 +124,10 @@ AceCore.addModule("LetterBox", function(sandbox){
 	
 	function viewLetter(){
 		lib.removeClass('letterBox', 'hidden');
+		if (!newLetterNumber) return;
+		chatApi.command({
+			command: "viewLetter"
+		});
 	}
 	
 	return {
@@ -153,10 +173,11 @@ AceCore.addModule("LetterBox", function(sandbox){
 					case "ok":
 					case "cancel":
 						lib.addClass('letterBox', 'hidden');
-						
+						if (!newLetterNumber) return;
 						letterTree.each(function(node){
 							node.setStatus("old", true);
 						});
+						updateNewLetter();
 						break;
 				}
 			});

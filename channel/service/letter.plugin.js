@@ -19,6 +19,11 @@ void function(){
 	LetterPlugin.prototype.command = function(fields, passport, query){
 		if (!fields || !passport || !query) return;
 		switch (query.command) {
+			case "viewLetter":
+				var playerLetter = playerLetterList[passport.id];
+				if (!playerLetter) return;
+				playerLetter.lastView = +new Date;
+				break;
 			case "letter":
 				if (!query.text) return;
 				if (query.to == passport.id) return;
@@ -56,22 +61,18 @@ void function(){
 	
 	LetterPlugin.prototype.all = function(fields, passport, query){
 		if (!fields || !passport) return;
-		var messages = this.getMessageAll(passport);
-		if (!messages) return;
-		fields.push({
-			type: "letterAll",
-			messages: messages
-		});
-	};
-	
-	LetterPlugin.prototype.getMessageAll = function(passport) {
 		var playerLetter = playerLetterList[passport.id];
 		if (!playerLetter) return;
 		var messages = [];
 		common.forEach(playerLetter.messages, function(message) {
 			messages.push(message);
 		});
-		return messages;
+		if (!messages) return;
+		fields.push({
+			type: "letterAll",
+			messages: messages,
+			lastView: playerLetter.lastView
+		});
 	};
 
 	/**
