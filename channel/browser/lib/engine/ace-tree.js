@@ -103,6 +103,20 @@ void function(exports){
 	}
 	
 	/**
+	 * 添加当前DOM对象的HTML
+	 * @param {Element|String} element
+	 * @param {String} html
+	 */
+	function appendWith(element, html){
+		element = lib.g(element);
+		console.log("1");
+		if (!element) return;
+		console.log("2");
+		console.log(html);
+		element.appendChild(html2Fragment(html));
+	}
+	
+	/**
 	 * 添加一个属性值
 	 * @param {Element|String} element
 	 * @param {String} attrName
@@ -241,9 +255,12 @@ void function(exports){
 		for (var i = this.index; i < this.parentNode.childNodes.length; i++) { // 更新序号
 			this.parentNode.childNodes[i].index = i;
 		}
-		this.parentNode.refresh();
-		//!isAncestor(this.did, this.cid) && lib.remove(this.cid); // 如果子节点容器是嵌套形式出现
-		//lib.remove(this.did);
+		if (this.tree.onsort) {
+			this.parentNode.refresh();
+		} else {
+			!isAncestor(this.did, this.cid) && lib.remove(this.cid); // 如果子节点容器是嵌套形式出现
+			lib.remove(this.did);
+		}
 	};
 	
 	/**
@@ -258,8 +275,12 @@ void function(exports){
 		node.index = this.childNodes.length;
 		this.childNodes.push(node);
 		if (depth) node.loadChilds(data[this.tree.fieldChilds], true);
-		this.tree.onsort && this.childNodes.sort(this.tree.onsort);
-		this.refresh();
+		if (this.tree.onsort) {
+			this.childNodes.sort(this.tree.onsort);
+			replaceWith(this.did, this.reader());
+		} else {
+			appendWith(this.cid, node.reader());
+		}
 		return node;
 	};
 	
@@ -280,8 +301,16 @@ void function(exports){
 			self.childNodes.push(node);
 			if (depth) node.loadChilds(data[self.tree.fieldChilds], true);
 		});
-		this.tree.onsort && this.childNodes.sort(this.tree.onsort);
-		this.refresh();
+		if (this.tree.onsort) {
+			this.tree.onsort && this.childNodes.sort(this.tree.onsort);
+			this.refresh();
+		} else {
+			var html = [];
+			lib.each(nodes, function(data) {
+				html.push(data.reader());
+			});
+			appendWith(this.cid, html.join(""));
+		}
 		return nodes;
 	};
 	
@@ -548,6 +577,7 @@ void function(exports){
 		this.handler = handler++;
 		this.childNodes = [];
 		this.focusDid = "";
+		this.cid = this.parent;
 		addAttr(this.parent, "data-handler", this.handler);
 		if (this.oninit) this.oninit(this);
 	}
