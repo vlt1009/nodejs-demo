@@ -1,4 +1,4 @@
-var ChannelCommon = ChannelCommon || {};
+var ChannelCommon = typeof exports == "undefined" ? ChannelCommon || {} : exports;
 
 void function(exports){
 
@@ -38,7 +38,7 @@ void function(exports){
 	/**
 	 * 公用部分
 	 */
-	var ChannelCommon = {
+	var ext = {
 		/* Debug Start */
 		// 服务器配置参数
 		/**
@@ -108,8 +108,8 @@ void function(exports){
 		forEach: forEach
 	};
 	
-	forEach(ChannelCommon, function(value, key){
+	forEach(ext, function(value, key){
 		exports[key] = value;
 	});
 	
-}(typeof exports == "undefined" ? ChannelCommon : exports);
+}(ChannelCommon);

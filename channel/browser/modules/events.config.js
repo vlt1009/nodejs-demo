@@ -5,7 +5,6 @@ AceCore.addConfig("Events", {
 	/**
 	 * @description 成功收到pick信息
 	 * @event
-	 * @param
 	 */
 	pickSuccess: 1,
 	/**
@@ -27,5 +26,15 @@ AceCore.addConfig("Events", {
 	 * @description 查看私信
 	 * @event
 	 */
-	viewLetter: 5
+	viewLetter: 5,
+	/**
+	 * @description 修改昵称
+	 * @event
+	 */
+	nick: 6,
+	/**
+	 * @description 发送聊天消息
+	 * @event
+	 */
+	talk: 7
 });

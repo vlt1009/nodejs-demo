@@ -10,10 +10,6 @@ AceCore.addModule("EditorBox", function(sandbox){
 	 * 类库
 	 */
 	var lib = sandbox.getLib();
-	/**
-	 * 聊天室api
-	 */
-	var chatApi = sandbox.getExtension("ChatApi");
 
 	return {
 		init: function(){
@@ -22,13 +18,7 @@ AceCore.addModule("EditorBox", function(sandbox){
 					case "send":
 						var text = lib.g("editor").value;
 						if (!text) return;
-						chatApi.command({
-							command: "talk",
-							text: text
-						}, function(data) {
-							if (!data || data.result != "ok") return;
-							lib.g('editor').value = "";
-						});
+						sandbox.fire(events.talk, text);
 						break;
 					case "focus":
 						lib.g('editor').focus();

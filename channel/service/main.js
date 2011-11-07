@@ -19,8 +19,7 @@ http.createServer(function(req, res){
 		return;
 	}
 	
-	var channelName = query.channel || "home";
-	var channel = channelManager.getChannel(channelName, {
+	var channel = channelManager.getChannel(query.channel, {
 		chat: {
 			create: chatPlugin.create,
 			options: {

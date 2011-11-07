@@ -18,7 +18,7 @@ void function(){
 	PlayerPlugin.prototype.command = function(fields, passport, query){
 		if (!fields || !passport || !query) return;
 		passport.commandTime = new Date;
-		if (passport.state == "busy") {
+		if (query.command != "goto" && passport.state == "busy") {
 			passport.update({
 				state: "online"
 			});
@@ -31,6 +31,22 @@ void function(){
 			});
 		}
 		switch (query.command) {
+			case "goto":
+				var state = 'busy';
+				var player = this.getPlayer(passport.id);
+				if (!player) break;
+				if (player.state == state) return; // 状态未改变
+				player.update({
+					state: state
+				});
+				fields.push({
+					type: "playerUpdate",
+					players: [{
+						id: player.id,
+						state: player.state
+					}]
+				});
+				break;
 			case "enter":
 				if (this.playerCount >= this.maxCount) return;
 				var player = this.getPlayer(passport.id);

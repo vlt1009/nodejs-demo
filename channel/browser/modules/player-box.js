@@ -19,10 +19,6 @@ AceCore.addModule("PlayerBox", function(sandbox){
 	 */
 	var passportInfo = {};
 	/**
-	 * 聊天室api
-	 */
-	var chatApi = sandbox.getExtension("ChatApi");
-	/**
 	 * 获取房间当前状态成功
 	 * @param {Object} data
 	 */
@@ -112,10 +108,7 @@ AceCore.addModule("PlayerBox", function(sandbox){
 									return true;
 								}
 								if (nick != data.nick) {
-									chatApi.command({
-										command: "nick",
-										nick: nick
-									});
+									sandbox.fire(events.nick, nick);
 								}
 							},
 							onshow: function(data) {

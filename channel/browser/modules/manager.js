@@ -14,6 +14,10 @@ AceCore.addModule("Manager", function(sandbox){
 	 * 聊天室api
 	 */
 	var chatApi = sandbox.getExtension("ChatApi");
+	/*
+	 * 进入的频道
+	 */
+	var channel;
 	/**
 	 * 当前pick序号
 	 */
@@ -23,22 +27,75 @@ AceCore.addModule("Manager", function(sandbox){
 	 */
 	function nextPick() {
 		chatApi.pick({
+			channel: channel,
 			seq: seq
 		}, function (data) {
 			if (!data || data.result != "ok") {
-				if (data && data.result != "kill") nextPick();
+				if (data && data.result != "kill" && data.channel == channel) nextPick();
 				sandbox.log("pick error.");
 				return;
 			}
-			if (seq != data.currSeq) return; // 和请求时的序号不一致
-			if ('nextSeq' in data) {
-				seq = data.nextSeq;
-				sandbox.log("seq change to:" + seq);
+			// 所属频道或请求序号不一致
+			if (data.channel == channel && seq == data.currSeq) {
+				if ('nextSeq' in data) {
+					seq = data.nextSeq;
+					sandbox.log("seq change to:" + seq);
+				}
+				if ('fields' in data) sandbox.fire(events.pickSuccess, data.fields);
+				setTimeout(function() {
+					nextPick();
+				}, 100);
 			}
-			if ('fields' in data) sandbox.fire(events.pickSuccess, data.fields);
-			setTimeout(function() {
-				nextPick();
-			}, 0);
+		});
+	}
+	
+	function setChannel(value) {
+		if (value == channel) return;
+		chatApi.command({
+			channel: channel,
+			desc: value,
+			command: "goto"
+		});
+		channel = value;
+		enterChannel();
+	}
+	
+	function enterChannel() {
+		chatApi.command({
+			channel: channel,
+			command: "enter"
+		}, function(data) {
+			data = data || {};
+			if (data.result != "ok") {
+				sandbox.fire(events.showDialog, {
+					type: "error",
+					message: data.error || "enter channel error."
+				});
+				return;
+			}
+			seq = 0;
+				setTimeout(function() {
+					nextPick();
+				}, 0);
+		});
+	}
+	
+	function nick(nick) {
+		chatApi.command({
+			channel: channel,
+			command: "nick",
+			nick: nick
+		});
+	}
+	
+	function talk(text) {
+		chatApi.command({
+			channel: channel,
+			command: "talk",
+			text: text
+		}, function(data) {
+			if (!data || data.result != "ok") return;
+			lib.g('editor').value = "";
 		});
 	}
 	
@@ -49,25 +106,15 @@ AceCore.addModule("Manager", function(sandbox){
 				return;
 			}
 			/* Debug End */
-			
+			sandbox.on(events.nick, nick);
+			sandbox.on(events.talk, talk);
+
 			AceTemplate.register(); // 注册所有模板
-			
-			chatApi.command({
-				command: "enter"
-			}, function(data) {
-				data = data || {};
-				if (data.result != "ok") {
-					sandbox.fire(events.showDialog, {
-						type: "error",
-						message: data.error || "enter channel error."
-					});
-					return;
-				}
-				
-				setTimeout(function() {
-					nextPick();
-				}, 0);
+			lib.on(window, "hashchange", function() {
+				setChannel(location.hash.replace(/^#/, ''));
 			});
+			channel = location.hash.replace(/^#/, '');
+			enterChannel();
 		}
 	};
 });

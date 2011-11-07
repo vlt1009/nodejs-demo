@@ -268,6 +268,7 @@ void function(exports){
 	 */
 	function start(options){
 		if (active) return;
+		options = options || {};
 		lib = options.lib || lib;
 		logger = options.logger || logger;
 		for (var id in extensions) {

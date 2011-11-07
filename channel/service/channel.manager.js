@@ -67,6 +67,7 @@ void function(){
 		});
 		this.callback(res, query.callback, {
 			result: "ok",
+			channel: this.id,
 			error: error
 		});
 		this.fire(fields);
@@ -91,6 +92,7 @@ void function(){
 			clearTimeout(pickItem.timer);
 			var data = {
 				result: "ok",
+				channel: this.id,
 				currSeq: pickItem.query.seq,
 				nextSeq: this.currSeq,
 				fields: []
@@ -142,6 +144,7 @@ void function(){
 			});
 			this.callback(res, query.callback, {
 				result: "ok",
+				channel: this.id,
 				currSeq: query.seq,
 				nextSeq: this.currSeq,
 				fields: fields
@@ -159,6 +162,7 @@ void function(){
 			timer: setTimeout(function(){
 				self.pickDict[key] = null;
 				self.callback(res, query.callback, {
+					channel: self.id,
 					result: "overtime"
 				});
 			}, common.pickWait)
@@ -190,7 +194,7 @@ void function(){
 	 * @param {Object} pluginInfos 插件信息
 	 */
 	function getChannel(id, pluginInfos){
-		id = id || "home";
+		id = id || "";
 		var channel = channelDict[id];
 		if (!channel) {
 			channelDict[id] = channel = new Channel(id);
