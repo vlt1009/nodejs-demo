@@ -9,6 +9,11 @@ AceCore.addConfig("ChatApi", {
 	/**
 	 * 请的Host地址
 	 */
-	apiHost: "http://localhost:2012"
-	//apiHost: "http://yudongxia.com:8080"
+	apiHost: "http://yudongxia.com:8080"
 });
+
+if (/debug/.test(location)) {
+	AceCore.addConfig("ChatApi", {
+		apiHost: "http://localhost:2012"
+	});
+}

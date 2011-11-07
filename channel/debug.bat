@@ -1,1 +1,1 @@
-call build.bat debug nocompressor
+call build.bat debug debug
