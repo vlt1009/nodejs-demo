@@ -1,4 +1,4 @@
 var access = require('./access.js');
-access.create('demo.db', function(data){
+access.create('demo.mdb', function(data){
 	console.log(data);
 });
