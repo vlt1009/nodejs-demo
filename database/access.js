@@ -1,6 +1,98 @@
+var Access = {
+	create: function(params){
+		var fso = new ActiveXObject("Scripting.FileSystemObject");
+		var result = 'ok';
+		if (!fso.FileExists(params.accessfile)){
+			var adoxcatalog = new ActiveXObject("ADOX.Catalog");
+			try {
+				adoxcatalog.Create("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + params.accessfile);
+			} catch(ex) {
+				result = ex.message;
+				return;
+			}
+			adoxcatalog = null;
+		} else {
+			result = 'exists';
+		}
+		return {
+			result: result
+		};
+	},
+	existsTable: function(params){
+		var connection = new ActiveXObject("ADODB.Connection");
+		var result = 'ok', exists = false;
+		try{
+			connection.Open("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + params.accessfile);
+			var recordset = connection.OpenSchema(20/*adSchemaTables*/);
+			recordset.MoveFirst();
+			while (!recordset.EOF){
+				if (recordset("TABLE_TYPE") == "TABLE" && recordset("TABLE_NAME") == params.tablename){
+					exists = true;
+					break;
+				}
+				recordset.MoveNext();
+			}
+			recordset.Close();
+			recordset = null;
+		} catch(ex){
+			result = ex.message;
+		}
+		return {
+			"result": result,
+			"exists": exists
+		};
+	},
+	execute: function(params){
+		var connection = new ActiveXObject("ADODB.Connection");
+		var result = 'ok';
+		try{
+			connection.Open("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + params.accessfile);
+			connection.Execute(params.sql);
+		} catch(ex){
+			result = ex.message;
+		}
+		return {
+			result: result
+		};
+	},
+	query: function(params){
+		var connection = new ActiveXObject("ADODB.Connection");
+		var result = 'ok', records = [];
+		try{
+			connection.Open("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + params.accessfile);
+			var recordset = new ActiveXObject("ADODB.Recordset");
+			recordset.Open(params.sql, connection);
+			var fields = [];
+			var enumer = new Enumerator(recordset.Fields);
+			for (; !enumer.atEnd(); enumer.moveNext()){
+				fields.push(enumer.item().name);
+			}
+
+			recordset.MoveFirst();
+			while (!recordset.EOF) {
+				var item = {};
+				for (var i = 0; i < fields.length; i++){
+					var fieldname = fields[i];
+					item[fieldname] = recordset(fieldname).value;
+				}
+				records.push(item);
+				recordset.MoveNext();
+			}
+			recordset.Close();
+			recordset = null;
+		} catch(ex){
+			result = ex.message;
+		}
+		return {
+			result: result,
+			records: records
+		};
+	}
+};
+
 if (/^u/.test(typeof exports)){ // cscript
 	void function(){
-		//from http://tangram.baidu.com/api.html#JSON
+		//from http://tangram.baidu.com/api.html#baidu.json
 		var JSON = {
 			stringify: (function () {
 				/**
@@ -98,8 +190,9 @@ if (/^u/.test(typeof exports)){ // cscript
 						return isFinite(value) ? String(value) : "null";
 						
 					case 'string':
-						return encodeString(value);
-						
+						return encodeString(value).replace(/[^\x00-\xff]/g, function(all) {
+							return "\\u" + (0x10000 + all.charCodeAt(0)).toString(16).substring(1);
+						});
 					case 'boolean':
 						return String(value);
 						
@@ -134,9 +227,9 @@ if (/^u/.test(typeof exports)){ // cscript
 									result.push(encode(key) + ':' + encode(item));
 								}
 							}
-							result.push('}');
-							return result.join('');
 						}
+						result.push('}');
+						return result.join('');
 					}
 				};
 			})(),
@@ -145,28 +238,6 @@ if (/^u/.test(typeof exports)){ // cscript
 			}
 		}
 
-		var Access = {
-			create: function(params){
-				var fso = new ActiveXObject("Scripting.FileSystemObject");
-				var result = 'ok';
-				if (!fso.FileExists(params.accessfile)){
-					var adoxcatalog = new ActiveXObject("ADOX.Catalog");
-					try {
-						adoxcatalog.Create("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + params.accessfile);
-					} catch(ex) {
-						result = ex.message;
-						return;
-					}
-					adoxcatalog = null;
-				} else {
-					result = 'exists';
-				}
-				return {
-					result: result
-				}
-			}
-		};
-		
 		//http://blog.csdn.net/cuixiping/article/details/409468
 		function base64Decode(base64){
 			var xmldom = new ActiveXObject("MSXML2.DOMDocument");
@@ -187,7 +258,6 @@ if (/^u/.test(typeof exports)){ // cscript
 			xmldom = null;
 			return result;
 		}
-		
 		WScript.StdOut.Write('<json>');
 		var method = Access[WScript.Arguments(0)];
 		var result = null;
@@ -195,7 +265,6 @@ if (/^u/.test(typeof exports)){ // cscript
 			result = method(JSON.parse(base64Decode(WScript.Arguments(1))));
 		}
 		WScript.StdOut.Write(JSON.stringify(result));
-		
 		WScript.StdOut.Write('</json>');
 	}();
 } else { // nodejs
@@ -210,18 +279,27 @@ if (/^u/.test(typeof exports)){ // cscript
 			return result;
 		}
 		var util = require('util'), exec = require('child_process').exec;
-		exports.create = function(accessfile, callback){
-			exec(util.format('cscript.exe /e:jscript "%s" create "%s"', __filename,
-				encodeURIComponent(JSON.stringify({accessfile: accessfile}))),
-				function (error, stdout, stderr) {
-					if (error != null) {
-						console.log('exec error: ' + error);
-						return;
-					}
-					console.log('stdout: ' + stdout);
-					callback && callback(json4stdout(stdout));
+		for (var name in Access){
+			exports[name] = (function(funcname){
+				return function(params, callback){
+					console.log([funcname, params]);
+					exec(
+						util.format(
+							'cscript.exe /e:jscript "%s" %s "%s"', __filename,
+							funcname,
+							(new Buffer(JSON.stringify(params))).toString('base64')
+						),
+						function (error, stdout, stderr) {
+							if (error != null) {
+								console.log('exec error: ' + error);
+								return;
+							}
+							console.log('stdout: ' + stdout);
+							callback && callback(json4stdout(stdout));
+						}
+					);
 				}
-			);
+			})(name);
 		}
 	}();
 }

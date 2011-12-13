@@ -1,2 +1,3 @@
-cscript.exe /e:jscript access.js create eyJhY2Nlc3NmaWxlIjoiZGVtby5kYiJ9
+echo {"accessfile":"demo.mdb"}
+cscript.exe /e:jscript access.js create eyJhY2Nlc3NmaWxlIjoiZGVtby5tZGIifQ==
 pause
