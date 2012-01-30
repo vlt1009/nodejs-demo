@@ -96,7 +96,7 @@ void function(){
 		}
 		while(size < length){
 			console.log(['download progress: ', size, '/', length, ' byte'].join(''));
-			download(url, filename, [size, Math.min(size + pageSize, length)]);
+			download(url, filename, [size, Math.min(size + pageSize - 1, length)]);
 			size += pageSize;
 		}
 		console.log('download complete.');
