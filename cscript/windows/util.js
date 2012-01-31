@@ -1,7 +1,5 @@
 var util = /^u/.test(typeof exports) ? util || {} : exports;
 void function(exports){
-	var JSON = JSON || require('JSON');
-	
 	// Copyright Joyent, Inc. and other Node contributors.
 	//
 	// Permission is hereby granted, free of charge, to any person obtaining a
