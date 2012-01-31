@@ -25,9 +25,4 @@
 	console = require('console');
 @end@*/
 
-console.log('--run.js--');
-var fs = require('fs');
-fs.readFile('run.js', function(err, data){
-	if (err) throw err;
-	console.log(String(data));
-});
+console.log('--hello %j--', { name: 'zswang'});
