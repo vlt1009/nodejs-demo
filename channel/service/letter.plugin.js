@@ -26,6 +26,7 @@ void function(){
 				break;
 			case "letter":
 				if (!query.text) return;
+				if (common.checkLetter(query.text)) return;
 				if (query.to == passport.id) return;
 				var toPlayer = playerManager.getPlayer(query.to);
 				if (!toPlayer) return;

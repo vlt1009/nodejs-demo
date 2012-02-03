@@ -99,6 +99,17 @@ AceCore.addModule("Manager", function(sandbox){
 		});
 	}
 	
+	function xgame(data) {
+		chatApi.command({
+			channel: channel,
+			command: "xgame",
+			text: text
+		}, function(data) {
+			if (!data || data.result != "ok") return;
+			lib.g('editor').value = "";
+		});
+	}
+	
 	return {
 		init: function() {
 			/* Debug Start */
@@ -108,6 +119,7 @@ AceCore.addModule("Manager", function(sandbox){
 			/* Debug End */
 			sandbox.on(events.nick, nick);
 			sandbox.on(events.talk, talk);
+			sandbox.on(events.xgame, xgame);
 
 			AceTemplate.register(); // 注册所有模板
 			lib.on(window, "hashchange", function() {

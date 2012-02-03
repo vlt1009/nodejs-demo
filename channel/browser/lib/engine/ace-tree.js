@@ -442,17 +442,39 @@ void function(exports){
 		if (this.status[name] == value) return;
 		this.status[name] = value;
 		if (pending) return;
-		if (this.tree.statusClasses.test(name)) {
-			if (value) {
-				lib.addClass(this.did, name);
-				this.tree.childsClasses.test(name) && lib.addClass(this.cid, name);
-			} else {
-				lib.removeClass(this.did, name);
-				this.tree.childsClasses.test(name) && lib.removeClass(this.cid, name);
+		if (this.tree.statusClasses instanceof RegExp) {
+			if (this.tree.statusClasses.test(name)) {
+				if (value) {
+					lib.addClass(this.did, name);
+					this.tree.childsClasses.test(name) && lib.addClass(this.cid, name);
+				} else {
+					lib.removeClass(this.did, name);
+					this.tree.childsClasses.test(name) && lib.removeClass(this.cid, name);
+				}
+				return;
 			}
-		} else {
-			this.refresh();
+		} if (typeof this.tree.statusClasses == "object") {
+			var statusClasse = this.tree.statusClasses[name];
+			if (statusClasse) {
+				if (statusClasse instanceof Array) {
+					if (value) {
+						lib.addClass(this.did, statusClasse[0]);
+						lib.removeClass(this.did, statusClasse[1]);
+					} else {
+						lib.addClass(this.did, statusClasse[1]);
+						lib.removeClass(this.did, statusClasse[0]);
+					}
+				} else {
+					if (value) {
+						lib.addClass(this.did, statusClasse);
+					} else {
+						lib.removeClass(this.did, statusClasse);
+					}
+				}
+				return;
+			}
 		}
+		this.refresh();
 	};
 	
 	TemplateNode.prototype.getStatus = function(name){

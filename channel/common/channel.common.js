@@ -77,6 +77,10 @@ void function(exports){
 		 * 私信最大长度
 		 */
 		maxLetter: 4000,
+		/*
+		 * 对话内容最大长度
+		 */
+		maxTalk: 2000,
 		/**
 		 * 验证昵称是否合法
 		 * @param {Object} nick
@@ -97,11 +101,23 @@ void function(exports){
 		 * @param {Object} letter
 		 */
 		checkLetter: function(letter){
-			if (!letter || /^\s+$/.test(letter)) {
+			if (!letter || /^\s+$/.test(letter)){
 				return "私信不能为空";
 			}
-			if (letter.length > this.maxLetter) {
+			if (letter.length > this.maxLetter){
 				return this.format("私信长度不能超过#{0}", [this.maxLetter]);
+			}
+		},
+		/**
+		 * 验证对话是否合法
+		 * @param {Object} talk
+		 */
+		checkTalk: function(talk){
+			if (!talk || /^\s+$/.test(talk)){
+				return "对话内容不能为空";
+			}
+			if (talk.length > this.maxTalk){
+				return this.format("对话内容长度不能超过#{0}", [this.maxTalk]);
 			}
 		},
 		format: format,

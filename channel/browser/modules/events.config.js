@@ -36,5 +36,10 @@ AceCore.addConfig("Events", {
 	 * @description 发送聊天消息
 	 * @event
 	 */
-	talk: 7
+	talk: 7,
+	/**
+	 * @description 游戏信息改变
+	 * @event
+	 */
+	xgame: 8
 });

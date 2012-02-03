@@ -17,7 +17,14 @@ AceCore.addModule("EditorBox", function(sandbox){
 				switch (command) {
 					case "send":
 						var text = lib.g("editor").value;
-						if (!text) return;
+						var error = ChannelCommon.checkTalk(text);
+						if (error) {
+							sandbox.fire(events.showDialog, {
+								type: "error",
+								message: error
+							});
+							return true;
+						}
 						sandbox.fire(events.talk, text);
 						break;
 					case "focus":

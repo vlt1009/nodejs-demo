@@ -54,8 +54,8 @@ AceCore.addModule("MessageBox", function(sandbox){
 	function formatTime(time) {
 		time = new Date(time);
 		var timeStr = lib.date.format(time, "HH:mm:ss");
-		var dateStr = lib.date.format(time, "yyyy:MM:dd");
-		return lib.date.format(new Date, "yyyy:MM:dd") == dateStr ? timeStr :
+		var dateStr = lib.date.format(time, "yyyy-MM-dd");
+		return lib.date.format(new Date, "yyyy-MM-dd") == dateStr ? timeStr :
 			[dateStr, timeStr].join(" ");
 	}
 

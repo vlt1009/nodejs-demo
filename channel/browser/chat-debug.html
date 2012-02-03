@@ -18,6 +18,7 @@
 		<script src="modules/editor-box.js"></script>
 		<script src="modules/dialog-box.js"></script>
 		<script src="modules/letter-box.js"></script>
+		<script src="modules/xgame-box.js"></script>
 	</head>
 	<body>
 		<div id="main">
@@ -73,6 +74,19 @@
 					<button cmd="viewLetter">查看私信<span id="newLetterNumber" class="number"></span></button>
 				</div>
 			</div>
+		</div>
+		<div id="xgameBox" style="position:absolute;top:340px;">
+			<ul>
+				<script id="xgameListTemplate" type="text/template">
+				<li class="!#{helper.node.getClasses()}">
+					<li><label><input type="checkbox" "${checked ? 'checked' : ''}" cmd="focus"/>#{title}</label></li>
+				</li>
+				</script>
+				<!-- Debug Start -->
+				<li><label><input type="checkbox" checked/>第一项</label></li>
+				<li><label><input type="checkbox"/>第二项</label></li>
+				<!-- Debug End -->
+			</ul>
 		</div>
 		<div id="letterBox" class="hidden">
 			<div class="masks">

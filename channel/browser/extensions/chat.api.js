@@ -8,6 +8,7 @@ AceCore.addExtension("ChatApi", function (sandbox) {
 	/* Debug Start */
 	var pickList = [
 		{
+			channel: "",
 			fields: [
 				{
 					type: "passport",
@@ -81,10 +82,28 @@ AceCore.addExtension("ChatApi", function (sandbox) {
 							state: "online"
 						}
 					]
+				},
+				{
+					type: "xgameAll",
+					plugin: "xgame",
+					infos: [
+						{
+							id: 1,
+							title: "今天周一",
+							checked: true
+						},
+						{
+							id: 2,
+							title: "今天周二",
+							checked: false
+						}
+					]	
 				}
+				
 			]
 		},
 		{
+			channel: "",
 			fields: [
 				{
 					type: "messageAdd",
@@ -131,6 +150,7 @@ AceCore.addExtension("ChatApi", function (sandbox) {
 			]
 		},
 		{
+			channel: "",
 			fields: [
 				{
 					type: "playerUpdate",

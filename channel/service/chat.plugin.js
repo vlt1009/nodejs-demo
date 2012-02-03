@@ -17,7 +17,7 @@ void function(){
 			return;
 		switch (query.command) {
 			case "talk":
-				if (!query.text) return;
+				if (common.checkTalk(query.text)) return;
 				this.currId++;
 				var message = {
 					id: this.currId,
