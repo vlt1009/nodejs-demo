@@ -29,11 +29,10 @@ AceCore.addModule("XGameBox", function(sandbox){
 					passportInfo = item.info;
 					break;
 				case "xgameAll":
-					console.log("xgameAll");
-					xgameTree.loadChilds(item.infos);
+					xgameTree.loadChilds(item.votes);
 					break;
 				case "xgameUpdate":
-					lib.each(item.infos, function(item) {
+					lib.each(item.votes, function(item) {
 						var node = xgameTree.updateData(item);
 					});
 					break;
@@ -58,16 +57,15 @@ AceCore.addModule("XGameBox", function(sandbox){
 				},
 				oncommand: function(command, node, e){
 					switch (command) {
-						case "focus":
+						case "vote":
+							if (node.getStatus('voted')) return;
 							node.focus();
-							sandbox.fire(events.xgame, {
-								id: node.data.id,
-								checked: !node.data.checked
-							});
+							node.setStatus('voted', true);
+							sandbox.fire(events.xgame, node.data.id);
 							break;
 					}
 				},
-				statusClasses: /^(focus|hover|select|expand|self)$/
+				statusClasses: /^(focus|hover|select|expand|self|voted)$/
 			});
 			sandbox.on(events.pickSuccess, pickSuccess);
 		}

@@ -86,18 +86,23 @@ AceCore.addExtension("ChatApi", function (sandbox) {
 				{
 					type: "xgameAll",
 					plugin: "xgame",
-					infos: [
+					votes: [
 						{
 							id: 1,
-							title: "今天周一",
-							checked: true
+							title: "顶一个",
+							count: 12
 						},
 						{
 							id: 2,
-							title: "今天周二",
-							checked: false
+							title: "打酱油",
+							count: 3
+						},
+						{
+							id: 3,
+							title: "臭鸡蛋",
+							count: 2
 						}
-					]	
+					]
 				}
 				
 			]
@@ -144,6 +149,16 @@ AceCore.addExtension("ChatApi", function (sandbox) {
 							id: 5,
 							nick: "岩石",
 							state: "online"
+						}
+					]
+				},
+				{
+					type: "xgameUpdate",
+					plugin: "xgame",
+					votes: [
+						{
+							id: 1,
+							count: 151
 						}
 					]
 				}

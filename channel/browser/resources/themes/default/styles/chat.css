@@ -26,7 +26,7 @@ input[type="button"]:hover, button:hover, .button:hover{
 	display: none;
 }
 
-#playerTools .number b{
+#playerTools .number b,#xgameBox .number b{
 	color: red;
 }
 
@@ -37,8 +37,8 @@ input[type="button"]:hover, button:hover, .button:hover{
 	background-image: -moz-linear-gradient(top, #fff, #eee);
 	background-image: -webkit-linear-gradient(top, #fff, #eee);
 	position: absolute;
-	top: 10px;
-	left: 10px;
+	top: 0;
+	left: 0;
 	width: 600px;
 	height: 320px;
 }
@@ -91,23 +91,23 @@ input[type="button"]:hover, button:hover, .button:hover{
 #messageList{
 	border: solid 1px #bdc7d9;
 	border-radius: 3px;
-    height: 170px;
-    margin: 5px 0;
-    overflow: auto;
-    padding: 5px;
+	height: 170px;
+	margin: 5px 0;
+	overflow: auto;
+	padding: 5px;
 }
 
 #editorTools button{
 	bottom: 7px;
-    position: absolute;
-    right: 5px;
+	position: absolute;
+	right: 5px;
 }
 
 #editorTools label{
 	margin: 5px 0;
-    position: absolute;
+	position: absolute;
 }
-	
+
 .tools button{
 	float: right;
 }
@@ -120,7 +120,7 @@ input[type="button"]:hover, button:hover, .button:hover{
 	background: #fff;
 	width: 230px;
 	right: 0;
-    top: 0;
+	top: 0;
 	bottom: 0;
 	position: absolute;
 }
@@ -280,12 +280,12 @@ h4{
 }
 
 .dialog .panel{
-    margin: 10px;
+	margin: 10px;
 }
 .dialog .panel textarea{
-    height: 68px;
-    width: 263px;
-    resize: none;
+	height: 68px;
+	width: 263px;
+	resize: none;
 }
 .dialog .close{
 	display: inline-block;
@@ -306,13 +306,45 @@ h4{
 }
 
 #letterBox .dialog .content{
-    border: 1px solid #BDC7D9;
-    border-radius: 3px 3px 3px 3px;
-    margin: 5px 0;
-    overflow: auto;
-    padding: 5px;
+	border: 1px solid #BDC7D9;
+	border-radius: 3px 3px 3px 3px;
+	margin: 5px 0;
+	overflow: auto;
+	padding: 5px;
 }
 
 #letterBox li.old{
 	background-color: #ddd;
+}
+
+#xgameBox{
+	left: 70px;
+	position: absolute;
+	top: 18px;
+}
+
+#xgameBox li{
+	overflow: hidden;
+	float: left;
+}
+
+#xgameBox li label{
+	cursor: pointer;
+	border-radius: 3px;
+	background-image: -moz-linear-gradient(top, rgb(204,232,255), #0f0);
+	background-image: -webkit-linear-gradient(top, rgb(204,232,255), #0f0);
+	border: solid 1px #bdc7d9;
+}
+
+#xgameBox li.voted label{
+	cursor: default;
+	background-image: -moz-linear-gradient(top, rgb(204,232,255), #ddd);
+	background-image: -webkit-linear-gradient(top, rgb(204,232,255), #ddd);
+}
+
+#main span.weibo{
+	background: url(http://weibo.com/favicon.ico) no-repeat;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
 }

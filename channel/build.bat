@@ -19,5 +19,3 @@ for /r %%i in (*.js) do java -jar %currDir%\..\yuicompressor-2.4.6.jar --type js
 for /r %%i in (*.css) do java -jar %currDir%\..\yuicompressor-2.4.6.jar --type css --charset utf-8 -o %%i %%i
 popd
 :end
-
-pause

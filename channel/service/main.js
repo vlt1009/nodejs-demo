@@ -7,6 +7,7 @@ var channelManager = require('./channel.manager.js');
 var chatPlugin = require('./chat.plugin.js');
 var playerPlugin = require('./player.plugin.js');
 var letterPlugin = require('./letter.plugin.js');
+var xgamePlugin = require('./xgame.plugin.js');
 
 http.createServer(function(req, res){
 	var reqUrl = url.parse(req.url, true);
@@ -18,7 +19,6 @@ http.createServer(function(req, res){
 		res.end("/* callback is invalid. */");
 		return;
 	}
-	
 	var channel = channelManager.getChannel(query.channel, {
 		chat: {
 			create: chatPlugin.create,
@@ -38,6 +38,9 @@ http.createServer(function(req, res){
 				maxCount: 20
 			}
 			
+		},
+		xgame: {
+			create: xgamePlugin.create
 		}
 	});
 	switch (reqUrl.pathname) {

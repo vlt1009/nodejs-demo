@@ -202,7 +202,7 @@ void function(){
 			var plugins = {};
 			for (var key in pluginInfos) {
 				var pluginInfo = pluginInfos[key];
-				plugins[key] = pluginInfo.create(pluginInfo.options, channel);
+				plugins[key] = pluginInfo.create(channel, pluginInfo.options);
 			}
 			channel.plugins = plugins;
 		}

@@ -70,21 +70,26 @@
 					</ul>
 				</div>
 				<div id="playerTools" class="tools">
-					<button cmd="nick">修改昵称</button>
-					<button cmd="viewLetter">查看私信<span id="newLetterNumber" class="number"></span></button>
+					<button cmd="nick">昵称</button>
+					<button cmd="viewLetter">私信<span id="newLetterNumber" class="number"></span></button>
+					<button cmd="weibo" title="微博"><span class="weibo"></span></button>
 				</div>
 			</div>
 		</div>
-		<div id="xgameBox" style="position:absolute;top:340px;">
+		<div id="xgameBox">
 			<ul>
 				<script id="xgameListTemplate" type="text/template">
 				<li class="!#{helper.node.getClasses()}">
-					<li><label><input type="checkbox" "${checked ? 'checked' : ''}" cmd="focus"/>#{title}</label></li>
+					<label cmd="vote" title="投票">#{title}<span class="number">!#{count ? '(<b>' + count + '</b>)' : ''}</span></label>
 				</li>
 				</script>
 				<!-- Debug Start -->
-				<li><label><input type="checkbox" checked/>第一项</label></li>
-				<li><label><input type="checkbox"/>第二项</label></li>
+				<li>
+					<label title="投票">路过<span class="number"><b>(1)</b></span></label>
+				</li>
+				<li class="voted">
+					<label title="投票">不错<span class="number"><b>(2)</b></span></label>
+				</li>
 				<!-- Debug End -->
 			</ul>
 		</div>
@@ -166,7 +171,7 @@
 					<div class="foot">
 						<button cmd="cancel">取消</button><button cmd="ok">确定</button>
 					</div>
-							break;			
+							break;
 	
 						case "error":
 	

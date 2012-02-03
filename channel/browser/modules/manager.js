@@ -95,18 +95,24 @@ AceCore.addModule("Manager", function(sandbox){
 			text: text
 		}, function(data) {
 			if (!data || data.result != "ok") return;
+			data.error && sandbox.fire(events.showDialog, {
+				type: "error",
+				message: data.error
+			});
 			lib.g('editor').value = "";
 		});
 	}
 	
-	function xgame(data) {
+	function xgame(id) {
 		chatApi.command({
 			channel: channel,
-			command: "xgame",
-			text: text
+			command: "vote",
+			id: id
 		}, function(data) {
-			if (!data || data.result != "ok") return;
-			lib.g('editor').value = "";
+			data.error && sandbox.fire(events.showDialog, {
+				type: "error",
+				message: data.error
+			});
 		});
 	}
 	
