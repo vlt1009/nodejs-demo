@@ -55,9 +55,11 @@ AceCore.addModule("PlayerBox", function(sandbox){
 		init: function() {
 			playerTree = AceTree.create({
 				parent: lib.g("playerListTemplate").parentNode,
+				/*
 				onsort: function(a, b){
 					return (a.data.commandTime || 0) - (b.data.commandTime || 0);
 				},
+				*/
 				oninit: function(tree){
 					tree.eventHandler = AceEvent.on(tree.parent, function(command, target, e){
 						var node = tree.node4target(target);
