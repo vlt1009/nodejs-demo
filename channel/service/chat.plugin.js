@@ -23,6 +23,7 @@ void function(){
 					id: this.currId,
 					from: passport.id,
 					nick: passport.nick,
+					weibo: passport.weibo,
 					time: +new Date,
 					message: query.text
 				};

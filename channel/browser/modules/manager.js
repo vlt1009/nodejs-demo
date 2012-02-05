@@ -85,9 +85,17 @@ AceCore.addModule("Manager", function(sandbox){
 			channel: channel,
 			command: "nick",
 			nick: nick
-		});
+		}, checkerror);
 	}
 	
+	function weibo(weibo){
+		chatApi.command({
+			channel: channel,
+			command: "weibo",
+			weibo: weibo
+		}, checkerror);
+	}
+
 	function talk(text) {
 		chatApi.command({
 			channel: channel,
@@ -108,11 +116,13 @@ AceCore.addModule("Manager", function(sandbox){
 			channel: channel,
 			command: "vote",
 			id: id
-		}, function(data) {
-			data.error && sandbox.fire(events.showDialog, {
-				type: "error",
-				message: data.error
-			});
+		}, checkerror);
+	}
+	
+	function checkerror(data){
+		data.error && sandbox.fire(events.showDialog, {
+			type: "error",
+			message: data.error
 		});
 	}
 	
@@ -126,6 +136,7 @@ AceCore.addModule("Manager", function(sandbox){
 			sandbox.on(events.nick, nick);
 			sandbox.on(events.talk, talk);
 			sandbox.on(events.xgame, xgame);
+			sandbox.on(events.weibo, weibo);
 
 			AceTemplate.register(); // 注册所有模板
 			lib.on(window, "hashchange", function() {

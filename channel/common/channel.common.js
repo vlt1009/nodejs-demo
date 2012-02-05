@@ -74,6 +74,10 @@ void function(exports){
 		 */
 		maxNick: 20,
 		/**
+		 * 微博最大长度
+		 */
+		maxWeibo: 150,
+		/**
 		 * 私信最大长度
 		 */
 		maxLetter: 4000,
@@ -94,6 +98,21 @@ void function(exports){
 			}
 			if (/@/.test(nick)) {
 				return "昵称不能带@";
+			}
+		},
+		/**
+		 * 验证微博是否合法
+		 * @param {String} weibo
+		 */
+		checkWeibo: function(weibo){
+			if (!weibo || /^\s+$/.test(weibo)) {
+				return "微博不能为空";
+			}
+			if (weibo.length > this.maxWeibo) {
+				return this.format("昵称长度不能超过#{0}", [this.maxWeibo]);
+			}
+			if (!(/^http:\/\/(weibo\.com|t\.qq\.com|t\.163\.com)\/\w+$/.test(weibo))) {
+				return "微博格式不正确，仅只支持：http://weibo.com|http://t.qq.com|http://t.163.com";
 			}
 		},
 		/**

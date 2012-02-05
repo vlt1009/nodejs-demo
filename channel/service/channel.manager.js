@@ -130,7 +130,8 @@ void function(){
 				type: "passport",
 				info: {
 					id: passport.id,
-					nick: passport.nick
+					nick: passport.nick,
+					weibo: passport.weibo
 				}
 			}, {
 				type: "channel",

@@ -55,6 +55,9 @@ AceCore.addModule("PlayerBox", function(sandbox){
 		init: function() {
 			playerTree = AceTree.create({
 				parent: lib.g("playerListTemplate").parentNode,
+				onsort: function(a, b){
+					return (a.data.commandTime || 0) - (b.data.commandTime || 0);
+				},
 				oninit: function(tree){
 					tree.eventHandler = AceEvent.on(tree.parent, function(command, target, e){
 						var node = tree.node4target(target);
@@ -91,9 +94,9 @@ AceCore.addModule("PlayerBox", function(sandbox){
 			sandbox.on(events.pickSuccess, pickSuccess);
 			AceEvent.on('playerTools', function(command) {
 				switch (command) {
-					case "nick":
+					case 'nick':
 						sandbox.fire(events.showDialog, {
-							type: "nick",
+							type: 'nick',
 							maxNick: ChannelCommon.maxNick,
 							nick: passportInfo.nick,
 							oncommand: function(command, data) {
@@ -118,7 +121,36 @@ AceCore.addModule("PlayerBox", function(sandbox){
 							}
 						});
 						break;
-					case "viewLetter":
+					case 'weibo':
+						sandbox.fire(events.showDialog, {
+							type: 'weibo',
+							maxWeibo: ChannelCommon.maxWeibo,
+							weibo: passportInfo.weibo || 'http://weibo.com/',
+							oncommand: function(command, data) {
+								if (command != "ok") return;
+								var weibo = lib.g("inputWeibo").value;
+								var error = ChannelCommon.checkWeibo(weibo);
+								if (error) {
+									sandbox.fire(events.showDialog, {
+										type: "error",
+										message: error
+									});
+									return true;
+								}
+								if (weibo != data.weibo) {
+									sandbox.fire(events.weibo, weibo);
+								}
+							},
+							onshow: function(data) {
+								var input = lib.g("inputWeibo");
+								var length = input.value.length;
+								input.setSelectionRange &&
+									input.setSelectionRange(length, length);
+								input.focus();
+							}
+						});
+						break;
+					case 'viewLetter':
 						sandbox.fire(events.viewLetter);
 						break;
 				}

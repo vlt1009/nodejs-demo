@@ -58,6 +58,7 @@ void function(){
 						players: [{
 							id: player.id,
 							nick: player.nick,
+							weibo: player.weibo,
 							state: player.state
 						}]
 					});
@@ -76,6 +77,24 @@ void function(){
 					players: [{
 						id: player.id,
 						nick: player.nick,
+						state: player.state
+					}]
+				});
+				break;
+			case "weibo":
+				var error = common.checkWeibo(query.weibo);
+				if (error) return error;
+				var player = this.getPlayer(passport.id);
+				if (!player) return;
+				console.log(query.weibo);
+				player.update({
+					weibo: query.weibo
+				});
+				fields.push({
+					type: "playerUpdate",
+					players: [{
+						id: player.id,
+						weibo: player.weibo,
 						state: player.state
 					}]
 				});
@@ -101,7 +120,8 @@ void function(){
 			players.push({
 				id: player.id,
 				nick: player.nick,
-				state: "online"
+				weibo: player.weibo,
+				state: player.state
 			});
 		});
 		return players;

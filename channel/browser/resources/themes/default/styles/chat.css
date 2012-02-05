@@ -193,6 +193,10 @@ input[type="button"]:hover, button:hover, .button:hover{
 	background-image: -moz-linear-gradient(top, #f2f7fd, #eff6ff);
 }
 
+#playerBox li a{
+	text-decoration: none;
+}
+
 #editor{
 	width: 225px;
 	height: 73px;
@@ -328,22 +332,24 @@ h4{
 	float: left;
 }
 
-#xgameBox li label{
+#xgameBox li button{
 	cursor: pointer;
 	border-radius: 3px;
 	background-image: -moz-linear-gradient(top, rgb(204,232,255), #0f0);
 	background-image: -webkit-linear-gradient(top, rgb(204,232,255), #0f0);
 	border: solid 1px #bdc7d9;
+	margin-top: 1px;
+	padding: 0 3px;
 }
 
-#xgameBox li.voted label{
+#xgameBox li.voted button{
 	cursor: default;
 	background-image: -moz-linear-gradient(top, rgb(204,232,255), #ddd);
 	background-image: -webkit-linear-gradient(top, rgb(204,232,255), #ddd);
 }
 
 #main span.weibo{
-	background: url(http://weibo.com/favicon.ico) no-repeat;
+	background: url(http://img.t.sinajs.cn/t4/style/images/common/ico_expand.png) no-repeat 0 -40px;
 	display: inline-block;
 	width: 16px;
 	height: 16px;

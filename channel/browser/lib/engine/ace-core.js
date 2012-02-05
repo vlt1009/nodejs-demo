@@ -55,7 +55,9 @@ void function(exports){
 	 */
 	var logger = {
 		log: function(message){
+			/* Debug Start */
 			typeof console == "object" && console.log(message);
+			/* Debug End */
 		}
 	};
 	

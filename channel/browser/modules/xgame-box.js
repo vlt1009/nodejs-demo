@@ -58,14 +58,16 @@ AceCore.addModule("XGameBox", function(sandbox){
 				oncommand: function(command, node, e){
 					switch (command) {
 						case "vote":
-							if (node.getStatus('voted')) return;
-							node.focus();
-							node.setStatus('voted', true);
+							if (node.data.voted) return;
+							node.tree.each(function(item){
+								item.data.voted = true;
+							});
+							node.tree.refresh();
 							sandbox.fire(events.xgame, node.data.id);
 							break;
 					}
 				},
-				statusClasses: /^(focus|hover|select|expand|self|voted)$/
+				statusClasses: /^(focus|hover|select|expand|self)$/
 			});
 			sandbox.on(events.pickSuccess, pickSuccess);
 		}

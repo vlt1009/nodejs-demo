@@ -1,5 +1,6 @@
 /**
- * @author 王集鹄(wangjihu，http://weibo.com/zswang)
+ * chat api 配置
+ * @author 王集鹄(wangjihu,http://weibo.com/zswang)
  */
 AceCore.addConfig("ChatApi", {
 	/**
@@ -7,9 +8,9 @@ AceCore.addConfig("ChatApi", {
 	 */
 	pickMaxWait: 45 * 1000,
 	/**
-	 * 请的Host地址
+	 * 请求的Host地址
 	 */
-	apiHost: "http://yudongxia.com:8080"
+	apiHost: "http://jssdk.com:8080"
 });
 
 if (/debug/.test(location)) {

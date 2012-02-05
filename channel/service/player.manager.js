@@ -11,7 +11,7 @@ void function(){
 	/**
 	 * 可更新的字段列表
 	 */
-	var updateFields = ['nick', 'state'];
+	var updateFields = ['nick', 'state', 'weibo'];
 	/**
 	 * 昵称词典，避免昵称重复
 	 */
@@ -66,6 +66,7 @@ void function(){
 					this.mask = player.mask;
 					this.nick = player.nick;
 					this.state = player.state;
+					this.weibo = player.weibo;
 					this.createTime = new Date(player.createTime);
 					this.accessTime = new Date(player.accessTime);
 					this.modifyTime = new Date(player.modifyTime);
@@ -121,15 +122,15 @@ void function(){
 		var self = this;
 		var changed = false;
 		common.forEach(updateFields, function(field){
-			if (field in data) {
-				if (self[field] != data[field]) {
+			if (field in data){
+				if (self[field] != data[field]){
 					changed = true;
 					self[field] = data[field];
 					self.modifyTime = new Date;
 				}
 			}
 		});
-		savePlayer(this.id);
+		changed && savePlayer(this.id);
 	};
 	/**
 	 * 获取用户信息
@@ -155,7 +156,7 @@ void function(){
 		var passport = m && querystring.parse(m[1]);
 		var player = passport && getPlayer(passport.id);
 		if (!player || player.visa != passport.visa ||
-		player.mask != getPlayerMask(passport.id, passport.visa)) {
+			player.mask != getPlayerMask(passport.id, passport.visa)){
 			if (!res) return;
 			player = new Player();
 			res.setHeader("Set-Cookie", [common.format("passport=id=#{id}&visa=#{visa}&mask=#{mask}; expires=Mon, 31 Dec 2998 16:00:00 GMT; path=/;", player)]);
