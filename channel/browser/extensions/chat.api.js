@@ -207,7 +207,17 @@ AceCore.addExtension("ChatApi", function (sandbox) {
 		}
 		return result.join("&");
 	}
-	
+
+	function queryToJson(query) {
+		var result = {};
+		String(query).replace(/([^?&#]+)=([^?&#]*)/g, function(all, name, value) {
+			result[name] = value;
+		});
+		return result;
+	}
+	var query = queryToJson(document.location.search);
+	var apiHost = query.api ? 'http://' + query.api : config.apiHost;
+
 	return {
 		pick: function(details, callback) {
 			if (!details || !callback) return;
@@ -218,7 +228,7 @@ AceCore.addExtension("ChatApi", function (sandbox) {
 				});
 				callback = function() {};
 			}, config.pickMaxWait);
-			var url = [config.apiHost + "/pick", jsonToQuery(details)].join("?");
+			var url = [apiHost + "/pick", jsonToQuery(details)].join("?");
 			sandbox.log(url);
 			lib.sio.callByServer(url, function(data) {
 				timer && clearTimeout(timer);
@@ -228,7 +238,7 @@ AceCore.addExtension("ChatApi", function (sandbox) {
 		},
 		command: function(details, callback) {
 			if (!details) return;
-			var url = [config.apiHost + "/command", jsonToQuery(details)].join("?");
+			var url = [apiHost + "/command", jsonToQuery(details)].join("?");
 			sandbox.log(url);
 			lib.sio.callByServer(url, function(data) {
 				callback && callback(data);
