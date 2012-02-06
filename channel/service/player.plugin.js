@@ -18,7 +18,8 @@ void function(){
 	PlayerPlugin.prototype.command = function(fields, passport, query){
 		if (!fields || !passport || !query) return;
 		passport.commandTime = new Date;
-		if (query.command != "goto" && passport.state == "busy") {
+		if (query.command != "goto" &&
+			/^(offline|busy)$/.test(passport.state)) {
 			passport.update({
 				state: "online"
 			});
