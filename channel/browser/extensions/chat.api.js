@@ -188,6 +188,17 @@ AceCore.addExtension("ChatApi", function (sandbox) {
 	});
 	
 	return {
+		hello: function(callback){
+			callback({
+				result: "ok",
+				passport: {
+					id: 1
+				}
+			});
+		},
+		getApiHost: function(){
+			return '';
+		},
 		pick: function(details, callback) {
 			callback && callback(pickList[details.seq]);
 		},
@@ -219,6 +230,26 @@ AceCore.addExtension("ChatApi", function (sandbox) {
 	var apiHost = query.api ? 'http://' + query.api : config.apiHost;
 
 	return {
+		getApiHost: function(){
+			return apiHost;
+		},
+		hello: function(callback){
+			if (!callback) return;
+			var timer = setTimeout(function() {
+				timer = 0;
+				callback({
+					result: "overtime"
+				});
+				callback = function() {};
+			}, config.pickMaxWait);
+			var url = apiHost + "/hello";
+			sandbox.log(url);
+			lib.sio.callByServer(url, function(data) {
+				timer && clearTimeout(timer);
+				timer = 0;
+				callback(data);
+			});
+		},
 		pick: function(details, callback) {
 			if (!details || !callback) return;
 			var timer = setTimeout(function() {

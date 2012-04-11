@@ -149,16 +149,25 @@ void function(){
 	 * 根据cookie获取用户
 	 * @param{Object} req 请求对象
 	 * @param{Object} res 应答对象，如果为空，则不会创建不存在的用户
+	 * @param{Object} hello 握手包，不写cookie
 	 */
-	function getPassport(req, res){
+	function getPassport(req, res, hello){
 		var cookie = req.headers['cookie'] || "";
 		var m = cookie.match(/\bpassport=([^;]+)/);
 		var passport = m && querystring.parse(m[1]);
 		var player = passport && getPlayer(passport.id);
 		if (!player || player.visa != passport.visa ||
 			player.mask != getPlayerMask(passport.id, passport.visa)){
+			if (hello) return;
 			if (!res) return;
 			player = new Player();
+			/*
+			if (/safari/i.test(req.headers['user-agent'])) {
+				res.setHeader('p3p', ['CP="IDC DSP COR CURa ADMa OUR IND PHY ONL COM STA"']);
+			} else {
+				res.setHeader('p3p', ['CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"']);
+			}
+			*/
 			res.setHeader("Set-Cookie", [common.format("passport=id=#{id}&visa=#{visa}&mask=#{mask}; expires=Mon, 31 Dec 2998 16:00:00 GMT; path=/;", player)]);
 		} else {
 			player.passportTime = new Date;

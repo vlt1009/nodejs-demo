@@ -125,11 +125,57 @@ AceCore.addModule("Manager", function(sandbox){
 			message: data.error
 		});
 	}
-	
+
+	//see
+	//http://stackoverflow.com/questions/172223/how-do-i-set-cookies-from-outside-domains-inside-iframes-in-safari
+	//http://stackoverflow.com/questions/6125741/iframe-cross-domain-cookies-p3p-policy-and-safari-with-error-a-required-anti
+	//http://blog.boisgames.com/2011/09/resovle-safari-in-iframe-thirdparty-domain-cookie-issue-for-node/
+	function safariPassport(){
+		function clearElement(){
+			//document.body.removeChild(iframe);
+			//document.body.removeChild(form);
+		}
+		var firstTimeSession = 0;
+		function submitSessionForm(){
+			if (firstTimeSession) return;
+			firstTimeSession = 1;
+			form.submit();
+			//setTimeout(clearElement, 2000);
+		}
+		var form = document.createElement('form');
+		form.action = chatApi.getApiHost() + '/command';
+		form.method = 'POST';
+		form.target = name;
+		form.enctype = "application/x-www-form-urlencoded";
+		document.body.appendChild(form);
+		var iframe = document.createElement('iframe');
+		var name = '_safariPassportFrame_' + (+new Date).toString(36);
+		iframe.name = name;
+		iframe.onload = submitSessionForm;
+		iframe.src = chatApi.getApiHost() + '/command';
+		document.body.appendChild(iframe);
+	}
+	function hello(){
+		chatApi.hello(function(data){
+			if (data && data.passport){
+				enterChannel();
+			} else {
+				sandbox.fire(events.showDialog, {
+					type: "passport",
+					url: chatApi.getApiHost() + '/passport',
+					onclose: function(){
+						setTimeout(function(){
+							hello();
+						}, 2000);
+					}
+				});
+			}
+		});
+	}
 	return {
 		init: function() {
 			/* Debug Start */
-			if (/\bstatic\b/.test(location.hash)) {
+			if (/\bstatic\b/.test(location.hash)){
 				return;
 			}
 			/* Debug End */
@@ -139,11 +185,15 @@ AceCore.addModule("Manager", function(sandbox){
 			sandbox.on(events.weibo, weibo);
 
 			AceTemplate.register(); // 注册所有模板
-			lib.on(window, "hashchange", function() {
+			lib.on(window, "hashchange", function(){
 				setChannel(location.hash.replace(/^#/, ''));
 			});
 			channel = location.hash.replace(/^#/, '');
-			enterChannel();
+			if (/safari/i.test(navigator.userAgent)){ // safari不支持jsonp写cookie
+				hello();
+			} else {
+				enterChannel();
+			}
 		}
 	};
 });

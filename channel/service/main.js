@@ -1,9 +1,10 @@
 /**
- * @author 王集鹄(wangjihu，http://weibo.com/zswang)
+ * @author 王集鹄(wangjihu,http://weibo.com/zswang)
  */
 var http = require('http');
 var url = require('url');
 var channelManager = require('./channel.manager.js');
+var playerManager = require('./player.manager.js');
 var chatPlugin = require('./chat.plugin.js');
 var playerPlugin = require('./player.plugin.js');
 var letterPlugin = require('./letter.plugin.js');
@@ -18,6 +19,30 @@ http.createServer(function(req, res){
 		});
 		res.end("/* callback is invalid. */");
 		return;
+	}
+	switch (reqUrl.pathname) {
+		case "/passport":
+			playerManager.getPassport(req, res);
+			res.end('Completed.');
+			return;
+		case "/hello":
+			res.writeHead(200, {
+				'Content-Type': 'text/javascript'
+			});
+			var json = {
+				result: 'error'
+			};
+			var passport = playerManager.getPassport(req, res, true);
+			if (passport){
+				json = {
+					result: 'ok',
+					passport: {
+						id: passport.id
+					}
+				};
+			}
+			res.end([query.callback || '', "(", JSON.stringify(json), ");"].join(""));
+			return;
 	}
 	var channel = channelManager.getChannel(query.channel, {
 		chat: {
@@ -52,4 +77,4 @@ http.createServer(function(req, res){
 			break;
 	}
 	
-}).listen(process.argv[2] || "80", process.argv[3] || "127.0.0.1");
+}).listen(process.argv[2] || "80");
