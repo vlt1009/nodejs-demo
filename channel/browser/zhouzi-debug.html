@@ -1,16 +1,16 @@
 <html>
 	<head>
-		<title>聊天枝丫</title>
+		<title>围堵肘子</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="stylesheet" href="resources/themes/default/styles/chat.css" />
+		<link rel="stylesheet" href="resources/themes/default/styles/zhouzi.css" />
 		<script src="http://img.baidu.com/js/tangram-1.3.9.js"></script>
 		<script src="lib/engine/ace-core.js"></script>
 		<script src="lib/engine/ace-template.js"></script>
 		<script src="lib/engine/ace-event.js"></script>
 		<script src="lib/engine/ace-tree.js"></script>
 		<script src="../common/channel.common.js"></script>
-		<script src="extensions/chat.api.config.js"></script>
-		<script src="extensions/chat.api.js"></script>
+		<script src="extensions/zhouzi.api.config.js"></script>
+		<script src="extensions/zhouzi.api.js"></script>
 		<script src="modules/events.config.js"></script>
 		<script src="modules/manager.js"></script>
 		<script src="modules/message-box.js"></script>
@@ -18,12 +18,33 @@
 		<script src="modules/editor-box.js"></script>
 		<script src="modules/dialog-box.js"></script>
 		<script src="modules/letter-box.js"></script>
-		<script src="modules/xgame-box.js"></script>
 	</head>
 	<body>
 		<div id="main">
-			<div id="messageBox">
-				<h4>消息</h4>
+			<div id="playerBox">
+				<div id="playerList">
+					<ul>
+						<script id="playerListTemplate" type="text/template">
+						<li class="#{state} !#{helper.node.getClasses()}" down="focus">
+						if (this.weibo){
+							<span class="letter" cmd="letter">私信</span><span class="state"></span><a href="#{weibo}" target="_blank"><span class="weibo"></span></a><span class="nick" title="#{id}">#{nick}<button cmd="flow">关注</button></span>
+						} else {
+							<span class="letter" cmd="letter">私信</span><span class="state"></span><span class="nick" title="#{id}">#{nick}</span>
+						}
+						</li>
+						</script>
+						<!-- Debug Start -->
+						<li class="online"><span class="letter">私信</span><span class="state"></span><a href="http://weibo.com/zswang" target="_blank"><span class="weibo"></span></a><span class="nick" title="ttt1">昵称 微博</span><button>关注</button><button>移除</button></li>
+						<li class="online"><span class="letter">私信</span><span class="state"></span><span class="nick" title="ttt2">昵称 他人</span></li>
+						<li class="offline self"><span class="letter">私信</span><span class="state"></span><span class="nick" title="ttt3">昵称 自己</span></li>
+						<!-- Debug End -->
+					</ul>
+				</div>
+				<div id="playerTools" class="tools">
+					<button cmd="nick">昵称</button>
+					<button cmd="viewLetter">私信<span id="newLetterNumber" class="number"></span></button>
+					<button cmd="weibo" title="微博"><span class="weibo"></span></button>
+				</div>
 				<div id="messageList">
 					<ul>
 						<script id="messageListTemplate" type="text/template">
@@ -53,54 +74,10 @@
 					</ul>
 				</div>
 				<div id="editorTools" class="tools">
-					<textarea id="editor"></textarea>
 					<label><input type="checkbox" id="ctrlEnter" cmd="focus">Ctrl+Enter</label>
-					<button cmd="send">发送</button>
+					<input id="editor" type="text" /><button cmd="send">发送</button>
 				</div>
 			</div>
-			<div id="playerBox">
-				<h4>用户</h4>
-				<div id="playerList">
-					<ul>
-						<script id="playerListTemplate" type="text/template">
-						<li class="#{state} !#{helper.node.getClasses()}" down="focus">
-						if (this.weibo){
-							<span class="letter" cmd="letter">私信</span><span class="state"></span><a href="#{weibo}" target="_blank"><span class="weibo"></span></a><span class="nick" title="#{id}">#{nick}<button cmd="flow">关注</button></span>
-						} else {
-							<span class="letter" cmd="letter">私信</span><span class="state"></span><span class="nick" title="#{id}">#{nick}<button cmd="flow">关注</button><button cmd="remove">移除</button></span>
-						}
-						</li>
-						</script>
-						<!-- Debug Start -->
-						<li class="online"><span class="letter">私信</span><span class="state"></span><a href="http://weibo.com/zswang" target="_blank"><span class="weibo"></span></a><span class="nick" title="ttt1">昵称 微博</span><button>关注</button><button>移除</button></li>
-						<li class="online"><span class="letter">私信</span><span class="state"></span><span class="nick" title="ttt2">昵称 他人</span></li>
-						<li class="offline self"><span class="letter">私信</span><span class="state"></span><span class="nick" title="ttt3">昵称 自己</span></li>
-						<!-- Debug End -->
-					</ul>
-				</div>
-				<div id="playerTools" class="tools">
-					<button cmd="nick">昵称</button>
-					<button cmd="viewLetter">私信<span id="newLetterNumber" class="number"></span></button>
-					<button cmd="weibo" title="微博"><span class="weibo"></span></button>
-				</div>
-			</div>
-		</div>
-		<div id="xgameBox">
-			<ul>
-				<script id="xgameListTemplate" type="text/template">
-				<li class="!#{helper.node.getClasses()} #{this['voted']?'voted':''}">
-					<button cmd="vote" title="投票">#{title}<span class="number">!#{count ? '(<b>' + count + '</b>)' : ''}</span></button>
-				</li>
-				</script>
-				<!-- Debug Start -->
-				<li>
-					<button title="投票">路过<span class="number"><b>(1)</b></span></button>
-				</li>
-				<li class="voted">
-					<button title="投票">不错<span class="number"><b>(2)</b></span></button>
-				</li>
-				<!-- Debug End -->
-			</ul>
 		</div>
 		<div id="letterBox" class="hidden">
 			<div class="masks">
@@ -207,17 +184,6 @@
 						<button cmd="ok">确定</button>
 					</div>
 	
-							break;
-
-						case "passport":
-
-					<div class="head"><span class="title">请登记</span></div>
-					<div class="content">
-						<div class="panel">
-							<div><p><a target="_blank" href="!#{url}" cmd="close">点击登记</a></p></div>
-						</div>
-					</div>
-
 							break;
 						case "letter":
 						

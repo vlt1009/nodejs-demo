@@ -15,7 +15,7 @@ http.createServer(function(req, res){
 	var query = reqUrl.query;
 	if (/[^\w_$]/.test(query.callback)) { // 错误的callback参数
 		res.writeHead(200, {
-			'Content-Type': 'text/javascript'
+			'Content-Type': 'text/html'
 		});
 		res.end("/* callback is invalid. */");
 		return;
