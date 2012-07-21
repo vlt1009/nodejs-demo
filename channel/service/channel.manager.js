@@ -39,7 +39,37 @@ void function(){
 		 * 清理过期数据
 		 */
 		this.patrolTime = new Date;
+		/**
+		 * 监听事件集合
+		 */
+		this.listeners = {};
 	}
+	Channel.prototype.dispatchEvent = function(event, data){
+		var listener = this.listeners[event];
+		if (!listener) return;
+		var i = listener.length;
+		while (i--) {
+			try {
+				listener[i](data, event);
+			} catch(ex) {
+				console.log([event, ex.message].join(" : "));
+			}
+		}
+	};
+	Channel.prototype.addEventListener = function(event, handler){
+		if (typeof handler != "function") return;
+		
+		if (event instanceof Array) {
+			var i = event.length;
+			while (i--) {
+				this.on(event[i], handler);
+			}
+			return;
+		}
+		
+		this.listeners[event] = this.listeners[event] || [];
+		this.listeners[event].unshift(handler); // 向前添加
+	};
 	/**
 	 * 执行回调
 	 * @param{Object} res 应答对象

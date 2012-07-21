@@ -46,5 +46,15 @@ AceCore.addConfig("Events", {
 	 * @description 修改微博
 	 * @event
 	 */
-	weibo: 9
+	weibo: 9,
+	/**
+	 * @description 肘子移动
+	 * @event
+	 */
+	move: 10,
+	/**
+	 * @description 扮演角色
+	 * @event
+	 */
+	role: 11
 });

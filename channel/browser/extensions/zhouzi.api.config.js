@@ -2,7 +2,7 @@
  * chat api 配置
  * @author 王集鹄(wangjihu,http://weibo.com/zswang)
  */
-AceCore.addConfig("ChatApi", {
+AceCore.addConfig("ZhouziApi", {
 	/**
 	 * pick最大等待时间，单位：毫秒
 	 */
@@ -10,11 +10,11 @@ AceCore.addConfig("ChatApi", {
 	/**
 	 * 请求的Host地址
 	 */
-	apiHost: "http://jssdk.com:8080"
+	apiHost: "http://renrousousuo.com:8084"
 });
 
 if (/debug/.test(location)) {
-	AceCore.addConfig("ChatApi", {
-		apiHost: "http://localhost:2012"
+	AceCore.addConfig("ZhouziApi", {
+		apiHost: "http://localhost:2014"
 	});
 }

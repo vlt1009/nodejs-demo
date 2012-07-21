@@ -17,7 +17,8 @@ AceCore.addModule("LetterBox", function(sandbox){
 	/**
 	 * 聊天室api
 	 */
-	var chatApi = sandbox.getExtension("ChatApi");
+	var chatApi = sandbox.getExtension("ChatApi") || 
+		sandbox.getExtension("ZhouziApi");
 	/**
 	 * 私信列表
 	 */

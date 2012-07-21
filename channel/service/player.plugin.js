@@ -136,6 +136,7 @@ void function(){
 		var self = this;
 		common.forEach(this.players, function(player){
 			if (now - player.passportTime > 2 * common.offineTime) { // 清除掉线用户
+				self.channel.dispatchEvent('player-remove', player);
 				fields.push({
 					type: "playerRemove",
 					players: [{
@@ -156,6 +157,7 @@ void function(){
 			player.update({
 				state: state
 			});
+			self.channel.dispatchEvent('player-update', player);
 			fields.push({
 				type: "playerUpdate",
 				players: [{

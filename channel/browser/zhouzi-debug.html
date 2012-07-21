@@ -12,15 +12,40 @@
 		<script src="extensions/zhouzi.api.config.js"></script>
 		<script src="extensions/zhouzi.api.js"></script>
 		<script src="modules/events.config.js"></script>
-		<script src="modules/manager.js"></script>
+		<script src="modules/zhouzi-manager.js"></script>
 		<script src="modules/message-box.js"></script>
 		<script src="modules/player-box.js"></script>
 		<script src="modules/editor-box.js"></script>
 		<script src="modules/dialog-box.js"></script>
 		<script src="modules/letter-box.js"></script>
+		<script src="modules/zhouzi-box.js"></script>
 	</head>
 	<body>
 		<div id="main">
+			<div id="zhouziBox">
+				<div id="roleTools">
+					<input type="button" id="player1" value="方肘子" cmd="player1" />
+					<input type="button" id="player2" value="可爱多" cmd="player2" />
+				</div>
+				<ul>
+					<script id="zhouziListTemplate" type="text/template">
+					if (!x || !y || x == helper.colCount - 1 || y == helper.rowCount - 1){
+						<li style="left: #{x * 45 + 24}px; top: #{y * 45 + 34}px;" class="star zhouzi#{value}" down="move"></li>
+					} else {
+						<li style="left: #{x * 45 + 24}px; top: #{y * 45 + 34}px;" class="zhouzi#{value}" down="move"></li>
+					}
+					</script>
+					<li style="left: 0px; top: 0px;"></li>
+					<li style="left: 32px; top: 0px;"></li>
+					<li style="left: 64px; top: 0px;"></li>
+					<li style="left: 0px; top: 32px;"></li>
+					<li style="left: 32px; top: 32px;"></li>
+					<li style="left: 64px; top: 32px;"></li>
+					<li style="left: 0px; top: 64px;"></li>
+					<li style="left: 32px; top: 64px;"></li>
+					<li style="left: 64px; top: 64px;"></li>
+				</ul>
+			</div>
 			<div id="playerBox">
 				<div id="playerList">
 					<ul>

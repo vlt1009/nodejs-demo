@@ -39,24 +39,12 @@ input[type="button"]:hover, button:hover, .button:hover{
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 960px;
-	height: 600px;
+	width: 760px;
+	height: 475px;
 }
 #playerTools{
 	height: 32px;
 }
-#messageBox{
-	width: 315px;
-	border: solid 1px #bdc7d9;
-	border-radius: 3px;
-	padding: 5px;
-	background: #fff;
-	margin: 10px 10px 10px 10px;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-}
-
 #messageBox ul{
 	height: 100px;
 }
@@ -118,7 +106,7 @@ input[type="button"]:hover, button:hover, .button:hover{
 	border: solid 1px #bdc7d9;
 	border-radius: 3px;
 	padding: 5px;
-	margin: 10px 10px 10px 0;
+	margin: 5px;
 	background: #fff;
 	width: 230px;
 	right: 0;
@@ -131,7 +119,7 @@ input[type="button"]:hover, button:hover, .button:hover{
 	border: solid 1px #bdc7d9;
 	border-radius: 3px;
 	overflow: auto;
-	height: 227px;
+	height: 115px;
 }
 
 #playerBox li{
@@ -198,11 +186,11 @@ input[type="button"]:hover, button:hover, .button:hover{
 	text-decoration: none;
 }
 
-#editor {
-    bottom: 7px;
+#editor{
+    bottom: 6px;
     position: absolute;
     resize: none;
-    width: 125px;
+    width: 168px;
 }
 h4{
 	border-radius: 3px;
@@ -354,4 +342,43 @@ h4{
 	display: inline-block;
 	width: 16px;
 	height: 16px;
+}
+
+#zhouziBox{
+	
+}
+.player1 #player1, .player2 #player2{
+	color: red;
+}
+#zhouziBox.player1 .zhouzi2{
+	cursor: pointer;
+}
+#zhouziBox.player2 .zhouzi2, #zhouziBox.player2 .zhouzi0{
+	cursor: pointer;
+}
+#zhouziBox .zhouzi1{
+	background: red;
+}
+#zhouziBox .zhouzi2{
+	background: green;
+}
+#zhouziBox .zhouzi3{
+	background: blue;
+}
+#zhouziBox .star{
+	background: gray;
+}
+#zhouziBox .star.zhouzi2{
+	background: yellow;
+}
+#zhouziBox .star.zhouzi3{
+	background: blue;
+}
+#zhouziBox ul li{
+	border: 1px solid #BDC7D9;
+	border-radius: 3px 3px 3px 3px;
+	overflow: hidden;
+	width: 30px;
+	height: 30px;
+	position: absolute;
 }
