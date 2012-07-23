@@ -12,8 +12,12 @@ void function(){
 		this.channel = channel;
 		var self = this;
 		this.channel.addEventListener('player-remove', function(player){
-			if (self.player1 == player.id) self.player1 = 0;
-			if (self.player2 == player.id) self.player2 = 0;
+			if (self.player1 == player.id ||
+				self.player2 == player.id){
+				self.player1 = 0;
+				self.player2 = 0;
+				self.gameover = true;
+			}
 		});
 		options = options || {};
 		
@@ -24,6 +28,7 @@ void function(){
 	}
 	
 	ZhouziPlugin.prototype.replay = function(){
+		this.gameover = false;
 		this.step = 0;
 		this.zhouzi = { x: 4, y: 4};
 		this.map = {};
@@ -71,13 +76,27 @@ void function(){
 						this.player2 = passport.id;
 						break;
 				}
-				this.currPlayer = this.step % 2 ?  this.player2 : this.player1;
-				fields.push({
-					type: "zhouziRole",
-					player1: this.player1,
-					player2: this.player2,
-					currPlayer: this.currPlayer
-				});
+				if (this.gameover){ // 如果游戏结束状态
+					this.replay();
+					fields.push({
+						type: "zhouziAll",
+						map: this.map,
+						step: this.step,
+						currPlayer: this.currPlayer,
+						player1: this.player1,
+						player2: this.player2,
+						colCount: this.colCount,
+						rowCount: this.rowCount
+					});
+				} else {
+					this.currPlayer = this.step % 2 ?  this.player2 : this.player1;
+					fields.push({
+						type: "zhouziRole",
+						player1: this.player1,
+						player2: this.player2,
+						currPlayer: this.currPlayer
+					});
+				}
 				break;
 			case "move": // 移动
 				if (this.currPlayer != passport.id) return;
@@ -107,16 +126,15 @@ void function(){
 					to.x == this.colCount - 1 ||
 					to.y == this.rowCount - 1
 				){
-					this.replay();
+					this.player1 = 0;
+					this.player2 = 0;
+					this.gameover = "move";
 					fields.push({
-						type: "zhouziAll",
-						map: this.map,
-						step: this.step,
-						currPlayer: this.currPlayer,
+						type: "zhouziRole",
+						gameover: this.gameover,
 						player1: this.player1,
 						player2: this.player2,
-						colCount: this.colCount,
-						rowCount: this.rowCount
+						currPlayer: this.currPlayer
 					});
 				}
 				break;
@@ -136,6 +154,18 @@ void function(){
 					y: query.y,
 					updates: updates
 				});
+				if (!this.search()){ // 无路可逃
+					this.player1 = 0;
+					this.player2 = 0;
+					this.gameover = "plug";
+					fields.push({
+						type: "zhouziRole",
+						gameover: this.gameover,
+						player1: this.player1,
+						player2: this.player2,
+						currPlayer: this.currPlayer
+					});
+				}
 				break;
 		}
 	};
@@ -148,10 +178,38 @@ void function(){
 			player1: this.player1,
 			player2: this.player2,
 			colCount: this.colCount,
-			rowCount: this.rowCount
+			rowCount: this.rowCount,
+			gameover: this.gameover
 		});
 	};
 	
+	// 搜索是否可以逃跑
+	ZhouziPlugin.prototype.search = function() {
+		var flags = {};
+		var result;
+		var self = this;
+		function run(pos){
+			if (result || flags[pos]) return;
+			flags[pos] = true;
+			for (var i = 0; i < offsets.length; i++){
+				var offset = offsets[i];
+				var path = [+pos[0] + offset[0], +pos[1] + offset[1]];
+				if (!(/^(0|2)$/.test(self.map[path]))) continue;
+				if (path[0] == 0 || 
+					path[1] == 0 || 
+					path[0] == self.colCount - 1 ||
+					path[1] == self.rowCount - 1
+				){
+					result = true;
+				} else {
+					run(path);
+				}
+			}
+		}
+		run([this.zhouzi.x, this.zhouzi.y]);
+		return result;
+	};
+
 	exports.create = function(channel, options) {
 		return new ZhouziPlugin(channel, options);
 	};
