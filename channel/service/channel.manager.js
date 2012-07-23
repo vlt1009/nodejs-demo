@@ -62,7 +62,7 @@ void function(){
 		if (event instanceof Array) {
 			var i = event.length;
 			while (i--) {
-				this.on(event[i], handler);
+				this.addEventListener(event[i], handler);
 			}
 			return;
 		}

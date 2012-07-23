@@ -54,6 +54,7 @@ void function(){
 				if (!player) {
 					this.playerCount++;
 					this.players[passport.id] = player = passport;
+					this.channel.dispatchEvent('player-add', player);
 					fields.push({
 						type: "playerAdd",
 						players: [{

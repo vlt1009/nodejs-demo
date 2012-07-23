@@ -12,6 +12,7 @@ void function(){
 		this.channel = channel;
 		var self = this;
 		this.channel.addEventListener('player-remove', function(player){
+			console.log('player remove:' + player.id);
 			if (self.player1 == player.id ||
 				self.player2 == player.id){
 				self.player1 = 0;
