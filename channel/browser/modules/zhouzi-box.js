@@ -20,15 +20,17 @@ AceCore.addModule("ZhouziBox", function(sandbox){
 	var passportInfo = {};
 	
 	var rowCount = 9;
-	
 	var colCount = 9;
 	
 	var currPlayer;
 	var player1;
 	var player2;
+	var gameover;
 	function updatePlayer(){
 		lib.removeClass('zhouziBox', 'player1');
 		lib.removeClass('zhouziBox', 'player2');
+		lib.removeClass('zhouziBox', 'win');
+		lib.removeClass('zhouziBox', 'lost');
 		if (currPlayer == passportInfo.id){
 			if (currPlayer == player1){
 				lib.addClass('zhouziBox', 'player1');
@@ -37,26 +39,34 @@ AceCore.addModule("ZhouziBox", function(sandbox){
 				lib.addClass('zhouziBox', 'player2');
 			}
 		}
+		T.g('player1').disabled = !!player1;
+		T.g('player2').disabled = !!player2;
+		if (gameover == 'move'){
+			lib.addClass('zhouziBox', 'win');
+		} else if (gameover == 'plug'){
+			lib.addClass('zhouziBox', 'lost');
+		}
 	}
 	function zhouziMove(item){
+		currPlayer = item.currPlayer;
 		for(var path in item.updates){
 			zhouziTree.updateData({
 				id: path,
 				value: item.updates[path]
 			});
 		}
-		currPlayer = item.currPlayer;
 		updatePlayer();
 	}
 	
 	function zhouziPlug(item){
+		currPlayer = item.currPlayer;
+		gameover = item.gameover;
 		for(var path in item.updates){
 			zhouziTree.updateData({
 				id: path,
 				value: item.updates[path]
 			});
 		}
-		currPlayer = item.currPlayer;
 		updatePlayer();
 	}
 	
@@ -64,6 +74,29 @@ AceCore.addModule("ZhouziBox", function(sandbox){
 		currPlayer = item.currPlayer;
 		player1 = item.player1;
 		player2 = item.player2;
+		gameover = item.gameover;
+		updatePlayer();
+	}
+	
+	function zhouziAll(item){
+		rowCount = item.rowCount,
+		colCount = item.colCount;
+		currPlayer = item.currPlayer;
+		player1 = item.player1;
+		player2 = item.player2;
+		gameover = item.gameover;
+		var items = [];
+		for (var y = 0; y < rowCount; y++){
+			for (var x = 0; x < colCount; x++){
+				items.push({
+					id: [x, y],
+					x: x,
+					y: y,
+					value: item.map[[x, y]]
+				});
+			}
+		}
+		zhouziTree.loadChilds(items);
 		updatePlayer();
 	}
 
@@ -87,24 +120,7 @@ AceCore.addModule("ZhouziBox", function(sandbox){
 					zhouziRole(item);
 					break;
 				case "zhouziAll":
-					rowCount = item.rowCount,
-					colCount = item.colCount;
-					var items = [];
-					for (var y = 0; y < item.rowCount; y++){
-						for (var x = 0; x < item.colCount; x++){
-							items.push({
-								id: [x, y],
-								x: x,
-								y: y,
-								value: item.map[[x, y]]
-							});
-						}
-					}
-					zhouziTree.loadChilds(items);
-					currPlayer = item.currPlayer;
-					player1 = item.player1;
-					player2 = item.player2;
-					updatePlayer();
+					zhouziAll(item);
 					break;
 			}
 		});
@@ -170,6 +186,10 @@ AceCore.addModule("ZhouziBox", function(sandbox){
 						break;
 				}
 			});
+			setInterval(function(){
+				if (!gameover) return;
+				T.dom.toggleClass('zhouziBox', 'flash');
+			}, 1000);
 		}
 	};
 });

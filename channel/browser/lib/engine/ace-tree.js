@@ -353,10 +353,13 @@ void function(exports){
 		if (depth) { // 深度更新则重新加载子节点
 			this.loadChilds(data[this.tree.fieldChilds], true);
 		}
+		if (changed) this.refresh();
+		/*
 		if (changed || depth) {
 			this.tree.onsort && this.parentNode.childNodes.sort(this.tree.onsort);
 			this.parentNode.refresh();
 		}
+		*/
 	};
 	
 	/**

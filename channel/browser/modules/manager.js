@@ -31,8 +31,11 @@ AceCore.addModule("Manager", function(sandbox){
 			seq: seq
 		}, function (data) {
 			if (!data || data.result != "ok") {
-				if (data && data.result != "kill" && data.channel == channel) nextPick();
-				sandbox.log("pick error.");
+				sandbox.log(data);
+				if (!data || data.result == 'overtime' || 
+					(data.result != "kill" && data.channel == channel)){
+					nextPick();
+				}
 				return;
 			}
 			// 所属频道或请求序号不一致

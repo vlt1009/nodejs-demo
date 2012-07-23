@@ -24,17 +24,22 @@
 		<div id="main">
 			<div id="zhouziBox">
 				<div id="roleTools">
-					<input type="button" id="player1" value="方肘子" cmd="player1" />
-					<input type="button" id="player2" value="可爱多" cmd="player2" />
+					<label>选择角色：</label>
+					<input type="button" id="player1" value="肘子" cmd="player1" />
+					<input type="button" id="player2" value="爱多" cmd="player2" />
 				</div>
 				<ul>
 					<script id="zhouziListTemplate" type="text/template">
 					if (!x || !y || x == helper.colCount - 1 || y == helper.rowCount - 1){
-						<li style="left: #{x * 45 + 24}px; top: #{y * 45 + 34}px;" class="star zhouzi#{value}" down="move"></li>
+						<li style="left: #{x * 47 + 24}px; top: #{y * 47 + 34}px;" class="star zhouzi#{value}" down="move">
+						
+						</li>
 					} else {
-						<li style="left: #{x * 45 + 24}px; top: #{y * 45 + 34}px;" class="zhouzi#{value}" down="move"></li>
+						<li style="left: #{x * 47 + 24}px; top: #{y * 47 + 34}px;" class="zhouzi#{value}" down="move">
+						</li>
 					}
 					</script>
+					<!-- Debug Start -->
 					<li style="left: 0px; top: 0px;"></li>
 					<li style="left: 32px; top: 0px;"></li>
 					<li style="left: 64px; top: 0px;"></li>
@@ -44,6 +49,7 @@
 					<li style="left: 0px; top: 64px;"></li>
 					<li style="left: 32px; top: 64px;"></li>
 					<li style="left: 64px; top: 64px;"></li>
+					<!-- Debug End -->
 				</ul>
 			</div>
 			<div id="playerBox">
@@ -52,7 +58,7 @@
 						<script id="playerListTemplate" type="text/template">
 						<li class="#{state} !#{helper.node.getClasses()}" down="focus">
 						if (this.weibo){
-							<span class="letter" cmd="letter">私信</span><span class="state"></span><a href="#{weibo}" target="_blank"><span class="weibo"></span></a><span class="nick" title="#{id}">#{nick}<button cmd="flow">关注</button></span>
+							<span class="letter" cmd="letter">私信</span><span class="state"></span><a href="#{weibo}" target="_blank"><span class="weibo"></span></a><span class="nick" title="#{id}">#{nick}</span>
 						} else {
 							<span class="letter" cmd="letter">私信</span><span class="state"></span><span class="nick" title="#{id}">#{nick}</span>
 						}
@@ -210,6 +216,16 @@
 					</div>
 	
 							break;
+
+						case "passport":
+
+					<div class="head"><span class="title">请登记(无需注册)</span></div>
+					<div class="content">
+						<div class="panel">
+							<div><p><a target="_blank" href="!#{url}" cmd="close">点击登记</a></p></div>
+						</div>
+					</div>
+
 						case "letter":
 						
 					<div class="head"><span class="title">给 #{nick} 发私信</span><span class="close" cmd="cancel"></span></div>

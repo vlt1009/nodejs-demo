@@ -356,29 +356,50 @@ h4{
 #zhouziBox.player2 .zhouzi2, #zhouziBox.player2 .zhouzi0{
 	cursor: pointer;
 }
+
 #zhouziBox .zhouzi1{
-	background: red;
+	background: url(../images/zhouzi45x45-1.png);
+}
+#zhouziBox.flash .zhouzi1{
+	background: url(../images/zhouzi45x45-2.png);
+}
+#zhouziBox.win .zhouzi1{
+	background: url(../images/zhouzi45x45-3.png);
+}
+#zhouziBox.lost .zhouzi1{
+	background: url(../images/zhouzi45x45-4.png);
 }
 #zhouziBox .zhouzi2{
 	background: green;
+	opacity: 0.2;
 }
 #zhouziBox .zhouzi3{
 	background: blue;
+	opacity: 0.2;
 }
-#zhouziBox .star{
+#zhouziBox .star.zhouzi0{
 	background: gray;
+	opacity: 0.2;
 }
 #zhouziBox .star.zhouzi2{
 	background: yellow;
+	opacity: 0.2;
 }
 #zhouziBox .star.zhouzi3{
 	background: blue;
+	opacity: 0.2;
+}
+#zhouziBox{
+	-moz-user-select: none;
+	-moz-touch-callout: none; 
+	-webkit-user-select: none;
+	-webkit-touch-callout: none; 
 }
 #zhouziBox ul li{
 	border: 1px solid #BDC7D9;
 	border-radius: 3px 3px 3px 3px;
 	overflow: hidden;
-	width: 30px;
-	height: 30px;
+	width: 45px;
+	height: 45px;
 	position: absolute;
 }
