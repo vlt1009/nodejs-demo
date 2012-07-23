@@ -122,6 +122,16 @@ AceCore.addModule("ZhouziBox", function(sandbox){
 				case "zhouziAll":
 					zhouziAll(item);
 					break;
+				case "playerRemove":
+					lib.each(item.players, function(player) {
+						if (player.id == player1 || player.id == player2){
+							player1 = 0;
+							player2 = 0;
+							gameover = false;
+							updatePlayer();
+						}
+					});
+					break;
 			}
 		});
 	}
