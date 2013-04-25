@@ -1,7 +1,7 @@
 var common = require('../common/channel.common.js');
 var querystring = require('querystring');
-var path = require('path');
 var fs = require('fs');
+var http = require('http');
 
 void function(){
 	/**
@@ -11,7 +11,7 @@ void function(){
 	/**
 	 * 可更新的字段列表
 	 */
-	var updateFields = ['nick', 'state', 'weibo'];
+	var updateFields = ['nick', 'state', 'weibo', 'face'];
 	/**
 	 * 昵称词典，避免昵称重复
 	 */
@@ -32,7 +32,7 @@ void function(){
 	function savePlayer(id){
 		var player = playerDict[id];
 		if (!player) return;
-		path.exists(dir, function(exists){
+		fs.exists(dir, function(exists){
 			if (exists) {
 				fs.writeFile(common.format("#{0}/#{1}.json", [dir, id]), JSON.stringify(player));
 			} else {
@@ -58,7 +58,7 @@ void function(){
 	function Player(id, file){
 		if (file) {
 			var filename = common.format("#{0}/#{1}.json", [dir, id]);
-			if (path.existsSync(filename)) {
+			if (fs.existsSync(filename)) {
 				var player = JSON.parse(fs.readFileSync(filename)) || {};
 				if (player.id == id) {
 					this.id = id;
@@ -151,7 +151,7 @@ void function(){
 	 * @param{Object} res 应答对象，如果为空，则不会创建不存在的用户
 	 * @param{Object} hello 握手包，不写cookie
 	 */
-	function getPassport(req, res, hello){
+	function getPassport(req, res, hello, query, channel){
 		var cookie = req.headers['cookie'] || "";
 		var m = cookie.match(/\bpassport=([^;]+)/);
 		var passport = m && querystring.parse(m[1]);
@@ -172,6 +172,49 @@ void function(){
 		} else {
 			player.passportTime = new Date;
 		}
+        if (query && query.refer && !player.weibo && !player.processUrl){
+            player.processUrl = true;
+            String(query.refer).replace(/^http:\/\/weibo.com\/(\w+)/g, function(url, id){
+                //http://zswang.duapp.com/api/?action=regex&regex=/%3Cimg%20class=%22W_face_radius%22%20src=%22([^%22]*)%22/&url=http://weibo.com/1486697205
+                console.log(query.refer);
+                http.get(url, function(res){
+                    if (res.statusCode == 302){
+                       // var location = res.getHeader('Location');
+                        if (!res.headers.location) return;
+                        var body = '';
+                        http.get(res.headers.location, function(res){
+                            res.on('data', function(chunk){
+                                body += chunk;
+                            });
+                            res.on('end', function(){
+                                String(body).replace(/<img class="[^"]*W_face_radius[^"]*" src="([^"]*)"[^>]*alt="([^"]*)" \/>/, function(all, face, nick){
+                                    player.update({
+                                        weibo: !common.checkWeibo(url) ? url : player.weibo,
+                                        nick: !common.checkNick(nick) ? nick : player.nick
+                                    });
+                                    console.log(player);
+                                    var fields = [];
+                                    fields.push({
+                                        type: "playerUpdate",
+                                        players: [{
+                                            id: player.id,
+                                            nick: player.nick,
+                                            weibo: player.weibo
+                                        }]
+                                    });
+                                    channel && channel.fire(fields);
+                                });
+                            });
+                        }).on('error', function(e){
+                            console.log("Got error: " + e.message);
+                        });                
+                    }
+                }).on('error', function(e){
+                    console.log("Got error: " + e.message);
+                });                
+            });
+        }
+
 		return player;
 	};
 	

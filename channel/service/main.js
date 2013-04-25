@@ -22,7 +22,7 @@ http.createServer(function(req, res){
 	}
 	switch (reqUrl.pathname) {
 		case "/passport":
-			playerManager.getPassport(req, res);
+			playerManager.getPassport(req, res, false, query);
 			res.end('Completed.');
 			return;
 		case "/hello":
@@ -32,7 +32,7 @@ http.createServer(function(req, res){
 			var json = {
 				result: 'error'
 			};
-			var passport = playerManager.getPassport(req, res, true);
+			var passport = playerManager.getPassport(req, res, true, query);
 			if (passport){
 				json = {
 					result: 'ok',

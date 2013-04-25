@@ -10,7 +10,7 @@ AceCore.addConfig("ChatApi", {
 	/**
 	 * 请求的Host地址
 	 */
-	apiHost: "http://jssdk.com:8080"
+	apiHost: "http://renrousousuo.com:8080"
 });
 
 if (/debug/.test(location)) {

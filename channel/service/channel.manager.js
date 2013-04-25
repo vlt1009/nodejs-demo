@@ -88,7 +88,7 @@ void function(){
 	 * @param{Object} res 应答对象
 	 */
 	Channel.prototype.command = function(query, req, res){
-		var passport = playerManager.getPassport(req, res);
+		var passport = playerManager.getPassport(req, res, false, query, this);
 		var fields = [];
 		var error;
 		common.forEach(this.plugins, function(plugin){
@@ -109,13 +109,13 @@ void function(){
 	Channel.prototype.fire = function(fields){
 		if (!fields || !fields.length) return;
 		this.seqFields.push({
-			startSeq: this.currSeq,
+			startSeq: this.currSeq++,
 			fields: fields
 		});
 		while (this.seqFields.length > common.maxFireCount) {
 			this.minSeq = this.seqFields.shift().startSeq;
 		}
-		this.currSeq++;
+		//this.currSeq++;
 		for (var key in this.pickDict) {
 			var pickItem = this.pickDict[key];
 			if (!pickItem) continue;
@@ -154,7 +154,7 @@ void function(){
 	 * @param {Object} res
 	 */
 	Channel.prototype.pick = function(query, req, res){
-		var passport = playerManager.getPassport(req, res);
+		var passport = playerManager.getPassport(req, res, false, query, this);
 		if (query.seq <= this.minSeq) { // 首次访问或完整数据
 			var fields = [{
 				type: "passport",

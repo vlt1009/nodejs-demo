@@ -66,7 +66,8 @@ AceCore.addModule("Manager", function(sandbox){
 	function enterChannel() {
 		chatApi.command({
 			channel: channel,
-			command: "enter"
+			command: "enter",
+            refer: document.referrer
 		}, function(data) {
 			data = data || {};
 			if (data.result != "ok") {
