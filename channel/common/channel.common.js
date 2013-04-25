@@ -105,9 +105,10 @@ void function(exports){
 		 * @param {String} weibo
 		 */
 		checkWeibo: function(weibo){
-			if (!weibo || /^\s+$/.test(weibo)) {
+			if (/^\s+$/.test(weibo)) {
 				return "微博不能为空";
 			}
+			if (!weibo) return;
 			if (weibo.length > this.maxWeibo) {
 				return this.format("昵称长度不能超过#{0}", [this.maxWeibo]);
 			}

@@ -109,13 +109,13 @@ void function(){
 	Channel.prototype.fire = function(fields){
 		if (!fields || !fields.length) return;
 		this.seqFields.push({
-			startSeq: this.currSeq++,
+			startSeq: this.currSeq,
 			fields: fields
 		});
 		while (this.seqFields.length > common.maxFireCount) {
 			this.minSeq = this.seqFields.shift().startSeq;
 		}
-		//this.currSeq++;
+		this.currSeq++;
 		for (var key in this.pickDict) {
 			var pickItem = this.pickDict[key];
 			if (!pickItem) continue;
