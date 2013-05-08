@@ -3,7 +3,6 @@
  */
 var events = require('events');
 var emitter = new events.EventEmitter();
-console.log('emitter');
 for (var p in emitter){
     if (typeof emitter[p] == 'function'){
         exports[p] = (function(name){
