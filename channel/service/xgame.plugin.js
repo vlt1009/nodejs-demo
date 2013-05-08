@@ -1,4 +1,5 @@
 var common = require('../common/channel.common.js');
+var event = require('./event');
 
 void function(){
 	/**
@@ -86,4 +87,6 @@ void function(){
 	exports.create = function(channel, options) {
 		return new XGamePlugin(channel, options);
 	};
+    
+    event.emit('plugin-register', 'xgame', XGamePlugin);
 }();

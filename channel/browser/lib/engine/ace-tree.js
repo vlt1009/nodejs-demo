@@ -109,10 +109,7 @@ void function(exports){
 	 */
 	function appendWith(element, html){
 		element = lib.g(element);
-		console.log("1");
 		if (!element) return;
-		console.log("2");
-		console.log(html);
 		element.appendChild(html2Fragment(html));
 	}
 	

@@ -79,12 +79,6 @@ AceCore.addModule("PlayerBox", function(sandbox){
 								info: node.data
 							});
 							break;
-						case "flow":
-							alert(JSON.stringify(node.data));
-							break;
-						case "remove":
-							alert('remove:' + JSON.stringify(node.data));
-							break;
 						case "letter":
 							sandbox.fire(events.letterDialog, {
 								nick: node.data.nick,

@@ -41,7 +41,7 @@ AceCore.addConfig("Events", {
 	 * @description 游戏信息改变
 	 * @event
 	 */
-	xgame: 8,
+	vote: 8,
 	/**
 	 * @description 修改微博
 	 * @event
