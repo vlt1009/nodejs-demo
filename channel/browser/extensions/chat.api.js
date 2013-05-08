@@ -224,7 +224,7 @@ AceCore.addExtension("ChatApi", function (sandbox){
     var passportInfo;
     var localPassport;
     if (window.localStorage){
-        localPassport = localStorage.getItem('passport');
+        localPassport = localStorage.getItem(apiHost + ':passport');
     }
     return {
         getApiHost: function(){
@@ -261,7 +261,7 @@ AceCore.addExtension("ChatApi", function (sandbox){
                                 } else {
                                     if (window.localStorage){
                                         localPassport = ChannelCommon.format('id=#{id}&visa=#{visa}&mask=#{mask}', passportInfo);
-                                        localStorage.setItem('passport', localPassport);
+                                        localStorage.setItem(apiHost + ':passport', localPassport);
                                     }
                                 }
                             break;

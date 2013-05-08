@@ -133,23 +133,20 @@ void function(){
     var badPassport = {};
     
     function buildPassport(request, respose, query, callback){
-        var passportKey = query.passport;
         var headers = request.headers;
         // http://localhost:2012/command?passport=id%3Dp14ksl9%26visa%3D955ja%26mask%3D-mnbsgs
-        // console.log('passportKey', passportKey);
-        if (!passportKey){
-            var cookie = headers['cookie'] || "";
-            var m = cookie.match(/\bpassport=([^;]+)/);
-            passportKey = m && m[1];
-        }
-        var passport = passportKey && querystring.parse(passportKey);
+
+        var cookie = headers['cookie'] || "";
+        var m = cookie.match(/\bpassport=([^;]+)/);
+        var passportKey = (m && m[1]) || query.passport;
+        var passport = (passportKey && querystring.parse(passportKey)) || {};
         
         var address = String(passportKey).substring(0, 30) + ',' + // 识别同一个用户
             + request.connection.remoteAddress
             + String(headers['x-real-ip'] || headers['x-forwarded-for']).replace(/,.*/, '')
             + String(headers['user-agent']).substring(0, 200);
         
-        buildPlayer(passport && passport.id, function(err, player){
+        buildPlayer(passport.id, function(err, player){
             if (!err && passport && player.id == passport.id && player.visa == passport.visa &&
                 player.mask == getPlayerMask(passport.id, passport.visa)){
                 callback(null, player);
