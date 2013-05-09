@@ -67,6 +67,17 @@ AceCore.addModule("MessageBox", function(sandbox){
         return lib.encodeHTML(text).replace(/\n/g, "<br/>");
     }
     
+    
+    function html2Text(html) {
+        return String(html)
+            .replace(/<br\s*\/>/g, "\n")
+            .replace(/&amp;/g, "&")
+            .replace(/&quot;/g, "\"")
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&nbsp;/g, " ");
+    }
+
     return {
         init: function() {
         

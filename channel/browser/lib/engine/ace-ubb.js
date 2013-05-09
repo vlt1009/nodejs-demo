@@ -6,16 +6,6 @@ void function(exports){
     function addPlugin(name, process){
         plugins[name] = process;
     }
-    
-    function html2Text(html) {
-        return String(html)
-            .replace(/<br\s*\/>/g, "\n")
-            .replace(/&amp;/g, "&")
-            .replace(/&quot;/g, "\"")
-            .replace(/&lt;/g, "<")
-            .replace(/&gt;/g, ">")
-            .replace(/&nbsp;/g, " ");
-    }
 
     function exportHtml(str) {
         str = String(str).replace(/[&"<> \t\n\r]/g, function(all) {
