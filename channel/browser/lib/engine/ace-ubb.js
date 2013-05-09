@@ -29,10 +29,6 @@ void function(exports){
                 , "\r": ""
                 , "\t": new Array(5).join("&nbsp;")
             })[all];
-        })
-        .replace(/(\[code\])(.*?)(\[\/code\])/ig, function($0, $1, $2) {
-            if (typeof AceHighlight == "undefined") return "<pre><code>" + $2 + "</code></pre>";
-            return "<pre><code>" + AceHighlight.exportHtml(html2Text($2)).replace(/\[/g, "&#91;").replace(/\[/g, "&#93;") + "</code></pre>";
         });
         
         for (var p in plugins){

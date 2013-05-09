@@ -65,18 +65,5 @@ void function(){
         }
     };
 
-    WeiboPlugin.prototype.getWeiboAll = function(){
-        var players = [];
-        common.forEach(this.players, function(Weibo){
-            players.push({
-                id: Weibo.id,
-                nick: Weibo.nick,
-                weibo: Weibo.weibo,
-                state: Weibo.state
-            });
-        });
-        return players;
-    };
-    
     event.emit('plugin-register', 'weibo', WeiboPlugin);
 }();
